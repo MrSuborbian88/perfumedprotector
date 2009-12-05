@@ -28,6 +28,11 @@ class World(DirectObject):
         self._setup_models()
         self._setup_lights()
         self._setup_actions()
+        self._setup_cam()
+
+    def _setup_cam(self):
+        base.camera.setPos(self.env.find("**/camera_loc").getPos())
+        base.camera.lookAt(self.env.find("**/camera_start_look").getPos())
 
     def _setup_models(self):
         self.player = player.Player()
@@ -46,9 +51,6 @@ class World(DirectObject):
         #self.env.reparentTo(render)
         #self.env.setPos(0, 0, 3)
         
-        
-
-
         #self._spawn_enemy((2,2,5),"data/testpoint.txt")
         
     def _setup_lights(self):
