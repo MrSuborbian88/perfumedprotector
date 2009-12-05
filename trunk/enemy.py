@@ -143,7 +143,7 @@ class Enemy(DirectObject):
         if self.dead==False:
             et = task.time - self._prev_time
             rotation_rate = 100
-            walk_rate = 5
+            walk_rate = settings.ENEMY_WALK_RATE
 
             # Get current values
             rotation = self._model.getH()
