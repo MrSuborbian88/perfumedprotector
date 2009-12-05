@@ -59,10 +59,10 @@ class Player(DirectObject):
         pass
 
     def _setup_actions(self):
-        self.accept("arrow_up", self._set_key, ["forward", 1])
-        self.accept("arrow_up-up", self._set_key, ["forward", 0])
-        self.accept("arrow_down", self._set_key, ["reverse", 1])
-        self.accept("arrow_down-up", self._set_key, ["reverse", 0])
+        self.accept("arrow_up", self._set_key, ["reverse", 1])
+        self.accept("arrow_up-up", self._set_key, ["reverse", 0])
+        self.accept("arrow_down", self._set_key, ["forward", 1])
+        self.accept("arrow_down-up", self._set_key, ["forward", 0])
         self.accept("arrow_left", self._set_key, ["left", 1])
         self.accept("arrow_left-up", self._set_key, ["left", 0])
         self.accept("arrow_right", self._set_key, ["right", 1])
