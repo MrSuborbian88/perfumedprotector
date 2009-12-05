@@ -89,7 +89,7 @@ class Player(DirectObject):
         # Front collision
         self._gnd_handler_front = CollisionHandlerQueue()
         self._gnd_ray_front = CollisionRay()
-        self._gnd_ray_front.setOrigin(0, self._coll_dist, 20)
+        self._gnd_ray_front.setOrigin(0, self._coll_dist, 15)
         self._gnd_ray_front.setDirection(0, 0, -1)
         self._gnd_coll_front = CollisionNode('collision-ground-front')
         self._gnd_coll_front.addSolid(self._gnd_ray_front)
@@ -101,7 +101,7 @@ class Player(DirectObject):
         # Back collision
         self._gnd_handler_back = CollisionHandlerQueue()
         self._gnd_ray_back = CollisionRay()
-        self._gnd_ray_back.setOrigin(0, -self._coll_dist, 20)
+        self._gnd_ray_back.setOrigin(0, -self._coll_dist, 15)
         self._gnd_ray_back.setDirection(0, 0, -1)
         self._gnd_coll_back = CollisionNode('collision-ground-back')
         self._gnd_coll_back.addSolid(self._gnd_ray_back)
@@ -113,7 +113,7 @@ class Player(DirectObject):
         # Left collision
         self._gnd_handler_left = CollisionHandlerQueue()
         self._gnd_ray_left = CollisionRay()
-        self._gnd_ray_left.setOrigin(-self._coll_dist_h, 0, 20)
+        self._gnd_ray_left.setOrigin(-self._coll_dist_h, 0, 15)
         self._gnd_ray_left.setDirection(0, 0, -1)
         self._gnd_coll_left = CollisionNode('collision-ground-left')
         self._gnd_coll_left.addSolid(self._gnd_ray_left)
@@ -125,7 +125,7 @@ class Player(DirectObject):
         # Right collision
         self._gnd_handler_right = CollisionHandlerQueue()
         self._gnd_ray_right = CollisionRay()
-        self._gnd_ray_right.setOrigin(self._coll_dist_h, 0, 20)
+        self._gnd_ray_right.setOrigin(self._coll_dist_h, 0, 15)
         self._gnd_ray_right.setDirection(0, 0, -1)
         self._gnd_coll_right = CollisionNode('collision-ground-right')
         self._gnd_coll_right.addSolid(self._gnd_ray_right)
