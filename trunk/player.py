@@ -189,7 +189,7 @@ class Player(DirectObject):
                 self.health -= .5
         et = task.time - self._prev_move_time
         rotation_rate = 300
-        walk_rate = 5
+        walk_rate = settings.PLAYER_WALK_RATE
         # Get current values
         rotation = self._model.getH()
         pos_x = self._model.getX()
