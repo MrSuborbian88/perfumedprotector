@@ -9,6 +9,7 @@ from direct.actor.Actor import Actor
 from direct.interval.IntervalGlobal import *
 from direct.task import Task
 
+import settings
 import math
 import os
 import random
@@ -31,6 +32,7 @@ class Enemy(DirectObject):
         self._model = Actor(os.path.join('models', 'enemy'),
                 {'enemove' : os.path.join('models', 'enemy_walk')})
         self._model.setPos(pos[0], pos[1], pos[2])
+        self._model.setScale(1 * settings.GLOBAL_SCALE)
         self._model.reparentTo(render)
         
     def _setup_collisions(self):

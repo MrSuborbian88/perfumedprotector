@@ -7,6 +7,7 @@ from direct.task import Task
 from direct.gui.OnscreenText import OnscreenText
 from direct.gui.OnscreenImage import OnscreenImage
 
+import settings
 import math
 import os
 
@@ -26,7 +27,7 @@ class Player(DirectObject):
         self._dir = 0
         self._coll_dist = 10
         self._coll_dist_h = 3
-        self._scale = .5
+        self._scale = .5 * settings.GLOBAL_SCALE
         self._load_models()
         self._load_sounds()
         self._load_lights()
@@ -48,7 +49,7 @@ class Player(DirectObject):
         self._model = Actor("models/sdog")
         self._model.reparentTo(render)
         self._model.setPos(0, 0, 5)
-        self._model.setScale(1)
+        self._model.setScale(1 * settings.GLOBAL_SCALE)
 
     def _load_sounds(self):
         pass

@@ -12,6 +12,7 @@ from direct.actor.Actor import Actor
 from direct.interval.IntervalGlobal import *
 from direct.task import Task
 
+import settings
 import player
 import cat
 #import enemy
@@ -86,7 +87,7 @@ class World(DirectObject):
     def _room2(self):
         self.env = loader.loadModel("models/room2")
         self.envscale = 3
-        self.env.setScale(self.envscale)
+        self.env.setScale(self.envscale * settings.GLOBAL_SCALE)
         self.env.reparentTo(render)
         self.env.setPos(0, 0, 5)
         self.rooms.append(self.env)
