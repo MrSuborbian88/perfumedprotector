@@ -49,7 +49,7 @@ class Player(DirectObject):
         self._model = Actor("models/sdog")
         self._model.reparentTo(render)
         self._model.setPos(0, 0, 5)
-        self._model.setScale(1 * settings.GLOBAL_SCALE)
+        self._model.setScale(.5 * settings.GLOBAL_SCALE)
 
     def _load_sounds(self):
         pass
