@@ -22,17 +22,13 @@ class Player(DirectObject):
                 'right'   : 0,
                 'left'    : 0,
         }
-        self._camera_pos = (0, -40, 5)
-        self._cam_min_dist = 10
         self._dir = 0
         self._coll_dist = 10
         self._coll_dist_h = 3
         self._scale = .5
-        self._fixed_camera = False
         self._load_models()
         self._load_sounds()
         self._load_lights()
-        self._configure_camera()
         self._setup_actions()
         self._setup_tasks()
         self._setup_collisions()
@@ -51,21 +47,13 @@ class Player(DirectObject):
         self._model.reparentTo(render)
         self._model.setPos(0, 0, 5)
         self._model.setScale(1)
-        self._floater = NodePath(PandaNode("floater"))
-        self._floater.reparentTo(render)
-        self._floater.setPos(self._model.getPos())
-        
 
     def _load_sounds(self):
-        self._sound_snowmobile = loader.loadSfx(os.path.join("sounds", "snowmobile-running.mp3"))
+        pass
+        #self._sound_snowmobile = loader.loadSfx(os.path.join("sounds", "snowmobile-running.mp3"))
 
     def _load_lights(self):
         pass
-
-    def _configure_camera(self):
-        camera.reparentTo(self._floater)
-        camera.setPos(self._camera_pos[0], self._camera_pos[1], self._camera_pos[2])
-        camera.lookAt(self._floater)
 
     def _setup_actions(self):
         self.accept("arrow_up", self._set_key, ["forward", 1])
@@ -84,17 +72,11 @@ class Player(DirectObject):
         self.accept("a-up", self._set_key, ["left", 0])
         self.accept("d", self._set_key, ["right", 1])
         self.accept("d-up", self._set_key, ["right", 0])
-        self.accept('space',self._toggle_camera)
-
-    def _toggle_camera(self):
-        if self._fixed_camera:
-            self._fixed_camera = False
-        else:
-            self._fixed_camera = True
 
     def _setup_tasks(self):
         self._prev_move_time = 0
         taskMgr.add(self._task_move, "player-task-move")
+        taskMgr.add(self._update_camera, "update-camera")
 
     def _setup_collisions(self):
         self._coll_trav = CollisionTraverser()
@@ -146,18 +128,6 @@ class Player(DirectObject):
         self._gnd_coll_path_right = self._model.attachNewNode(self._gnd_coll_right)
         self._gnd_coll_path_right.show()
         self._coll_trav.addCollider(self._gnd_coll_path_right, self._gnd_handler_right)
-        # Camera collision
-        self._gnd_handler_cam = CollisionHandlerQueue()
-        self._gnd_ray_cam = CollisionRay()
-        self._gnd_ray_cam.setOrigin(camera.getX(), camera.getY(), 20)
-        self._gnd_ray_cam.setDirection(0, 0, -1)
-        self._gnd_coll_cam = CollisionNode('collision-ground-cam')
-        self._gnd_coll_cam.addSolid(self._gnd_ray_cam)
-        self._gnd_coll_cam.setFromCollideMask(BitMask32.bit(0))
-        self._gnd_coll_cam.setIntoCollideMask(BitMask32.allOff())
-        self._gnd_coll_path_cam = self._floater.attachNewNode(self._gnd_coll_cam)
-        self._gnd_coll_path_cam.show()
-        self._coll_trav.addCollider(self._gnd_coll_path_cam, self._gnd_handler_cam)
         # Enemy sight target
         self._sphere_handler = CollisionHandlerQueue()
         self._sphere = CollisionSphere(0, 0, 0, 4)
@@ -182,15 +152,36 @@ class Player(DirectObject):
     def _set_key(self, key, value):
         self._keymap[key] = value
 
+    def _update_camera(self, task):
+        camera_h = base.camera.getH()
+        camera_p = base.camera.getP()
+        base.camera.lookAt(self._model)
+        player_h = base.camera.getH()
+        player_p = base.camera.getP()
+
+        if player_h > camera_h:
+            dest_h = min(camera_h+.5, player_h)
+        else:
+            dest_h = max(camera_h-.5, player_h)
+
+        if player_p > camera_p:
+            dest_p = min(camera_p+.5, player_p)
+        else:
+            dest_p = max(camera_p-.5, player_p)
+
+        base.camera.setP(dest_p)
+        base.camera.setH(dest_h)
+
+        return Task.cont
+
     def _task_move(self, task):
+
         for i in range(self._inner_sphere_handler.getNumEntries()):
             if self._inner_sphere_handler.getEntry(i).getIntoNode().getName()=='collision-with-player':
                 self.health -= .5
         et = task.time - self._prev_move_time
         rotation_rate = 300
         walk_rate = 5
-        cam_rate = .5
-        cam_turn = 10
         # Get current values
         rotation = self._model.getH()
         pos_x = self._model.getX()
@@ -209,13 +200,13 @@ class Player(DirectObject):
         pos_x -= self._keymap['reverse'] * dx
         pos_y -= self._keymap['reverse'] * dy
 
-        if self._sound_snowmobile.status() == 1:
-            if self._keymap['forward'] == 1 or self._keymap['reverse'] == 1 or self._keymap['left'] == 1 or self._keymap['right'] == 1:
-                self._sound_snowmobile.play()
-                self._sound_snowmobile.setLoop(True)
-        elif self._sound_snowmobile.status() == 2:
-            if self._keymap['forward'] == 0 and self._keymap['reverse'] == 0 and self._keymap['left'] == 0 and self._keymap['right'] == 0:
-                self._sound_snowmobile.stop()
+        #if self._sound_snowmobile.status() == 1:
+        #    if self._keymap['forward'] == 1 or self._keymap['reverse'] == 1 or self._keymap['left'] == 1 or self._keymap['right'] == 1:
+        #        self._sound_snowmobile.play()
+        #        self._sound_snowmobile.setLoop(True)
+        #elif self._sound_snowmobile.status() == 2:
+        #    if self._keymap['forward'] == 0 and self._keymap['reverse'] == 0 and self._keymap['left'] == 0 and self._keymap['right'] == 0:
+        #        self._sound_snowmobile.stop()
 
         # Save back to the model
         self._model.setH(rotation)
@@ -259,37 +250,6 @@ class Player(DirectObject):
                     self._model.setR(rad2Deg(math.atan2(l - z, self._coll_dist_h * self._scale)))
             else:
                 self._model.setPos(pos)
-        self._floater.setPos(self._model.getPos())
-        self._floater.setH(self._model.getH())
-
-        entries_cam = []
-        for i in range(self._gnd_handler_cam.getNumEntries()):
-            entries_cam.append(self._gnd_handler_cam.getEntry(i))
-        entries_cam = filter(lambda x: x.getIntoNode().getName().find('terrain') != -1, entries_cam)
-        entries_cam.sort(srt)
-        cam_z = self._camera_pos[2]
-        if entries_cam and self._fixed_camera:
-            cam_z = max(cam_z, entries_cam[0].getSurfacePoint(render).getZ() + self._cam_min_dist)
-        ival = None
-        if self._keymap['left']:
-            self._dir = -1
-            ival = camera.posHprInterval(cam_rate,
-                    (-cam_turn, camera.getY(), cam_z),
-                    (-cam_turn, camera.getP(), camera.getR()))
-        elif self._keymap['right']:
-            self._dir = 1
-            ival = camera.posHprInterval(cam_rate,
-                    (cam_turn, camera.getY(), cam_z),
-                    (cam_turn, camera.getP(), camera.getR()))
-        else:
-            self._dir = 0
-            ival = camera.posHprInterval(cam_rate / 2,
-                    (0, camera.getY(), cam_z),
-                    (0, camera.getP(), camera.getR()))
-        if ival:
-            ival.start()
-        camera.lookAt(self._floater)
-        self._gnd_ray_cam.setOrigin(camera.getX(), camera.getY(), 20)
 
         self._prev_move_time = task.time
         #Commented out some code due to panda3d assertion error
