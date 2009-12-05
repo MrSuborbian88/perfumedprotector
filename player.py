@@ -25,8 +25,8 @@ class Player(DirectObject):
                 'jump'    : 0,
         }
         self._dir = 0
-        self._coll_dist = 10
-        self._coll_dist_h = 3
+        self._coll_dist = 5
+        self._coll_dist_h = 2
         self._scale = .5 * settings.GLOBAL_SCALE
         self._load_models()
         self._load_sounds()
