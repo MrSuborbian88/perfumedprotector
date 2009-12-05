@@ -91,7 +91,7 @@ class World(DirectObject):
         self.env.reparentTo(render)
         self.env.setPos(0, 0, 5)
         self.rooms.append(self.env)
-        self._spawn_enemy((0,8,5), "data/room2.txt")
+        self._spawn_enemy((0,8,50), "data/room2.txt")
 
 def start_game():
     b.destroy()
