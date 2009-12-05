@@ -188,7 +188,7 @@ class Player(DirectObject):
             if self._inner_sphere_handler.getEntry(i).getIntoNode().getName()=='collision-with-player':
                 self.health -= .5
         et = task.time - self._prev_move_time
-        rotation_rate = 300
+        rotation_rate = settings.PLAYER_ROTATION_RATE
         walk_rate = settings.PLAYER_WALK_RATE
         # Get current values
         rotation = self._model.getH()
