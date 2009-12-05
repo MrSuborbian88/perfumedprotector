@@ -43,7 +43,6 @@ class Player(DirectObject):
                               mayChange=1)
         self.inst1 = addInstructions(0.95, str(self._model.getPos()))
 
-        
         self.win = False
     def _load_models(self):
         self._model = Actor("models/sdog")
