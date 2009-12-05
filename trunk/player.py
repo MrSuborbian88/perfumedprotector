@@ -21,6 +21,7 @@ class Player(DirectObject):
                 'reverse' : 0,
                 'right'   : 0,
                 'left'    : 0,
+                'jump'    : 0,
         }
         self._dir = 0
         self._coll_dist = 10
@@ -32,6 +33,7 @@ class Player(DirectObject):
         self._setup_actions()
         self._setup_tasks()
         self._setup_collisions()
+        self.gravity = 0
         self.health = 100
         self.font = loader.loadFont(os.path.join("fonts", "arial.ttf"))
         self.bk_text= "Health   "
@@ -43,7 +45,7 @@ class Player(DirectObject):
         
         self.win = False
     def _load_models(self):
-        self._model = Actor("models/dog")
+        self._model = Actor("models/sdog")
         self._model.reparentTo(render)
         self._model.setPos(0, 0, 5)
         self._model.setScale(1)
@@ -72,6 +74,10 @@ class Player(DirectObject):
         self.accept("a-up", self._set_key, ["left", 0])
         self.accept("d", self._set_key, ["right", 1])
         self.accept("d-up", self._set_key, ["right", 0])
+
+        self.accept('space',self._set_key, ["jump", 1])
+        self.accept('space-up', self._set_key, ["jump", 0])
+
 
     def _setup_tasks(self):
         self._prev_move_time = 0
@@ -175,6 +181,7 @@ class Player(DirectObject):
         return Task.cont
 
     def _task_move(self, task):
+        pos_z = self._model.getZ()
 
         for i in range(self._inner_sphere_handler.getNumEntries()):
             if self._inner_sphere_handler.getEntry(i).getIntoNode().getName()=='collision-with-player':
@@ -199,6 +206,10 @@ class Player(DirectObject):
         pos_y += self._keymap['forward'] * dy
         pos_x -= self._keymap['reverse'] * dx
         pos_y -= self._keymap['reverse'] * dy
+      
+        if self._keymap['jump']:
+            pos_z += self._keymap['jump'] * 2
+            self.gravity=1
 
         #if self._sound_snowmobile.status() == 1:
         #    if self._keymap['forward'] == 1 or self._keymap['reverse'] == 1 or self._keymap['left'] == 1 or self._keymap['right'] == 1:
@@ -207,6 +218,7 @@ class Player(DirectObject):
         #elif self._sound_snowmobile.status() == 2:
         #    if self._keymap['forward'] == 0 and self._keymap['reverse'] == 0 and self._keymap['left'] == 0 and self._keymap['right'] == 0:
         #        self._sound_snowmobile.stop()
+
 
         # Save back to the model
         self._model.setH(rotation)
@@ -235,8 +247,14 @@ class Player(DirectObject):
         entries_left.sort(srt)
         entries_right.sort(srt)
         if entries_all:
-            is_valid = lambda x: x and x[0].getIntoNode().getName().find('polySurface8') != -1
-            if is_valid(entries_front) and is_valid(entries_back) and is_valid(entries_left) and is_valid(entries_right):
+            is_valid = lambda x: x and x[0].getIntoNode().getName().find('ground1') != -1
+            if self.gravity == 1:
+                self._model.setZ(pos_z)
+                if entries_front[0].getSurfacePoint(render).getZ() == self._model.getZ():
+                    self.gravity=0
+                else:
+                    self._model.setZ(pos_z-1)
+            elif is_valid(entries_front) and is_valid(entries_back) and is_valid(entries_left) and is_valid(entries_right):
                 f = entries_front[0].getSurfacePoint(render).getZ()
                 b = entries_back[0].getSurfacePoint(render).getZ()
                 l = entries_left[0].getSurfacePoint(render).getZ()
@@ -269,3 +287,4 @@ class Player(DirectObject):
         self.inst1 = addInstructions(0.95, str(self._model.getPos()))
 
         return Task.cont
+    
