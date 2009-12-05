@@ -28,6 +28,8 @@ class Enemy(DirectObject):
         self._setup_tasks()
         self._read_points(file_loc)
         self._current = self._points[0]
+        self.gravity = 0
+
     def _load_models(self, pos):
         self._model = Actor(os.path.join('models', 'enemy'),
                 {'enemove' : os.path.join('models', 'enemy_walk')})
@@ -143,7 +145,7 @@ class Enemy(DirectObject):
         if self.dead==False:
             et = task.time - self._prev_time
             rotation_rate = 100
-            walk_rate = settings.ENEMY_WALK_RATE
+            walk_rate = 5
 
             # Get current values
             rotation = self._model.getH()
@@ -214,18 +216,38 @@ class Enemy(DirectObject):
  
             self.pos = self._model.getPos()
 
+            pos_z = self._model.getZ()
             entries = []
-
+            
             for i in range(self._ground_handler.getNumEntries()):
                 entries.append(self._ground_handler.getEntry(i))
 
             entries.sort(lambda x, y: cmp(y.getSurfacePoint(render).getZ(),
-                                      x.getSurfacePoint(render).getZ()))    
-            if entries and entries[0].getIntoNode().getName().find('terrain') != -1:
-                self._model.setZ(entries[0].getSurfacePoint(render).getZ() + .2)
+                                          x.getSurfacePoint(render).getZ()))
+            
+            if entries:
+                is_valid = lambda x: x and x[0].getIntoNode().getName().find('ground1') != -1
+                if entries[0].getSurfacePoint(render).getZ() <= self._model.getZ():
+                    self.gravity = 1
+                if self.gravity == 1:
+                    if entries[0].getSurfacePoint(render).getZ() == self._model.getZ():
+                        self.gravity=0
+                    else:
+                        self._model.setZ(pos_z - 1)
+                elif is_valid(entries):
+                    z = entries[0].getSurfacePoint(render).getZ()
+                    if abs(z - self._model.getZ()) > 5:
+                        self._model.setPos(pos)
+                    else:
+                        self._model.setZ(z)
+                else:
+                    self._model.setPos(self.pos)
+
+#                self._model.setZ(entries[0].getSurfacePoint(render).getZ() + .2)
+            """
             else:
                 self._model.setPos(self.pos)
-
+            """
             self._prev_time = task.time
 
             return Task.cont
