@@ -9,6 +9,7 @@ from direct.interval.IntervalGlobal import *
 from direct.task import Task
 import enemy
 
+import settings
 import math
 import os
 import random
@@ -23,4 +24,5 @@ class Cat(enemy.Enemy):
     def _load_models(self, pos):
         self._model = Actor("models/cat")
         self._model.setPos(pos[0], pos[1], pos[2])
+        self._model.setScale(1 * settings.GLOBAL_SCALE)
         self._model.reparentTo(render)
