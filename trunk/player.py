@@ -98,6 +98,30 @@ class Player(DirectObject):
         self._gnd_coll_path_front = self._model.attachNewNode(self._gnd_coll_front)
         self._gnd_coll_path_front.show()
         self._coll_trav.addCollider(self._gnd_coll_path_front, self._gnd_handler_front)
+         # Front-left collision
+        self._gnd_handler_front_left = CollisionHandlerQueue()
+        self._gnd_ray_front_left = CollisionRay()
+        self._gnd_ray_front_left.setOrigin(-self._coll_dist_h, self._coll_dist/2, 1)
+        self._gnd_ray_front_left.setDirection(0, 0, -1)
+        self._gnd_coll_front_left = CollisionNode('collision-ground-front-left')
+        self._gnd_coll_front_left.addSolid(self._gnd_ray_front_left)
+        self._gnd_coll_front_left.setFromCollideMask(BitMask32.bit(0))
+        self._gnd_coll_front_left.setIntoCollideMask(BitMask32.allOff())
+        self._gnd_coll_path_front_left = self._model.attachNewNode(self._gnd_coll_front_left)
+        self._gnd_coll_path_front_left.show()
+        self._coll_trav.addCollider(self._gnd_coll_path_front_left, self._gnd_handler_front_left)
+         # Front-right collision
+        self._gnd_handler_front_right = CollisionHandlerQueue()
+        self._gnd_ray_front_right = CollisionRay()
+        self._gnd_ray_front_right.setOrigin(self._coll_dist_h, self._coll_dist/2, 1)
+        self._gnd_ray_front_right.setDirection(0, 0, -1)
+        self._gnd_coll_front_right = CollisionNode('collision-ground-front-right')
+        self._gnd_coll_front_right.addSolid(self._gnd_ray_front_right)
+        self._gnd_coll_front_right.setFromCollideMask(BitMask32.bit(0))
+        self._gnd_coll_front_right.setIntoCollideMask(BitMask32.allOff())
+        self._gnd_coll_path_front_right = self._model.attachNewNode(self._gnd_coll_front_right)
+        self._gnd_coll_path_front_right.show()
+        self._coll_trav.addCollider(self._gnd_coll_path_front_right, self._gnd_handler_front_right)
         # Back collision
         self._gnd_handler_back = CollisionHandlerQueue()
         self._gnd_ray_back = CollisionRay()
@@ -110,6 +134,30 @@ class Player(DirectObject):
         self._gnd_coll_path_back = self._model.attachNewNode(self._gnd_coll_back)
         self._gnd_coll_path_back.show()
         self._coll_trav.addCollider(self._gnd_coll_path_back, self._gnd_handler_back)
+        # Back-left collision
+        self._gnd_handler_back_left = CollisionHandlerQueue()
+        self._gnd_ray_back_left = CollisionRay()
+        self._gnd_ray_back_left.setOrigin(-self._coll_dist_h, -self._coll_dist/2, 1)
+        self._gnd_ray_back_left.setDirection(0, 0, -1)
+        self._gnd_coll_back_left = CollisionNode('collision-ground-back-left')
+        self._gnd_coll_back_left.addSolid(self._gnd_ray_back_left)
+        self._gnd_coll_back_left.setFromCollideMask(BitMask32.bit(0))
+        self._gnd_coll_back_left.setIntoCollideMask(BitMask32.allOff())
+        self._gnd_coll_path_back_left = self._model.attachNewNode(self._gnd_coll_back_left)
+        self._gnd_coll_path_back_left.show()
+        self._coll_trav.addCollider(self._gnd_coll_path_back_left, self._gnd_handler_back_left)
+        # Back-right collision
+        self._gnd_handler_back_right = CollisionHandlerQueue()
+        self._gnd_ray_back_right = CollisionRay()
+        self._gnd_ray_back_right.setOrigin(self._coll_dist_h, -self._coll_dist/2, 1)
+        self._gnd_ray_back_right.setDirection(0, 0, -1)
+        self._gnd_coll_back_right = CollisionNode('collision-ground-back-right')
+        self._gnd_coll_back_right.addSolid(self._gnd_ray_back_right)
+        self._gnd_coll_back_right.setFromCollideMask(BitMask32.bit(0))
+        self._gnd_coll_back_right.setIntoCollideMask(BitMask32.allOff())
+        self._gnd_coll_path_back_right = self._model.attachNewNode(self._gnd_coll_back_right)
+        self._gnd_coll_path_back_right.show()
+        self._coll_trav.addCollider(self._gnd_coll_path_back_right, self._gnd_handler_back_right)
         # Left collision
         self._gnd_handler_left = CollisionHandlerQueue()
         self._gnd_ray_left = CollisionRay()
@@ -218,7 +266,11 @@ class Player(DirectObject):
         self._coll_trav.traverse(render)
 
         entries_front = []
+        entries_front_left = []
+        entries_front_right = []
         entries_back = []
+        entries_back_left = []
+        entries_back_right = []
         entries_left = []
         entries_right = []
         for i in range(self._gnd_handler_front.getNumEntries()):
@@ -229,26 +281,35 @@ class Player(DirectObject):
             entries_left.append(self._gnd_handler_left.getEntry(i))
         for i in range(self._gnd_handler_right.getNumEntries()):
             entries_right.append(self._gnd_handler_right.getEntry(i))
-        entries_all = entries_front + entries_back + entries_left + entries_right
+        for i in range(self._gnd_handler_front_left.getNumEntries()):
+            entries_front_left.append(self._gnd_handler_front_left.getEntry(i))
+        for i in range(self._gnd_handler_back_left.getNumEntries()):
+            entries_back_left.append(self._gnd_handler_back_left.getEntry(i))
+        for i in range(self._gnd_handler_front_right.getNumEntries()):
+            entries_front_right.append(self._gnd_handler_front_right.getEntry(i))
+        for i in range(self._gnd_handler_back_right.getNumEntries()):
+            entries_back_right.append(self._gnd_handler_back_right.getEntry(i))
+        
+        entries_all = entries_front + entries_back + entries_left + entries_right + entries_front_right + entries_back_right + entries_front_left + entries_back_left
         srt = lambda x, y: cmp(y.getSurfacePoint(render).getZ(),
                                x.getSurfacePoint(render).getZ())
         entries_front.sort(srt)
         entries_back.sort(srt)
         entries_left.sort(srt)
         entries_right.sort(srt)
+        entries_front_right.sort(srt)
+        entries_front_left.sort(srt)
+        entries_back_left.sort(srt)
+        entries_back_right.sort(srt)
         
         if entries_all:
-            for x in entries_all:
-                print x.getSurfacePoint(render).getZ()
             if self.gravity == 1:
                 self._model.setZ(pos_z)
-                print entries_front[0].getSurfacePoint(render).getZ()
-                print self._model.getZ()
                 if abs(entries_front[0].getSurfacePoint(render).getZ()-self._model.getZ()) < 1:
                     self.gravity=0
                 else:
                     self._model.setZ(pos_z-1)
-            elif self.is_valid(entries_front) and self.is_valid(entries_back) and self.is_valid(entries_left) and self.is_valid(entries_right):
+            elif self.is_valid(entries_front) and self.is_valid(entries_back) and self.is_valid(entries_left) and self.is_valid(entries_right) and self.is_valid(entries_front_right) and self.is_valid(entries_front_left) and self.is_valid(entries_back_left) and self.is_valid(entries_back_right):
                 f = entries_front[0].getSurfacePoint(render).getZ()
                 b = entries_back[0].getSurfacePoint(render).getZ()
                 l = entries_left[0].getSurfacePoint(render).getZ()
