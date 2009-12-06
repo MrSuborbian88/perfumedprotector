@@ -89,7 +89,7 @@ class Player(DirectObject):
         # Front collision
         self._gnd_handler_front = CollisionHandlerQueue()
         self._gnd_ray_front = CollisionRay()
-        self._gnd_ray_front.setOrigin(0, self._coll_dist, 15)
+        self._gnd_ray_front.setOrigin(0, self._coll_dist, 1)
         self._gnd_ray_front.setDirection(0, 0, -1)
         self._gnd_coll_front = CollisionNode('collision-ground-front')
         self._gnd_coll_front.addSolid(self._gnd_ray_front)
@@ -101,7 +101,7 @@ class Player(DirectObject):
         # Back collision
         self._gnd_handler_back = CollisionHandlerQueue()
         self._gnd_ray_back = CollisionRay()
-        self._gnd_ray_back.setOrigin(0, -self._coll_dist, 15)
+        self._gnd_ray_back.setOrigin(0, -self._coll_dist, 1)
         self._gnd_ray_back.setDirection(0, 0, -1)
         self._gnd_coll_back = CollisionNode('collision-ground-back')
         self._gnd_coll_back.addSolid(self._gnd_ray_back)
@@ -113,7 +113,7 @@ class Player(DirectObject):
         # Left collision
         self._gnd_handler_left = CollisionHandlerQueue()
         self._gnd_ray_left = CollisionRay()
-        self._gnd_ray_left.setOrigin(-self._coll_dist_h, 0, 15)
+        self._gnd_ray_left.setOrigin(-self._coll_dist_h, 0, 1)
         self._gnd_ray_left.setDirection(0, 0, -1)
         self._gnd_coll_left = CollisionNode('collision-ground-left')
         self._gnd_coll_left.addSolid(self._gnd_ray_left)
@@ -125,7 +125,7 @@ class Player(DirectObject):
         # Right collision
         self._gnd_handler_right = CollisionHandlerQueue()
         self._gnd_ray_right = CollisionRay()
-        self._gnd_ray_right.setOrigin(self._coll_dist_h, 0, 15)
+        self._gnd_ray_right.setOrigin(self._coll_dist_h, 0, 1)
         self._gnd_ray_right.setDirection(0, 0, -1)
         self._gnd_coll_right = CollisionNode('collision-ground-right')
         self._gnd_coll_right.addSolid(self._gnd_ray_right)
@@ -134,16 +134,6 @@ class Player(DirectObject):
         self._gnd_coll_path_right = self._model.attachNewNode(self._gnd_coll_right)
         self._gnd_coll_path_right.show()
         self._coll_trav.addCollider(self._gnd_coll_path_right, self._gnd_handler_right)
-        # Enemy sight target
-        self._sphere_handler = CollisionHandlerQueue()
-        self._sphere = CollisionSphere(0, 0, 0, 4)
-        self._coll_sphere = CollisionNode('collision-player-sphere')
-        self._coll_sphere.addSolid(self._sphere)
-        self._coll_sphere.setFromCollideMask(BitMask32.bit(0))
-        self._coll_sphere.setIntoCollideMask(BitMask32.bit(5))
-        self._coll_sphere_path = self._model.attachNewNode(self._coll_sphere)
-        self._coll_sphere_path.show()
-        self._coll_trav.addCollider(self._coll_sphere_path, self._sphere_handler)
         # Inner sphere collision
         self._inner_sphere_handler = CollisionHandlerQueue()
         self._inner_sphere = CollisionSphere(0, 0, 0, 4)
@@ -246,15 +236,19 @@ class Player(DirectObject):
         entries_back.sort(srt)
         entries_left.sort(srt)
         entries_right.sort(srt)
+        
         if entries_all:
-            is_valid = lambda x: x and x[0].getIntoNode().getName().find('ground1') != -1
+            for x in entries_all:
+                print x.getSurfacePoint(render).getZ()
             if self.gravity == 1:
                 self._model.setZ(pos_z)
-                if entries_front[0].getSurfacePoint(render).getZ() == self._model.getZ():
+                print entries_front[0].getSurfacePoint(render).getZ()
+                print self._model.getZ()
+                if abs(entries_front[0].getSurfacePoint(render).getZ()-self._model.getZ()) < 1:
                     self.gravity=0
                 else:
                     self._model.setZ(pos_z-1)
-            elif is_valid(entries_front) and is_valid(entries_back) and is_valid(entries_left) and is_valid(entries_right):
+            elif self.is_valid(entries_front) and self.is_valid(entries_back) and self.is_valid(entries_left) and self.is_valid(entries_right):
                 f = entries_front[0].getSurfacePoint(render).getZ()
                 b = entries_back[0].getSurfacePoint(render).getZ()
                 l = entries_left[0].getSurfacePoint(render).getZ()
@@ -287,4 +281,12 @@ class Player(DirectObject):
         self.inst1 = addInstructions(0.95, str(self._model.getPos()))
 
         return Task.cont
+    
+    def is_valid(self, entries):
+        if len(entries) == 0:
+            return False
+        for x in entries:
+             if x.getIntoNode().getName()!='ground1':
+                return False
+        return True
     
