@@ -33,8 +33,8 @@ class Enemy(DirectObject):
     def _load_models(self, pos):
         self._model = Actor(os.path.join('models', 'enemy'),
                 {'enemove' : os.path.join('models', 'enemy_walk')})
-        self._model.setPos(pos[0], pos[1], pos[2])
         self._model.setScale(1 * settings.GLOBAL_SCALE)
+        self._model.setPos(pos[0], pos[1], pos[2])
         self._model.reparentTo(render)
         
     def _setup_collisions(self):

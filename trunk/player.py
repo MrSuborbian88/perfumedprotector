@@ -47,8 +47,8 @@ class Player(DirectObject):
     def _load_models(self):
         self._model = Actor("models/sdog")
         self._model.reparentTo(render)
-        self._model.setPos(0, 0, 5)
         self._model.setScale(.5 * settings.GLOBAL_SCALE)
+        self._model.setPos(0, 0, 5)
 
     def _load_sounds(self):
         pass
@@ -200,22 +200,44 @@ class Player(DirectObject):
         camera_h = base.camera.getH()
         camera_p = base.camera.getP()
         base.camera.lookAt(self._model)
-        player_h = base.camera.getH()
-        player_p = base.camera.getP()
+        target_h = base.camera.getH()
+        target_p = base.camera.getP()
 
-        if player_h > camera_h:
-            dest_h = min(camera_h+.5, player_h)
-        else:
-            dest_h = max(camera_h-.5, player_h)
+        if camera_h == target_h and camera_p == target_p:
+            return Task.cont
 
-        if player_p > camera_p:
-            dest_p = min(camera_p+.5, player_p)
+        diff_h = abs(camera_h-target_h)
+        diff_p = abs(camera_p-target_p)
+
+        if diff_h > diff_p:
+            if diff_h==0:
+                diff_p = 1
+            else:
+                diff_p = diff_p / diff_h
+                diff_h = 1
         else:
-            dest_p = max(camera_p-.5, player_p)
+            if diff_p==0:
+                diff_h = 1
+            else:
+                diff_h = diff_h / diff_p
+                diff_p = 1
+
+        if target_h > camera_h:
+            dest_h = min(camera_h+(.5*diff_h), target_h)
+        elif target_h < camera_h:
+            dest_h = max(camera_h-(.5*diff_h), target_h)
+        else:
+            dest_h=target_h
+
+        if target_p > camera_p:
+            dest_p = min(camera_p+(.5*diff_p), target_p)
+        elif target_p < camera_p:
+            dest_p = max(camera_p-(.5*diff_p), target_p)
+        else:
+            dest_p=target_p
 
         base.camera.setP(dest_p)
         base.camera.setH(dest_h)
-
         return Task.cont
 
     def _task_move(self, task):

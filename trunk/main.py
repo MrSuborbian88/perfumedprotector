@@ -89,7 +89,7 @@ class World(DirectObject):
         self.envscale = 3
         self.env.setScale(self.envscale * settings.GLOBAL_SCALE)
         self.env.reparentTo(render)
-        self.env.setPos(0, 0, 5)
+        self.env.setPos(0, 0, 0)
         self.rooms.append(self.env)
         self._spawn_enemy((0,8,50), "data/room2.txt")
 
