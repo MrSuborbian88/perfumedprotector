@@ -36,6 +36,8 @@ class Player(DirectObject):
         self._setup_collisions()
         self.gravity = 0
         self.health = 100
+        self.jumping = 15
+        self.jumpingCurrently = False
         self.font = loader.loadFont(os.path.join("fonts", "arial.ttf"))
         self.bk_text= "Health   "
         self.textObject = OnscreenText(text=self.bk_text+str(self.health), font=self.font, pos = (-1, -.95),
@@ -267,9 +269,11 @@ class Player(DirectObject):
         pos_x -= self._keymap['reverse'] * dx
         pos_y -= self._keymap['reverse'] * dy
       
-        if self._keymap['jump']:
-            pos_z += self._keymap['jump'] * 2
-            self.gravity=1
+        if self._keymap['jump'] and not self.jumpingCurrently:
+            self.jumpingCurrently=True
+        
+        if self.jumpingCurrently:
+            pos_z+=self.jump()
 
         #if self._sound_snowmobile.status() == 1:
         #    if self._keymap['forward'] == 1 or self._keymap['reverse'] == 1 or self._keymap['left'] == 1 or self._keymap['right'] == 1:
@@ -329,8 +333,8 @@ class Player(DirectObject):
                 self._model.setZ(pos_z)
                 if abs(entries_front[0].getSurfacePoint(render).getZ()-self._model.getZ()) < 1:
                     self.gravity=0
-                else:
-                    self._model.setZ(pos_z-1)
+                    self.jumpingCurrently=False
+                    self.jumping=15
             elif self.is_valid(entries_front) and self.is_valid(entries_back) and self.is_valid(entries_left) and self.is_valid(entries_right) and self.is_valid(entries_front_right) and self.is_valid(entries_front_left) and self.is_valid(entries_back_left) and self.is_valid(entries_back_right):
                 f = entries_front[0].getSurfacePoint(render).getZ()
                 b = entries_back[0].getSurfacePoint(render).getZ()
@@ -373,3 +377,8 @@ class Player(DirectObject):
                 return False
         return True
     
+    def jump(self):
+            self.gravity=1
+            self.jumping-=1
+            return self.jumping*.25
+        
