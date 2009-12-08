@@ -37,20 +37,12 @@ class Player(DirectObject):
         self._setup_tasks()
         self._setup_collisions()
         self.gravity = 0
-        self.health = 100
         self.jumping = 15
         self.falling = 0
         self.jumpingCurrently = False
         self.chase = False
         self.chasetimer = settings.PLAYER_CHASE_LENGTH
-        self.font = loader.loadFont(os.path.join("fonts", "arial.ttf"))
-        self.bk_text= "Health   "
-        self.textObject = OnscreenText(text=self.bk_text+str(self.health), font=self.font, pos = (-1, -.95),
-                              scale=0.1, fg=(1, 1, 1, 1),
-                              mayChange=1)
         self.inst1 = addInstructions(0.95, str(self._model.getPos()))
-        self.sound_bark = loader.loadSfx(os.path.join("sound files", "Small Dog Barking.mp3"))
-        self.sound_dog_footsteps = loader.loadSfx(os.path.join("sound files", "Dog Footsteps.mp3"))
 
         self.win = False
     def _load_models(self):
@@ -63,8 +55,8 @@ class Player(DirectObject):
         self._model.setPos(0, 0, 5)
 
     def _load_sounds(self):
-        pass
-        #self._sound_snowmobile = loader.loadSfx(os.path.join("sounds", "snowmobile-running.mp3"))
+        self.sound_bark = loader.loadSfx(os.path.join("sound files", "Small Dog Barking.mp3"))
+        self.sound_dog_footsteps = loader.loadSfx(os.path.join("sound files", "Dog Footsteps.mp3"))
 
     def _load_lights(self):
         pass
@@ -493,19 +485,8 @@ class Player(DirectObject):
             self.chasetimer += 1
 
         self._prev_move_time = task.time
-        #Commented out some code due to panda3d assertion error
-        #http://www.panda3d.org/phpbb2/viewtopic.php?p=38667
-        if self.health >= 0:
-            pass
-            #self.textObject.setText(self.bk_text+str(self.health))
-        if self.health <= 0 and self.win == False:
-            pass
-        """
-             c = OnscreenImage(parent=render2d, image=os.path.join("models", "titlescreen.png"))
-             lose = OnscreenText(text="You Lose!", font=self.font, pos = (0, 0.7),
-                              scale=0.2, fg=(1, 1, 1, 1),
-                              mayChange=0)
-        """
+       
+        
         self.inst1.destroy()
         self.inst1 = addInstructions(0.95, str(self._model.getPos()))
 
