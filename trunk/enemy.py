@@ -111,7 +111,16 @@ class Enemy(DirectObject):
         self._sight_coll_ri_path = self._model.attachNewNode(self._sight_coll_ri)
         self._sight_coll_ri_path.show()
         self._coll_trav.addCollider(self._sight_coll_ri_path, self._sight_handler_ri)
-   
+        # Player sight target
+        self._sphere_handler = CollisionHandlerQueue()
+        self._sphere = CollisionSphere(0, 0, 0, 4)
+        self._coll_sphere = CollisionNode('collision-enemy-sphere')
+        self._coll_sphere.addSolid(self._sphere)
+        self._coll_sphere.setFromCollideMask(BitMask32.bit(0))
+        self._coll_sphere.setIntoCollideMask(BitMask32.bit(6))
+        self._coll_sphere_path = self._model.attachNewNode(self._coll_sphere)
+        self._coll_sphere_path.show()
+        self._coll_trav.addCollider(self._coll_sphere_path, self._sphere_handler)   
         # Player collision
         self._player_handler = CollisionHandlerQueue()
         self._player = CollisionSphere(0, 0, 0, 3)
