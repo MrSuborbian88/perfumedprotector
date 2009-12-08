@@ -1,4 +1,4 @@
-import pregame
+import pregamew
 
 if __name__ == '__main__':
 

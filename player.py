@@ -493,8 +493,8 @@ class Player(DirectObject):
             elif self.is_valid(entries_wall): 
                 f = entries_front[0].getSurfacePoint(render).getZ()
                 b = entries_back[0].getSurfacePoint(render).getZ()
-                l = entries_left[0].getSurfacePoint(render).getZ()
-                r = entries_right[0].getSurfacePoint(render).getZ()
+                #l = entries_left[0].getSurfacePoint(render).getZ()
+                #r = entries_right[0].getSurfacePoint(render).getZ()
                 z = (f + b) / 2
                 if abs(z - self._model.getZ()) > 5:
                     self.gravity=1
