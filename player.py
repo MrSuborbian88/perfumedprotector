@@ -188,6 +188,20 @@ class Player(DirectObject):
         self._gnd_coll_path_right = self._model.attachNewNode(self._gnd_coll_right)
         self._gnd_coll_path_right.show()
         self._coll_trav.addCollider(self._gnd_coll_path_right, self._gnd_handler_right)
+        
+        #Wall collision
+        self._wall_handler = CollisionHandlerQueue()
+        self._wall_ray = CollisionSegment()
+        self._wall_ray.setPointA(0, self._coll_dist, 2)
+        self._wall_ray.setPointB(0, -self._coll_dist, 2)
+        self._wall_coll = CollisionNode('collision-wall')
+        self._wall_coll.addSolid(self._wall_ray)
+        self._wall_coll.setFromCollideMask(BitMask32.bit(0))
+        self._wall_coll.setIntoCollideMask(BitMask32.allOff())
+        self._wall_coll_path = self._model.attachNewNode(self._wall_coll)
+        self._wall_coll_path.show()
+        self._coll_trav.addCollider(self._wall_coll_path, self._wall_handler)
+        
         # Enemy sight target
         self._sphere_handler = CollisionHandlerQueue()
         self._sphere = CollisionSphere(0, 0, 0, 4)
@@ -409,7 +423,8 @@ class Player(DirectObject):
         self._model.setY(pos_y)
 
         self._coll_trav.traverse(render)
-
+        
+        entries_wall = []
         entries_front = []
         entries_front_left = []
         entries_front_right = []
@@ -418,6 +433,9 @@ class Player(DirectObject):
         entries_back_right = []
         entries_left = []
         entries_right = []
+        
+        for i in range(self._wall_handler.getNumEntries()):
+            entries_wall.append(self._wall_handler.getEntry(i))
         for i in range(self._gnd_handler_front.getNumEntries()):
             entries_front.append(self._gnd_handler_front.getEntry(i))
         for i in range(self._gnd_handler_back.getNumEntries()):
@@ -446,6 +464,7 @@ class Player(DirectObject):
         entries_front_left.sort(srt)
         entries_back_left.sort(srt)
         entries_back_right.sort(srt)
+        entries_wall.sort(srt)
         
         if entries_all:
             if self.gravity == 1:
@@ -470,7 +489,8 @@ class Player(DirectObject):
                     if self.gravity == 1 and not self.jumpingCurrently:
                         pos_z+=self.fall()
                         self._model.setZ(pos_z)
-            elif self.is_valid(entries_front) and self.is_valid(entries_back) and self.is_valid(entries_left) and self.is_valid(entries_right) and self.is_valid(entries_front_right) and self.is_valid(entries_front_left) and self.is_valid(entries_back_left) and self.is_valid(entries_back_right):
+            #elif self.is_valid(entries_front) and self.is_valid(entries_back) and self.is_valid(entries_left) and self.is_valid(entries_right) and self.is_valid(entries_front_right) and self.is_valid(entries_front_left) and self.is_valid(entries_back_left) and self.is_valid(entries_back_right):
+            elif self.is_valid(entries_wall): 
                 f = entries_front[0].getSurfacePoint(render).getZ()
                 b = entries_back[0].getSurfacePoint(render).getZ()
                 l = entries_left[0].getSurfacePoint(render).getZ()
@@ -479,9 +499,10 @@ class Player(DirectObject):
                 if abs(z - self._model.getZ()) > 5:
                     self.gravity=1
                 else:
-                    self._model.setZ(z)
-                    self._model.setP(rad2Deg(math.atan2(f - z, self._coll_dist * self._scale)))
-                    self._model.setR(rad2Deg(math.atan2(l - z, self._coll_dist_h * self._scale)))
+                    #self._model.setZ(z)
+                    #self._model.setP(rad2Deg(math.atan2(f - z, self._coll_dist * self._scale)))
+                    #self._model.setR(rad2Deg(math.atan2(l - z, self._coll_dist_h * self._scale)))
+                    pass
             else:
                 self._model.setPos(pos)
 
@@ -498,8 +519,8 @@ class Player(DirectObject):
         return Task.cont
     
     def is_valid(self, entries):
-        if len(entries) == 0:
-            return False
+        #if len(entries) == 0:
+         #return False
         for x in entries:
              if x.getIntoNode().getName()!='ground1':
                 return False
