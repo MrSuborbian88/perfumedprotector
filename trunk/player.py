@@ -276,7 +276,11 @@ class Player(DirectObject):
             self.jumpingCurrently=True
         
         if self.jumpingCurrently:
-            pos_z+=self.jump()
+                temp=self.jump()
+                if (temp+pos_z) < 190:
+                    pos_z+=temp
+                else:
+                    self.jumping=0
             
         if self._keymap['bark']:
             self.sound_bark.play()
