@@ -40,6 +40,8 @@ class Player(DirectObject):
         self.jumping = 15
         self.falling = 0
         self.jumpingCurrently = False
+        self.chase = False
+        self.chasetimer = settings.PLAYER_CHASE_LENGTH
         self.font = loader.loadFont(os.path.join("fonts", "arial.ttf"))
         self.bk_text= "Health   "
         self.textObject = OnscreenText(text=self.bk_text+str(self.health), font=self.font, pos = (-1, -.95),
@@ -208,6 +210,42 @@ class Player(DirectObject):
         self._coll_inner_sphere_path = self._model.attachNewNode(self._coll_inner_sphere)
         #self._coll_inner_sphere_path.show()
         self._coll_trav.addCollider(self._coll_inner_sphere_path, self._inner_sphere_handler)
+        # Sight collision (Mid)
+        self._sight_handler_mi = CollisionHandlerQueue()
+        self._sight_ray_mi = CollisionRay()
+        self._sight_ray_mi.setOrigin(1, 0, 0)
+        self._sight_ray_mi.setDirection(0, -1, 0)
+        self._sight_coll_mi = CollisionNode('collision-sight-mi')
+        self._sight_coll_mi.addSolid(self._sight_ray_mi)
+        self._sight_coll_mi.setFromCollideMask(BitMask32.bit(6))
+        self._sight_coll_mi.setIntoCollideMask(BitMask32.allOff())
+        self._sight_coll_mi_path = self._model.attachNewNode(self._sight_coll_mi)
+        self._sight_coll_mi_path.show()
+        self._coll_trav.addCollider(self._sight_coll_mi_path, self._sight_handler_mi)
+        # Sight collision (left)
+        self._sight_handler_le = CollisionHandlerQueue()
+        self._sight_ray_le = CollisionRay()
+        self._sight_ray_le.setOrigin(1, 0, 0)
+        self._sight_ray_le.setDirection(-.1, -1, 0)
+        self._sight_coll_le = CollisionNode('collision-sight-le')
+        self._sight_coll_le.addSolid(self._sight_ray_le)
+        self._sight_coll_le.setFromCollideMask(BitMask32.bit(6))
+        self._sight_coll_le.setIntoCollideMask(BitMask32.allOff())
+        self._sight_coll_le_path = self._model.attachNewNode(self._sight_coll_le)
+        self._sight_coll_le_path.show()
+        self._coll_trav.addCollider(self._sight_coll_le_path, self._sight_handler_le)
+        # Sight collision (right)
+        self._sight_handler_ri = CollisionHandlerQueue()
+        self._sight_ray_ri = CollisionRay()
+        self._sight_ray_ri.setOrigin(1, 0, 0)
+        self._sight_ray_ri.setDirection(.1, -1, 0)
+        self._sight_coll_ri = CollisionNode('collision-sight-ri')
+        self._sight_coll_ri.addSolid(self._sight_ray_ri)
+        self._sight_coll_ri.setFromCollideMask(BitMask32.bit(6))
+        self._sight_coll_ri.setIntoCollideMask(BitMask32.allOff())
+        self._sight_coll_ri_path = self._model.attachNewNode(self._sight_coll_ri)
+        self._sight_coll_ri_path.show()
+        self._coll_trav.addCollider(self._sight_coll_ri_path, self._sight_handler_ri)
 
     def _set_key(self, key, value):
         self._keymap[key] = value
@@ -258,10 +296,12 @@ class Player(DirectObject):
 
     def _task_move(self, task):
         pos_z = self._model.getZ()
-
+        self.chase = False
         for i in range(self._inner_sphere_handler.getNumEntries()):
             if self._inner_sphere_handler.getEntry(i).getIntoNode().getName()=='collision-with-player':
-                self.health -= .5
+                if self.chasetimer >= settings.PLAYER_CHASE_LENGTH:
+                    self.chase = True
+        
         et = task.time - self._prev_move_time
         rotation_rate = settings.PLAYER_ROTATION_RATE
         walk_rate = settings.PLAYER_WALK_RATE
@@ -270,6 +310,46 @@ class Player(DirectObject):
         pos_x = self._model.getX()
         pos_y = self._model.getY()
         pos = self._model.getPos()
+        
+        if self.chase:
+            self._sight_handler_mi.sortEntries()
+            self._sight_handler_ri.sortEntries()
+            self._sight_handler_le.sortEntries()
+            if self._sight_handler_mi.getNumEntries() and self._sight_handler_mi.getEntry(0).getIntoNode().getName() == 'collision-enemy-sphere':                                
+                rotation_rad = deg2Rad(rotation)
+                dx = et * walk_rate * math.sin(rotation_rad)
+                dy = et * walk_rate * -math.cos(rotation_rad)
+                pos_x += dx
+                pos_y += dy
+
+            elif self._sight_handler_ri.getNumEntries() and self._sight_handler_ri.getEntry(0).getIntoNode().getName() == 'collision-enemy-sphere':
+                rotation += et * rotation_rate
+                rotation_rad = deg2Rad(rotation)
+                dx = et * walk_rate * math.sin(rotation_rad)
+                dy = et * walk_rate * -math.cos(rotation_rad)
+                pos_x += dx
+                pos_y += dy
+            elif self._sight_handler_le.getNumEntries() and self._sight_handler_le.getEntry(0).getIntoNode().getName() == 'collision-enemy-sphere':
+                rotation -= et * rotation_rate
+                rotation_rad = deg2Rad(rotation)
+                dx = et * walk_rate * math.sin(rotation_rad)
+                dy = et * walk_rate * -math.cos(rotation_rad)
+                pos_x += dx
+                pos_y += dy
+            else:
+                rotation += et * rotation_rate
+
+            self._model.setH(rotation)
+            self._model.setX(pos_x)
+            self._model.setY(pos_y)
+
+            self.chasetimer -= 1
+            self._prev_move_time = task.time
+
+            return Task.cont
+
+
+
         # Rotate the player
         dr = et * rotation_rate
         rotation += self._keymap['left'] * dr
@@ -387,6 +467,10 @@ class Player(DirectObject):
                     self._model.setR(rad2Deg(math.atan2(l - z, self._coll_dist_h * self._scale)))
             else:
                 self._model.setPos(pos)
+
+
+        if self.chasetimer < settings.PLAYER_CHASE_LENGTH:
+            self.chasetimer += 1
 
         self._prev_move_time = task.time
         #Commented out some code due to panda3d assertion error
