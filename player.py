@@ -66,6 +66,7 @@ class Player(DirectObject):
         pass
 
     def _setup_actions(self):
+        """
         self.accept("arrow_up", self._set_key, ["reverse", 1])
         self.accept("arrow_up-up", self._set_key, ["reverse", 0])
         self.accept("arrow_down", self._set_key, ["forward", 1])
@@ -74,10 +75,11 @@ class Player(DirectObject):
         self.accept("arrow_left-up", self._set_key, ["left", 0])
         self.accept("arrow_right", self._set_key, ["right", 1])
         self.accept("arrow_right-up", self._set_key, ["right", 0])
-        self.accept("w", self._set_key, ["forward", 1])
-        self.accept("w-up", self._set_key, ["forward", 0])
-        self.accept("s", self._set_key, ["reverse", 1])
-        self.accept("s-up", self._set_key, ["reverse", 0])
+        """
+        self.accept("w", self._set_key, ["reverse", 1])
+        self.accept("w-up", self._set_key, ["reverse", 0])
+        self.accept("s", self._set_key, ["forward", 1])
+        self.accept("s-up", self._set_key, ["forward", 0])
         self.accept("a", self._set_key, ["left", 1])
         self.accept("a-up", self._set_key, ["left", 0])
         self.accept("d", self._set_key, ["right", 1])
@@ -284,7 +286,8 @@ class Player(DirectObject):
                 p_p = 1
 
         if camera_h == target_h:
-            pass
+            dest_h = target_h
+            dest_p = target_p
         elif diff_h > 180 or (diff_h < 0 and diff_h > -180):
             dest_h = camera_h+(.5*p_h)
             if dest_h > target_h:
