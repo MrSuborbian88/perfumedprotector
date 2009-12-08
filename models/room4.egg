@@ -134,7 +134,7 @@
 }
 <Group> camLook {
 }
-<Group> ground {
+<Group> ROOM4ground {
   <VertexPool> groundShape.verts {
     <Vertex> 0 {
       -10 5.52982 8
@@ -254,7 +254,7 @@
     <VertexRef> { 12 13 14 15 <Ref> { groundShape.verts } }
   }
 }
-<Group> walls {
+<Group> ROOM4walls {
   <VertexPool> wallsShape.verts {
     <Vertex> 0 {
       -10 0 -8

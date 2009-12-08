@@ -132,7 +132,7 @@
     <Scalar> visibility { hidden }
   }
 }
-<Group> walls {
+<Group> ROOM3walls {
   <VertexPool> wallsShape.verts {
     <Vertex> 0 {
       -8 0 10
@@ -1667,7 +1667,7 @@
     <VertexRef> { 209 210 202 201 <Ref> { wallsShape.verts } }
   }
 }
-<Group> ground {
+<Group> ROOM3ground {
   <ObjectType> { none }
   <VertexPool> groundShape.verts {
     <Vertex> 0 {
@@ -1875,11 +1875,7 @@
     <VertexRef> { 24 25 26 27 <Ref> { groundShape.verts } }
   }
 }
-<Group> cam {
-}
-<Group> camLook {
-}
-<Group> walls1 {
+<Group> ROOM3walls1 {
   <ObjectType> { barrier }
   <VertexPool> walls1Shape.verts {
     <Vertex> 0 {
@@ -3415,7 +3411,7 @@
     <VertexRef> { 209 210 202 201 <Ref> { walls1Shape.verts } }
   }
 }
-<Group> ground1 {
+<Group> ROOM3ground1 {
   <ObjectType> { barrier }
   <VertexPool> ground1Shape.verts {
     <Vertex> 0 {
@@ -3621,5 +3617,30 @@
     <Normal> { 0 1 0 }
     <TRef> { phong1SG }
     <VertexRef> { 24 25 26 27 <Ref> { ground1Shape.verts } }
+  }
+}
+
+<Group> camera_loc {
+  <DCS> { net }
+  <Transform> {
+    <Matrix4> {
+      1 0 0 0
+      0 1 0 0
+      0 0 1 0
+      -220 200 -200 1
+    }
+    <Translate> { 0 0 0 }
+  }
+}
+<Group> camera_start_look {
+  <DCS> { net }
+  <Transform> {
+    <Matrix4> {
+      1 0 0 0
+      0 1 0 0
+      0 0 1 0
+      220 210 -261 1
+    }
+    <Translate> { 0 0 0 }
   }
 }
