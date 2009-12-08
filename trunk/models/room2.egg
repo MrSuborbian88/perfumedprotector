@@ -178,7 +178,7 @@
     <Scalar> visibility { hidden }
   }
 }
-<Group> ground {
+<Group> ROOM2ground {
   <ObjectType> { none }
   <VertexPool> groundShape.verts {
     <Vertex> 0 {
@@ -802,11 +802,7 @@
     <Scalar> visibility { hidden }
   }
 }
-<Group> cam {
-}
-<Group> camLook {
-}
-<Group> oldwalls3DAMNIT {
+<Group> ROOM2oldwalls3DAMNIT {
   <Group> transform36 {
     <Scalar> visibility { hidden }
   }
@@ -854,7 +850,7 @@
     <Scalar> visibility { hidden }
   }
 }
-<Group> walls {
+<Group> ROOM2walls {
   <ObjectType> { none }
   <VertexPool> wallsShape.verts {
     <Vertex> 0 {
@@ -4000,7 +3996,7 @@
     <VertexRef> { 427 428 429 430 <Ref> { wallsShape.verts } }
   }
 }
-<Group> ground1 {
+<Group> ROOM2ground1 {
   <ObjectType> { barrier }
   <VertexPool> ground1Shape.verts {
     <Vertex> 0 {
@@ -4614,7 +4610,7 @@
     <VertexRef> { 80 81 82 83 <Ref> { ground1Shape.verts } }
   }
 }
-<Group> walls1 {
+<Group> ROOM2walls1 {
   <ObjectType> { barrier }
   <VertexPool> walls1Shape.verts {
     <Vertex> 0 {
