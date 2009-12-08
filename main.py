@@ -20,25 +20,25 @@ import os
 import pregame
 
 GAME_STARTED = False
-ROOM_OFFSETS = [(0,0,0), #placeholder - no room 0
-                (0,0,0), #1
-                (0,0,0), #2
-                (190,-486,0), #3
-                (388,565,0), #4
-                (0,0,0), #placeholder - no room 5
-                (1077,79,0), #6 83
-                (0,0,0), #7
-                (0,0,0), #8
-                (0,0,0), #9
-                (0,0,0), #10
-                (0,0,0), #11
-                (0,0,0), #12
-                (0,0,0), #13
-                (0,0,0), #14
-                (0,0,0), #15
-                (0,0,0), #16
-                (0,0,0), #17
-                (0,0,0)] #18
+ROOM_OFFSETS = [(0,0,0),        #placeholder - no room 0
+                (0,0,0),        #1
+                (0,0,0),        #2
+                (190,-486,0),   #3
+                (388,565,0),    #4
+                (0,0,0),        #placeholder - no room 5
+                (1077,79,0),    #6 83
+                (0,0,0),        #7
+                (0,0,0),        #8
+                (0,0,0),        #9
+                (0,0,0),        #10
+                (0,0,0),        #11
+                (0,0,0),        #12
+                (0,0,0),        #13
+                (0,0,0),        #14
+                (0,0,0),        #15
+                (0,0,0),        #16
+                (0,0,0),        #17
+                (0,0,0)]        #18
                 
 ROOM_LOADS = [(0),              #placeholder - no room 0
               (1,2),            #1
@@ -46,7 +46,7 @@ ROOM_LOADS = [(0),              #placeholder - no room 0
               (2,3,6),          #3
               (2,4,6),          #4
               (0),              #placeholder - no room 5
-              (3,4,6),      #6(3,4,6,7,9)
+              (3,4,6),          #6(3,4,6,7,9)
               (6,7,8),          #7
               (7,8,9,11,14),    #8
               (6,8,9,10),       #9
@@ -73,8 +73,8 @@ class World(DirectObject):
         self._load_rooms(2)
 
     def _setup_cam(self):
-        base.camera.setPos(self.room2.find("**/camera_loc").getPos())
-        base.camera.lookAt(self.room2.find("**/camera_start_look").getPos())
+        base.camera.setPos(self.room2.find("**/camera_loc").getPos() + ROOM_OFFSETS[2])
+        base.camera.lookAt(self.room2.find("**/camera_start_look").getPos() + ROOM_OFFSETS[2])
 
     def _setup_models(self):
         self.player = player.Player()

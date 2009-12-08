@@ -257,36 +257,49 @@ class Player(DirectObject):
         target_h = base.camera.getH()
         target_p = base.camera.getP()
 
+        if camera_h < -180:
+            camera_h = (180 - (camera_h + 180))
+        elif camera_h > 180:
+            camera_h = (-180 + (camera_h - 180))
+
         if camera_h == target_h and camera_p == target_p:
             return Task.cont
 
-        diff_h = abs(camera_h-target_h)
-        diff_p = abs(camera_p-target_p)
+        diff_h = camera_h-target_h
+        diff_p = camera_p-target_p
 
-        if diff_h > diff_p:
+        if abs(diff_h) > abs(diff_p):
             if diff_h==0:
-                diff_p = 1
+                p_p = 1
+                p_h = 0
             else:
-                diff_p = diff_p / diff_h
-                diff_h = 1
+                p_p = abs(diff_p / diff_h)
+                p_h = 1
         else:
             if diff_p==0:
-                diff_h = 1
+                p_h = 1
+                p_p = 1
             else:
-                diff_h = diff_h / diff_p
-                diff_p = 1
+                p_h = abs(diff_h / diff_p)
+                p_p = 1
 
-        if target_h > camera_h:
-            dest_h = min(camera_h+(.5*diff_h), target_h)
-        elif target_h < camera_h:
-            dest_h = max(camera_h-(.5*diff_h), target_h)
+        if camera_h == target_h:
+            pass
+        elif diff_h > 180 or (diff_h < 0 and diff_h > -180):
+            dest_h = camera_h+(.5*p_h)
+            if dest_h > target_h:
+                dest_h = target_h
+        elif diff_h <= -180 or (diff_h > 0 and diff_h <= 180):
+            dest_h = camera_h-(.5*p_h)
+            if dest_h < target_h:
+                dest_h = target_h
         else:
             dest_h=target_h
 
         if target_p > camera_p:
-            dest_p = min(camera_p+(.5*diff_p), target_p)
+            dest_p = min(camera_p+(.5*p_p), target_p)
         elif target_p < camera_p:
-            dest_p = max(camera_p-(.5*diff_p), target_p)
+            dest_p = max(camera_p-(.5*p_p), target_p)
         else:
             dest_p=target_p
 
