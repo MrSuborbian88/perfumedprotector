@@ -45,6 +45,6 @@ class Pregame(DirectObject):
                 self.sound_main.play()
                 self.sound_main.setLoop(True)
                 self.d.destroy()
-                w = main.World()
+                w = main.World(self.dog_selection)
             else:
                 self.posit = 3
