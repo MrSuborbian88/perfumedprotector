@@ -4,8 +4,6 @@ loadPrcFileData('', 'notify-level fatal')
 import direct.directbase.DirectStart
 from pandac.PandaModules import *
 from direct.showbase.DirectObject import DirectObject
-from direct.gui.OnscreenText import OnscreenText
-from direct.gui.OnscreenImage import OnscreenImage
 from pandac.PandaModules import *
 from direct.gui.DirectGui import *
 from direct.actor.Actor import Actor
@@ -19,6 +17,7 @@ import cat
 
 import sys
 import os
+import pregame
 
 GAME_STARTED = False
 ROOM_OFFSETS = [(0,0,0), #placeholder - no room 0
@@ -243,13 +242,10 @@ class World(DirectObject):
         self.rooms.append(self.room18)
         """
 
-def start_game():
-    b.destroy()
-    d.destroy()
-    textObject.destroy()
+def start_game(self, position):
+    pass
 
 if __name__ == '__main__':
-    bk_text = "Plague of the Perfumed Protector"
     font = loader.loadFont(os.path.join("fonts", "arial.ttf"))
     font.setPixelsPerUnit(200)
     """
@@ -265,10 +261,10 @@ if __name__ == '__main__':
                      pos=(0, 0, -.62), relief=None)
     d.setTransparency(1)
     """
-    #c = OnscreenImage(parent=render2d, image=os.path.join("models", "background.png"))
+    
+    
     #sound_ambient = loader.loadSfx(os.path.join("sounds", "ambient-wind.mp3"))
     #sound_ambient.play()
     #sound_ambient.setLoop(True)
-
-    w = World()
+    p = pregame.Pregame()
     run()

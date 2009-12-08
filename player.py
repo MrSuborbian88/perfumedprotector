@@ -23,6 +23,7 @@ class Player(DirectObject):
                 'right'   : 0,
                 'left'    : 0,
                 'jump'    : 0,
+                'bark'    : 0,
         }
         self._dir = 0
         self._coll_dist = 5
@@ -45,6 +46,7 @@ class Player(DirectObject):
                               scale=0.1, fg=(1, 1, 1, 1),
                               mayChange=1)
         self.inst1 = addInstructions(0.95, str(self._model.getPos()))
+        self.sound_bark = loader.loadSfx(os.path.join("sound files", "Small Dog Barking.mp3"))
 
         self.win = False
     def _load_models(self):
@@ -77,7 +79,7 @@ class Player(DirectObject):
         self.accept("a-up", self._set_key, ["left", 0])
         self.accept("d", self._set_key, ["right", 1])
         self.accept("d-up", self._set_key, ["right", 0])
-
+        self.accept("e", self._set_key, ["bark", 1])
         self.accept('space',self._set_key, ["jump", 1])
         self.accept('space-up', self._set_key, ["jump", 0])
 
@@ -275,6 +277,10 @@ class Player(DirectObject):
         
         if self.jumpingCurrently:
             pos_z+=self.jump()
+            
+        if self._keymap['bark']:
+            self.sound_bark.play()
+            self._keymap['bark'] = 0
 
         #if self._sound_snowmobile.status() == 1:
         #    if self._keymap['forward'] == 1 or self._keymap['reverse'] == 1 or self._keymap['left'] == 1 or self._keymap['right'] == 1:
