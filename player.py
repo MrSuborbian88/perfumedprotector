@@ -16,7 +16,7 @@ def addInstructions(pos, msg):
                         pos=(-1.3, pos), align=TextNode.ALeft, scale = .05)
 
 class Player(DirectObject):
-    def __init__(self):
+    def __init__(self, dogSelection):
         self._keymap = {
                 'forward' : 0,
                 'reverse' : 0,
@@ -28,6 +28,7 @@ class Player(DirectObject):
         self._dir = 0
         self._coll_dist = 4
         self._coll_dist_h = 1.5
+        self.dogSelection = dogSelection
         self._scale = .5 * settings.GLOBAL_SCALE
         self._load_models()
         self._load_sounds()
@@ -53,7 +54,10 @@ class Player(DirectObject):
 
         self.win = False
     def _load_models(self):
-        self._model = Actor("models/sdog")
+        if self.dogSelection == 2:
+            self._model = Actor("models/sdog")
+        else:
+            self._model = Actor("models/dog")
         self._model.reparentTo(render)
         self._model.setScale(.5 * settings.GLOBAL_SCALE)
         self._model.setPos(0, 0, 5)

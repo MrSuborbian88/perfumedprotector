@@ -61,9 +61,10 @@ ROOM_LOADS = [(0),              #placeholder - no room 0
               (11,12,13,15,18)] #18
 
 class World(DirectObject):
-    def __init__(self):
+    def __init__(self, dogSelection):
         base.disableMouse()
         render.setShaderAuto()
+        self.dogSelection = dogSelection
         self._setup_models()
         self._preload_rooms()
         self._setup_room_collisions()
@@ -77,7 +78,7 @@ class World(DirectObject):
         base.camera.lookAt(self.room2.find("**/camera_start_look").getPos() + ROOM_OFFSETS[2])
 
     def _setup_models(self):
-        self.player = player.Player()
+        self.player = player.Player(self.dogSelection)
         base.cTrav = CollisionTraverser()
         self.cHandler = CollisionHandlerEvent()
         self.cHandler.setInPattern("artifact_gotten") #artifact gotten?
@@ -243,29 +244,8 @@ class World(DirectObject):
         self.rooms.append(self.room18)
         """
 
-def start_game(self, position):
-    pass
 
 if __name__ == '__main__':
-    font = loader.loadFont(os.path.join("fonts", "arial.ttf"))
-    font.setPixelsPerUnit(200)
-    """
-    textObject = OnscreenText(text=bk_text, font=font, pos = (0, 0.7),
-                              scale=0.2, fg=(1, 1, 1, 1),
-                              mayChange=0)
-    b = DirectButton(text="Start Game", text_font=font, clickSound=None,
-                     command=start_game, text_fg=(0, 0, 0, 1), scale=.1,
-                     pos=(0, 0, -.5), relief=None)
-    b.setTransparency(1)
-    d = DirectButton(text="Quit", text_font=font, clickSound=None,
-                     command=sys.exit, text_fg=(0, 0, 0, 1), scale=.1,
-                     pos=(0, 0, -.62), relief=None)
-    d.setTransparency(1)
-    """
-    
-    
-    #sound_ambient = loader.loadSfx(os.path.join("sounds", "ambient-wind.mp3"))
-    #sound_ambient.play()
-    #sound_ambient.setLoop(True)
+
     p = pregame.Pregame()
     run()
