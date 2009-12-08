@@ -3,7 +3,7 @@ loadPrcFileData('', 'window-title Doggy Delivery')
 loadPrcFileData('', 'notify-level fatal')
 import direct.directbase.DirectStart
 from pandac.PandaModules import *
-from direct.showbase.DirectObject import DirectObject
+from direct.showbase.DirectObject import DirectObject 
 from pandac.PandaModules import *
 from direct.gui.DirectGui import *
 from direct.actor.Actor import Actor
