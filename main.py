@@ -98,7 +98,6 @@ class World(DirectObject):
 
     def _setup_actions(self):
         self.accept("escape", sys.exit)
-        self.accept("enter",  start_game)
 
     def _spawn_enemy(self,pos,file_loc):
         self._coll_trav = CollisionTraverser()
