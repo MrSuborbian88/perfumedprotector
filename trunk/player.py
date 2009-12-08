@@ -36,7 +36,8 @@ class Player(DirectObject):
         self._setup_collisions()
         self.gravity = 0
         self.health = 100
-        self.jumping = 10
+        self.jumping = 15
+        self.falling = 0
         self.jumpingCurrently = False
         self.font = loader.loadFont(os.path.join("fonts", "arial.ttf"))
         self.bk_text= "Health   "
@@ -336,6 +337,10 @@ class Player(DirectObject):
                     self.gravity=0
                     self.jumpingCurrently=False
                     self.jumping=15
+                    self.falling=0
+                if self.gravity == 1 and not self.jumpingCurrently:
+                    pos_z+=self.fall()
+                    self._model.setZ(pos_z)
             elif self.is_valid(entries_front) and self.is_valid(entries_back) and self.is_valid(entries_left) and self.is_valid(entries_right) and self.is_valid(entries_front_right) and self.is_valid(entries_front_left) and self.is_valid(entries_back_left) and self.is_valid(entries_back_right):
                 f = entries_front[0].getSurfacePoint(render).getZ()
                 b = entries_back[0].getSurfacePoint(render).getZ()
@@ -343,7 +348,7 @@ class Player(DirectObject):
                 r = entries_right[0].getSurfacePoint(render).getZ()
                 z = (f + b) / 2
                 if abs(z - self._model.getZ()) > 5:
-                    self._model.setPos(pos)
+                    self.gravity=1
                 else:
                     self._model.setZ(z)
                     self._model.setP(rad2Deg(math.atan2(f - z, self._coll_dist * self._scale)))
@@ -379,7 +384,12 @@ class Player(DirectObject):
         return True
     
     def jump(self):
+        if self.jumping>0:
             self.gravity=1
             self.jumping-=.5
             return self.jumping*.5
-        
+        else:
+            return self.fall()
+    def fall(self):
+            self.falling-=.5
+            return self.falling*.5
