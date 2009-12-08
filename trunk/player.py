@@ -343,15 +343,26 @@ class Player(DirectObject):
         if entries_all:
             if self.gravity == 1:
                 self._model.setZ(pos_z)
-                if entries_back[0].getSurfacePoint(render).getZ()>self._model.getZ():
-                    self._model.setZ(entries_back[0].getSurfacePoint(render).getZ())
-                    self.gravity=0
-                    self.jumpingCurrently=False
-                    self.jumping=15
-                    self.falling=0
-                if self.gravity == 1 and not self.jumpingCurrently:
-                    pos_z+=self.fall()
-                    self._model.setZ(pos_z)
+                if entries_back:
+                    if entries_back[0].getSurfacePoint(render).getZ()>self._model.getZ():
+                        self._model.setZ(entries_back[0].getSurfacePoint(render).getZ())
+                        self.gravity=0
+                        self.jumpingCurrently=False
+                        self.jumping=15
+                        self.falling=0
+                    if self.gravity == 1 and not self.jumpingCurrently:
+                        pos_z+=self.fall()
+                        self._model.setZ(pos_z)
+                else:
+                    if entries_front[0].getSurfacePoint(render).getZ()>self._model.getZ():
+                        self._model.setZ(entries_front[0].getSurfacePoint(render).getZ())
+                        self.gravity=0
+                        self.jumpingCurrently=False
+                        self.jumping=15
+                        self.falling=0
+                    if self.gravity == 1 and not self.jumpingCurrently:
+                        pos_z+=self.fall()
+                        self._model.setZ(pos_z)
             elif self.is_valid(entries_front) and self.is_valid(entries_back) and self.is_valid(entries_left) and self.is_valid(entries_right) and self.is_valid(entries_front_right) and self.is_valid(entries_front_left) and self.is_valid(entries_back_left) and self.is_valid(entries_back_right):
                 f = entries_front[0].getSurfacePoint(render).getZ()
                 b = entries_back[0].getSurfacePoint(render).getZ()
@@ -390,8 +401,7 @@ class Player(DirectObject):
         if len(entries) == 0:
             return False
         for x in entries:
-             if x.getIntoNode().getName()!='ground1' and x.getIntoNode().getName()!='walls1':
-                print x.getIntoNode().getName()
+             if x.getIntoNode().getName()!='ground1':
                 return False
         return True
     
