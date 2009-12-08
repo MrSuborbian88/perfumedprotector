@@ -26,8 +26,8 @@ class Player(DirectObject):
                 'bark'    : 0,
         }
         self._dir = 0
-        self._coll_dist = 5
-        self._coll_dist_h = 2
+        self._coll_dist = 4
+        self._coll_dist_h = 1.5
         self._scale = .5 * settings.GLOBAL_SCALE
         self._load_models()
         self._load_sounds()
@@ -47,6 +47,7 @@ class Player(DirectObject):
                               mayChange=1)
         self.inst1 = addInstructions(0.95, str(self._model.getPos()))
         self.sound_bark = loader.loadSfx(os.path.join("sound files", "Small Dog Barking.mp3"))
+        self.sound_dog_footsteps = loader.loadSfx(os.path.join("sound files", "Dog Footsteps.mp3"))
 
         self.win = False
     def _load_models(self):
@@ -286,13 +287,13 @@ class Player(DirectObject):
             self.sound_bark.play()
             self._keymap['bark'] = 0
 
-        #if self._sound_snowmobile.status() == 1:
-        #    if self._keymap['forward'] == 1 or self._keymap['reverse'] == 1 or self._keymap['left'] == 1 or self._keymap['right'] == 1:
-        #        self._sound_snowmobile.play()
-        #        self._sound_snowmobile.setLoop(True)
-        #elif self._sound_snowmobile.status() == 2:
-        #    if self._keymap['forward'] == 0 and self._keymap['reverse'] == 0 and self._keymap['left'] == 0 and self._keymap['right'] == 0:
-        #        self._sound_snowmobile.stop()
+        if self.sound_dog_footsteps.status() == 1:
+            if self._keymap['forward'] == 1 or self._keymap['reverse'] == 1 or self._keymap['left'] == 1 or self._keymap['right'] == 1:
+                self.sound_dog_footsteps.play()
+                self.sound_dog_footsteps.setLoop(True)
+        elif self.sound_dog_footsteps.status() == 2:
+            if self._keymap['forward'] == 0 and self._keymap['reverse'] == 0 and self._keymap['left'] == 0 and self._keymap['right'] == 0:
+                self.sound_dog_footsteps.stop()
 
 
         # Save back to the model
@@ -389,7 +390,8 @@ class Player(DirectObject):
         if len(entries) == 0:
             return False
         for x in entries:
-             if x.getIntoNode().getName()!='ground1':
+             if x.getIntoNode().getName()!='ground1' and x.getIntoNode().getName()!='walls1':
+                print x.getIntoNode().getName()
                 return False
         return True
     
