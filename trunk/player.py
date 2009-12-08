@@ -190,7 +190,7 @@ class Player(DirectObject):
         self._coll_trav.addCollider(self._gnd_coll_path_right, self._gnd_handler_right)
         # Enemy sight target
         self._sphere_handler = CollisionHandlerQueue()
-        self._sphere = CollisionSphere(0, 0, 0, 4)
+        self._sphere = CollisionSphere(0, 0, 0, 8)
         self._coll_sphere = CollisionNode('collision-player-sphere')
         self._coll_sphere.addSolid(self._sphere)
         self._coll_sphere.setFromCollideMask(BitMask32.bit(0))
@@ -308,7 +308,6 @@ class Player(DirectObject):
 
     def _task_move(self, task):
         pos_z = self._model.getZ()
-        self.chase = False
         for i in range(self._inner_sphere_handler.getNumEntries()):
             if self._inner_sphere_handler.getEntry(i).getIntoNode().getName()=='collision-with-player':
                 if self.chasetimer >= settings.PLAYER_CHASE_LENGTH:
@@ -322,8 +321,13 @@ class Player(DirectObject):
         pos_x = self._model.getX()
         pos_y = self._model.getY()
         pos = self._model.getPos()
-        
+        print self.chasetimer
         if self.chase:
+            self._inner_sphere_handler.sortEntries()
+            if self._inner_sphere_handler and self._inner_sphere_handler.getEntry(0).getIntoNode().getName() == 'collision-enemy-sphere':
+                    self._prev_move_time = task.time
+                    return Task.cont
+
             self._sight_handler_mi.sortEntries()
             self._sight_handler_ri.sortEntries()
             self._sight_handler_le.sortEntries()
@@ -356,6 +360,8 @@ class Player(DirectObject):
             self._model.setY(pos_y)
 
             self.chasetimer -= 1
+            if self.chasetimer == 0:
+                self.chase = False
             self._prev_move_time = task.time
 
             return Task.cont
