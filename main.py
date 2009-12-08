@@ -24,10 +24,10 @@ GAME_STARTED = False
 ROOM_OFFSETS = [(0,0,0), #placeholder - no room 0
                 (0,0,0), #1
                 (0,0,0), #2
-                (0,0,0), #3
-                (0,0,0), #4
+                (190,-486,0), #3
+                (388,565,0), #4
                 (0,0,0), #placeholder - no room 5
-                (0,0,0), #6
+                (1077,79,0), #6 83
                 (0,0,0), #7
                 (0,0,0), #8
                 (0,0,0), #9
@@ -40,13 +40,14 @@ ROOM_OFFSETS = [(0,0,0), #placeholder - no room 0
                 (0,0,0), #16
                 (0,0,0), #17
                 (0,0,0)] #18
+                
 ROOM_LOADS = [(0),              #placeholder - no room 0
               (1,2),            #1
               (1,2,3,4),        #2
               (2,3,6),          #3
               (2,4,6),          #4
               (0),              #placeholder - no room 5
-              (3,4,5,7,9),      #6
+              (3,4,6),      #6(3,4,6,7,9)
               (6,7,8),          #7
               (7,8,9,11,14),    #8
               (6,8,9,10),       #9
@@ -70,7 +71,7 @@ class World(DirectObject):
         self._setup_lights()
         self._setup_actions()
         self._setup_cam()
-        self._load_rooms(1)
+        self._load_rooms(2)
 
     def _setup_cam(self):
         base.camera.setPos(self.room2.find("**/camera_loc").getPos())
@@ -83,7 +84,6 @@ class World(DirectObject):
         self.cHandler.setInPattern("artifact_gotten") #artifact gotten?
         self.env = render.attachNewNode("env")
         self.rooms = []
-        
         self.enemylist = []
         
     def _setup_lights(self):
@@ -150,8 +150,7 @@ class World(DirectObject):
         self.rooms.append(self.room1)
         """
         self.room1 = loader.loadModel("models/room2")
-        self.room1.setScale(settings.ENV_SCALE * settings.GLOBAL_SCALE)
-        self.room1.setPos(ROOM_OFFSETS[2][0], ROOM_OFFSETS[2][1], ROOM_OFFSETS[2][2])
+        self.room1.setScale(.0001)
         self.rooms.append(self.room1)
 
         self.room2 = loader.loadModel("models/room2")
@@ -164,6 +163,7 @@ class World(DirectObject):
         self.room2.reparentTo(self.env)
 
         self.room3 = loader.loadModel("models/room3")
+        self.room3.setH(-90)
         self.room3.setScale(settings.ENV_SCALE * settings.GLOBAL_SCALE)
         self.room3.setPos(ROOM_OFFSETS[3][0], ROOM_OFFSETS[3][1], ROOM_OFFSETS[3][2])
         self.rooms.append(self.room3)
@@ -172,6 +172,10 @@ class World(DirectObject):
         self.room4.setScale(settings.ENV_SCALE * settings.GLOBAL_SCALE)
         self.room4.setPos(ROOM_OFFSETS[4][0], ROOM_OFFSETS[4][1], ROOM_OFFSETS[4][2])
         self.rooms.append(self.room4)
+
+        self.room5 = loader.loadModel("models/room2")
+        self.room5.setScale(.0001)
+        self.rooms.append(self.room5)
 
         self.room6 = loader.loadModel("models/room6")
         self.room6.setScale(settings.ENV_SCALE * settings.GLOBAL_SCALE)
