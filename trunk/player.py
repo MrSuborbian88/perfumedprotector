@@ -188,6 +188,16 @@ class Player(DirectObject):
         self._gnd_coll_path_right = self._model.attachNewNode(self._gnd_coll_right)
         self._gnd_coll_path_right.show()
         self._coll_trav.addCollider(self._gnd_coll_path_right, self._gnd_handler_right)
+        # Enemy sight target
+        self._sphere_handler = CollisionHandlerQueue()
+        self._sphere = CollisionSphere(0, 0, 0, 4)
+        self._coll_sphere = CollisionNode('collision-player-sphere')
+        self._coll_sphere.addSolid(self._sphere)
+        self._coll_sphere.setFromCollideMask(BitMask32.bit(0))
+        self._coll_sphere.setIntoCollideMask(BitMask32.bit(5))
+        self._coll_sphere_path = self._model.attachNewNode(self._coll_sphere)
+        self._coll_sphere_path.show()
+        self._coll_trav.addCollider(self._coll_sphere_path, self._sphere_handler)
         # Inner sphere collision
         self._inner_sphere_handler = CollisionHandlerQueue()
         self._inner_sphere = CollisionSphere(0, 0, 0, 4)

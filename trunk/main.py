@@ -105,7 +105,8 @@ class World(DirectObject):
         enemy = cat.Cat(pos,file_loc)
         for p in enemy._points:
                 self._sphere_handler = CollisionHandlerQueue()
-                self._sphere = CollisionSphere(p[0] /settings.ENV_SCALE, p[1]/settings.ENV_SCALE, p[2], 1)
+#                self._sphere = CollisionSphere(p[0] /settings.ENV_SCALE, p[1]/settings.ENV_SCALE, p[2], 2 * settings.ENV_SCALE)
+                self._sphere = CollisionSphere(p[0], p[1], p[2],10 * settings.ENV_SCALE)
                 self._coll_sphere = CollisionNode('collision-point-sphere')
                 self._coll_sphere.addSolid(self._sphere)
                 self._coll_sphere.setFromCollideMask(BitMask32.bit(0))
@@ -156,6 +157,7 @@ class World(DirectObject):
         self.room2.setScale(settings.ENV_SCALE * settings.GLOBAL_SCALE)
         self.room2.setPos(ROOM_OFFSETS[2][0], ROOM_OFFSETS[2][1], ROOM_OFFSETS[2][2])
         self.rooms.append(self.room2)
+        self._spawn_enemy((80,123,40), "data/room2.txt");
 
         #load room1 and room2 to start
         #self.room1.reparentTo(self.env)
