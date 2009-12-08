@@ -36,7 +36,7 @@ class Player(DirectObject):
         self._setup_collisions()
         self.gravity = 0
         self.health = 100
-        self.jumping = 15
+        self.jumping = 10
         self.jumpingCurrently = False
         self.font = loader.loadFont(os.path.join("fonts", "arial.ttf"))
         self.bk_text= "Health   "
@@ -331,7 +331,8 @@ class Player(DirectObject):
         if entries_all:
             if self.gravity == 1:
                 self._model.setZ(pos_z)
-                if abs(entries_front[0].getSurfacePoint(render).getZ()-self._model.getZ()) < 1:
+                if entries_back[0].getSurfacePoint(render).getZ()>self._model.getZ():
+                    self._model.setZ(entries_back[0].getSurfacePoint(render).getZ())
                     self.gravity=0
                     self.jumpingCurrently=False
                     self.jumping=15
@@ -379,6 +380,6 @@ class Player(DirectObject):
     
     def jump(self):
             self.gravity=1
-            self.jumping-=1
-            return self.jumping*.25
+            self.jumping-=.5
+            return self.jumping*.5
         
