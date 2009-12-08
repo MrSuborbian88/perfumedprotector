@@ -1,0 +1,17 @@
+Player
+   Follow cat
+   Break down break-downable stuff   
+   Play dead
+
+Cat
+   Walk towards guards when being followed by dog
+   Avoid obstacles
+
+Robot
+   Chase player
+   Avoid obstacles
+
+Environment
+   Line-up rooms
+   Camera switches
+   Camera pan-route
