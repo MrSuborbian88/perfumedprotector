@@ -2,8 +2,8 @@ from direct.showbase.DirectObject import DirectObject
 from direct.gui.OnscreenText import OnscreenText
 from direct.gui.OnscreenImage import OnscreenImage
 import os
-import main
 import sys
+import world
 
 class Pregame(DirectObject):
     def __init__(self):
@@ -45,6 +45,6 @@ class Pregame(DirectObject):
                 self.sound_main.play()
                 self.sound_main.setLoop(True)
                 self.d.destroy()
-                w = main.World(self.dog_selection)
+                w = world.World(self.dog_selection)
             else:
                 self.posit = 3
