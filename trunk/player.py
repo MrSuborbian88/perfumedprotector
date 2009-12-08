@@ -190,7 +190,7 @@ class Player(DirectObject):
         self._coll_trav.addCollider(self._gnd_coll_path_right, self._gnd_handler_right)
         # Enemy sight target
         self._sphere_handler = CollisionHandlerQueue()
-        self._sphere = CollisionSphere(0, 0, 0, 8)
+        self._sphere = CollisionSphere(0, 0, 0, 4)
         self._coll_sphere = CollisionNode('collision-player-sphere')
         self._coll_sphere.addSolid(self._sphere)
         self._coll_sphere.setFromCollideMask(BitMask32.bit(0))
@@ -321,7 +321,6 @@ class Player(DirectObject):
         pos_x = self._model.getX()
         pos_y = self._model.getY()
         pos = self._model.getPos()
-        print self.chasetimer
         if self.chase:
             self._inner_sphere_handler.sortEntries()
             if self._inner_sphere_handler and self._inner_sphere_handler.getEntry(0).getIntoNode().getName() == 'collision-enemy-sphere':
