@@ -10,6 +10,7 @@ from direct.particles.Particles import Particles
 from direct.particles.ParticleEffect import ParticleEffect
 from pandac.PandaModules import BaseParticleEmitter,BaseParticleRenderer
 from pandac.PandaModules import PointParticleFactory,SpriteParticleRenderer
+from direct.particles.ForceGroup import ForceGroup
 
 import settings
 import math
@@ -474,6 +475,7 @@ class Player(DirectObject):
             for x in self.blocks:
                 if x.getRoom() == self.currentRoom:
                     x.destroyBlock()
+                    #self.loadParticleConfig(x.getPosition())
             
         
         if self._keymap['forward'] == 1 or self._keymap['reverse'] == 1 or self._keymap['left'] == 1 or self._keymap['right'] == 1:
@@ -613,7 +615,19 @@ class Player(DirectObject):
             self.falling-=.5
             return self.falling*.5
     
-
+    def loadParticleConfig(self, position):
+        self.p.cleanup()
+        self.p = ParticleEffect()
+        self.p.loadConfig(os.path.join("models", "smokering.ptf"))   
+        self.p.accelerate(.25) 
+        self.p.setPos(position) 
+        self.p.reparentTo(render) 
+        self.p.setScale(30)  
+        self.p.start()
+        #taskMgr.doMethodLater(5, self.cleanParticles, 'Stop Particles')
+        
+    def cleanParticles(self, random):
+        self.p.softStop()
         
     def play_dead(self):
         self.playing_dead = not self.playing_dead
@@ -635,4 +649,4 @@ class Player(DirectObject):
         if self.dogSelection == 2: #small
             self.a = OnscreenImage(parent=render2d, image=os.path.join("image files", "Game-Over-Screen-Small.png"))
         else:
-         
+         pass
