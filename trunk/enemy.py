@@ -112,26 +112,16 @@ class Enemy(DirectObject):
         self._sight_coll_ri_path = self._model.attachNewNode(self._sight_coll_ri)
         self._sight_coll_ri_path.show()
         self._coll_trav.addCollider(self._sight_coll_ri_path, self._sight_handler_ri)
-        # Player sight target
-        self._sphere_handler = CollisionHandlerQueue()
-        self._sphere = CollisionSphere(0, 6, 0, 4)
-        self._coll_sphere = CollisionNode('collision-enemy-sphere')
-        self._coll_sphere.addSolid(self._sphere)
-        self._coll_sphere.setFromCollideMask(BitMask32.bit(0))
-        self._coll_sphere.setIntoCollideMask(BitMask32.bit(6))
-        self._coll_sphere_path = self._model.attachNewNode(self._coll_sphere)
-        self._coll_sphere_path.show()
-        self._coll_trav.addCollider(self._coll_sphere_path, self._sphere_handler)   
-        # Player collision
-        self._player_handler = CollisionHandlerQueue()
-        self._player = CollisionSphere(0, 0, 0, 3)
-        self._player_coll = CollisionNode('collision-with-player')
-        self._player_coll.addSolid(self._player)
-        self._player_coll.setFromCollideMask(BitMask32.bit(7))
-        self._player_coll.setIntoCollideMask(BitMask32.bit(7))
-        self._player_coll_path = self._model.attachNewNode(self._player_coll)
-        self._player_coll_path.show()
-        self._coll_trav.addCollider(self._player_coll_path, self._player_handler)
+        #Wall collision
+        self._wall_handler = CollisionHandlerQueue()
+        self._wall_ray = CollisionSphere(0,0,0,2)
+        self._wall_coll = CollisionNode('collision-wall')
+        self._wall_coll.addSolid(self._wall_ray)
+        self._wall_coll.setFromCollideMask(BitMask32.bit(0))
+        self._wall_coll.setIntoCollideMask(BitMask32.allOff())
+        self._wall_coll_path = self._model.attachNewNode(self._wall_coll)
+        self._wall_coll_path.show()
+        self._coll_trav.addCollider(self._wall_coll_path, self._wall_handler)
 
     def _setup_tasks(self):
         self._prev_time = 0
@@ -169,8 +159,19 @@ class Enemy(DirectObject):
             self._sight_handler_mi.sortEntries()
             self._sight_handler_ri.sortEntries()
             self._sight_handler_le.sortEntries()
-            
-            if self._sight_handler_hi.getNumEntries() and self._sight_handler_hi.getEntry(0).getIntoNode().getName() == 'collision-player-sphere' or \
+            entries_wall = []
+        
+            for i in range(self._wall_handler.getNumEntries()):
+                entries_wall.append(self._wall_handler.getEntry(i))
+
+            if not self.is_valid(entries_wall):
+                rotation += et * rotation_rate * random.randint(-1,1)
+                rotation_rad = deg2Rad(rotation)
+                dx = et * walk_rate * math.sin(rotation_rad) * 10
+                dy = et * walk_rate * -math.cos(rotation_rad) * 15
+                pos_x -= dx
+                pos_y -= dy
+            elif self._sight_handler_hi.getNumEntries() and self._sight_handler_hi.getEntry(0).getIntoNode().getName() == 'collision-player-sphere' or \
                 self._sight_handler_lo.getNumEntries() and self._sight_handler_lo.getEntry(0).getIntoNode().getName() == 'collision-player-sphere' or \
                 self._sight_handler_mi.getNumEntries() and self._sight_handler_mi.getEntry(0).getIntoNode().getName() == 'collision-player-sphere' and \
                 not self._is_cat:                                
@@ -219,16 +220,14 @@ class Enemy(DirectObject):
                 dy = et * walk_rate * -math.cos(rotation_rad)
                 pos_x += dx
                 pos_y += dy
-                
-
             else:
                 rotation += et * rotation_rate
-            
+
             # Save back to the model
             self._model.setH(rotation)
+            
             self._model.setX(pos_x)
             self._model.setY(pos_y)
- 
             self.pos = self._model.getPos()
 
             pos_z = self._model.getZ()
@@ -263,3 +262,9 @@ class Enemy(DirectObject):
             self._prev_time = task.time
 
             return Task.cont
+               
+    def is_valid(self, entries):
+        for x in entries:
+            if x.getIntoNode().getName()!='ground1':
+                return False
+        return True

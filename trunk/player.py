@@ -337,7 +337,7 @@ class Player(DirectObject):
     def _task_move(self, task):
         pos_z = self._model.getZ()
         for i in range(self._inner_sphere_handler.getNumEntries()):
-            if self._inner_sphere_handler.getEntry(i).getIntoNode().getName()=='collision-with-player':
+            if self._inner_sphere_handler.getEntry(i).getIntoNode().getName()=='collision-with-player-cat':
                 if self.chasetimer >= settings.PLAYER_CHASE_LENGTH:
                     self.chase = True
 
