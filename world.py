@@ -131,14 +131,62 @@ class World(DirectObject):
                 self._coll_sphere_path.show()
                 self._coll_trav.addCollider(self._coll_sphere_path, self._sphere_handler)
         self.enemylist.append(enemy)
+        
     def _setup_room_collisions(self):
-        pass
+        self.cTrav = CollisionTraverser()
+        # Front collision
+        self._room_check_handler = CollisionHandlerQueue()
+        self._room_check_ray = CollisionRay()
+        self._room_check_ray.setOrigin(0, -5, 1)
+        self._room_check_ray.setDirection(0, 0, -1)
+        self._room_check_coll = CollisionNode('collision-ground-front')
+        self._room_check_coll.addSolid(self._room_check_ray)
+        self._room_check_coll.setFromCollideMask(BitMask32(0x00000001))
+        self._room_check_coll.setIntoCollideMask(BitMask32.allOff())
+        self._room_check_coll_path = self.player._model.attachNewNode(self._room_check_coll)
+        self._room_check_coll_path.show()
+        self.cTrav.addCollider(self._room_check_coll_path, self._room_check_handler)
+
+        taskMgr.doMethodLater(1, self._handle_room_check_collisions, "room_check")
+
+    def _handle_room_check_collisions(self, task):
+        self.cTrav.traverse(self.env)
+        for i in range(self._room_check_handler.getNumEntries()):
+            entry = self._room_check_handler.getEntry(i)
+        #In room 2
+            if entry.getIntoNodePath() == self.room2 or \
+                    entry.getIntoNodePath().getParent() == self.room2 or \
+                    entry.getIntoNodePath().getParent().getParent() == self.room2:
+                print "room 2"
+                self._change_room(2)
+        #In room 3
+            elif entry.getIntoNodePath() == self.room3 or \
+                    entry.getIntoNodePath().getParent() == self.room3 or \
+                    entry.getIntoNodePath().getParent().getParent() == self.room3:
+                print "room 3"
+                self._change_room(3)
+        #In room 4
+            elif entry.getIntoNodePath() == self.room4 or \
+                    entry.getIntoNodePath().getParent() == self.room4 or \
+                    entry.getIntoNodePath().getParent().getParent() == self.room4:
+                print "room 4"
+                self._change_room(4)
+        #In room 6
+            elif entry.getIntoNodePath() == self.room6 or \
+                    entry.getIntoNodePath().getParent() == self.room6 or \
+                    entry.getIntoNodePath().getParent().getParent() == self.room6:
+                print "room 6"
+                self._change_room(6)
+                
+        return Task.again
 
     def _change_room(self, num):
-        self.current_room = num
-        self.player.current_room = num
-        #change cameras
-        _load_rooms(num)
+        if self.current_room != num:
+            self.current_room = num
+           #change camera
+            base.camera.setPos(self.rooms[num].find("**/camera_loc").getPos() + ROOM_OFFSETS[num])
+            base.camera.lookAt(self.rooms[num].find("**/camera_start_look").getPos() + ROOM_OFFSETS[num])
+            self._load_rooms(num)
 
     def _load_rooms(self, current):
         #self.room1.detachNode()
@@ -310,5 +358,3 @@ class World(DirectObject):
             base.camera.setH(dest_h)
             base.camera.setP(dest_p)
         return Task.cont
-
-

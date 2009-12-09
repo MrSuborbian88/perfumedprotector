@@ -378,7 +378,6 @@ class Player(DirectObject):
                 dy = et * walk_rate * -math.cos(rotation_rad)
                 pos_x += dx
                 pos_y += dy
-
             elif self._sight_handler_ri.getNumEntries() and self._sight_handler_ri.getEntry(0).getIntoNode().getName() == 'collision-chase-sphere':
                 rotation += et * rotation_rate
                 rotation_rad = deg2Rad(rotation)
@@ -527,18 +526,19 @@ class Player(DirectObject):
                         self._model.setZ(pos_z)
             #elif self.is_valid(entries_front) and self.is_valid(entries_back) and self.is_valid(entries_left) and self.is_valid(entries_right) and self.is_valid(entries_front_right) and self.is_valid(entries_front_left) and self.is_valid(entries_back_left) and self.is_valid(entries_back_right):
             elif self.is_valid(entries_wall):
-                f = entries_front[0].getSurfacePoint(render).getZ()
-                b = entries_back[0].getSurfacePoint(render).getZ()
-                #l = entries_left[0].getSurfacePoint(render).getZ()
-                #r = entries_right[0].getSurfacePoint(render).getZ()
-                z = (f + b) / 2
-                if abs(z - self._model.getZ()) > 5:
-                    self.gravity=1
-                else:
-                    #self._model.setZ(z)
-                    #self._model.setP(rad2Deg(math.atan2(f - z, self._coll_dist * self._scale)))
-                    #self._model.setR(rad2Deg(math.atan2(l - z, self._coll_dist_h * self._scale)))
-                    pass
+                if len(entries_front) > 0 and len(entries_back) > 0:
+                    f = entries_front[0].getSurfacePoint(render).getZ()
+                    b = entries_back[0].getSurfacePoint(render).getZ()
+                    #l = entries_left[0].getSurfacePoint(render).getZ()
+                    #r = entries_right[0].getSurfacePoint(render).getZ()
+                    z = (f + b) / 2
+                    if abs(z - self._model.getZ()) > 5:
+                        self.gravity=1
+                    else:
+                        #self._model.setZ(z)
+                        #self._model.setP(rad2Deg(math.atan2(f - z, self._coll_dist * self._scale)))
+                        #self._model.setR(rad2Deg(math.atan2(l - z, self._coll_dist_h * self._scale)))
+                        pass
             else:
                 self._model.setPos(pos)
 

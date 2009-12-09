@@ -17,31 +17,10 @@ Environment
 	Camera pan-route
 	
 Art
-	big dog model
-	big dog animation
-		jump
-		turn
-		walk
-	small dog animation
-		jump
-		turn
-		walk
-	cat animation
-		walk
-		turn
-	robot model
-	robot animation
-		walk
-		turn
+	bag model
+	big dog bag-carrying model
 	rooms
-		1
-		3 - resize to line up with 2&6
-		6 - floor reallign & package spot
-		7
-		8
-		9
-		10
-		11
+		fix 6
 		12
 		13
 
