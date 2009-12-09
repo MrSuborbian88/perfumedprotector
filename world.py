@@ -357,4 +357,6 @@ class World(DirectObject):
 
             base.camera.setH(dest_h)
             base.camera.setP(dest_p)
+        else:
+            self.pan_tar = 1
         return Task.cont
