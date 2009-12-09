@@ -286,7 +286,7 @@
     <Scalar> visibility { hidden }
   }
   <Group> walls1 {
-    <Scalar> visibility { hidden }
+    <ObjectType> { barrier }
     <VertexPool> walls1Shape.verts {
       <Vertex> 0 {
         -8.42312 0 0.73279
@@ -459,7 +459,7 @@
     }
   }
   <Group> ground1 {
-    <Scalar> visibility { hidden }
+    <ObjectType> { barrier }
     <VertexPool> ground1Shape.verts {
       <Vertex> 0 {
         5.71901 0 -13.4093
