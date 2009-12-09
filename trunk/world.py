@@ -74,6 +74,7 @@ class World(DirectObject):
     def _setup_models(self):
         self.player = player.Player(self.dogSelection)
         base.cTrav = CollisionTraverser()
+        base.enableParticles()
         self.cHandler = CollisionHandlerEvent()
         self.cHandler.setInPattern("artifact_gotten") #artifact gotten?
         self.env = render.attachNewNode("env")
@@ -237,3 +238,4 @@ class World(DirectObject):
         self.room18.setPos(ROOM_OFFSETS[18][0], ROOM_OFFSETS[18][1], ROOM_OFFSETS[18][2])
         self.rooms.append(self.room18)
         """
+        

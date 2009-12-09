@@ -6,10 +6,15 @@ from direct.interval.IntervalGlobal import *
 from direct.task import Task
 from direct.gui.OnscreenText import OnscreenText
 from direct.gui.OnscreenImage import OnscreenImage
+from direct.particles.Particles import Particles
+from direct.particles.ParticleEffect import ParticleEffect
+from pandac.PandaModules import BaseParticleEmitter,BaseParticleRenderer
+from pandac.PandaModules import PointParticleFactory,SpriteParticleRenderer
 
 import settings
 import math
 import os
+import world
 
 def addInstructions(pos, msg):
     return OnscreenText(text=msg, style=1, fg=(1,1,1,1), font=loader.loadFont(os.path.join("fonts", "arial.ttf")),
@@ -53,6 +58,7 @@ class Player(DirectObject):
         self._model.reparentTo(render)
         self._model.setScale(.5 * settings.GLOBAL_SCALE)
         self._model.setPos(0, 0, 5)
+        self.p = ParticleEffect()
 
     def _load_sounds(self):
         self.sound_bark = loader.loadSfx(os.path.join("sound files", "Small Dog Barking.mp3"))
@@ -407,6 +413,7 @@ class Player(DirectObject):
         if self._keymap['bark']:
             self.sound_bark.play()
             self._keymap['bark'] = 0
+            self.loadParticleConfig()
 
         if self.sound_dog_footsteps.status() == 1:
             if self._keymap['forward'] == 1 or self._keymap['reverse'] == 1 or self._keymap['left'] == 1 or self._keymap['right'] == 1:
@@ -536,3 +543,11 @@ class Player(DirectObject):
     def fall(self):
             self.falling-=.5
             return self.falling*.5
+    
+    def loadParticleConfig(self):
+        self.p.cleanup()
+        self.p = ParticleEffect()
+        self.p.loadConfig(os.path.join("models", "smokering.ptf"))   
+        self.p.accelerate(.25)     
+        self.p.start(self._model)
+        self.p.setPos(0,0,10)
