@@ -47,6 +47,7 @@ class Player(DirectObject):
         self._setup_actions()
         self._setup_tasks()
         self._setup_collisions()
+        self.bag = None
         self.gravity = 0
         self.jumping = 15
         self.falling = 0
@@ -340,27 +341,17 @@ class Player(DirectObject):
             base.camera.setP(dest_p)
             base.camera.setH(dest_h)
         return Task.cont
+    
     def _switch_models(self):
-        pos = self._model.getPos()
-        rot = self._model.getH()
-        p = self._model.getP()
-        r = self._model.getR()
-        self._model.cleanup()
-        self._model.removeNode()
-        if self.dogSelection == 2:
-            self._model = Actor("models/sdogb.egg", {"walking":"models/sdogbanim.egg"})
-        else:
-            self._model = Actor("models/bdogb.egg", {"walking":"models/bdogbanim.egg"})
-        #self.animControl =self._model.getAnimControl('walking')
-        self._model.reparentTo(render)
-        self._model.setScale(.5 * settings.GLOBAL_SCALE)
-        self._model.setPos(550, 0, 5)
-        self._model.setH(-90)
-        self._setup_collisions()
-        self._model.setPos(pos)
-        self._model.setH(rot)
-        self._model.setP(p)
-        self._model.setR(r)
+        if self.bag == None:
+            print "making bag"
+            self.bag = loader.loadModel("models/bag")
+            self.bag.setScale(0.8)
+            if self.dogSelection == 2:
+                self.bag.setPos(0,1.5,6)
+            else:
+                self.bag.setPos(0,2.5,9)
+            self.bag.reparentTo(self._model)
         
     def _task_move(self, task):
         pos_z = self._model.getZ()
@@ -649,4 +640,5 @@ class Player(DirectObject):
         if self.dogSelection == 2: #small
             self.a = OnscreenImage(parent=render2d, image=os.path.join("image files", "Game-Over-Screen-Small.png"))
         else:
-         pass
+            self.a = OnscreenImage(parent=render2d, image=os.path.join("image files", "Game-Over-Screen-Big.png"))
+
