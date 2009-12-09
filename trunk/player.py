@@ -340,6 +340,8 @@ class Player(DirectObject):
             if self._inner_sphere_handler.getEntry(i).getIntoNode().getName()=='collision-with-player-cat':
                 if self.chasetimer >= settings.PLAYER_CHASE_LENGTH:
                     self.chase = True
+            elif self._inner_sphere_handler.getEntry(i).getIntoNode().getName()=='collision-with-player-dcatcher':
+                print "Captured"
 
         if self.playing_dead or self._model.getR()>0:
             if self.playing_dead:
