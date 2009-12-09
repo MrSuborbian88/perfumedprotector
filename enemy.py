@@ -30,6 +30,7 @@ class Enemy(DirectObject):
         self._read_points(file_loc)
         self._current = self._points[0]
         self.gravity = 0
+        self._walk_rate = 25
 
     def _load_models(self, pos):
         self._model = Actor(os.path.join('models', 'enemy'),
@@ -144,7 +145,7 @@ class Enemy(DirectObject):
         if self.dead==False:
             et = task.time - self._prev_time
             rotation_rate = 100
-            walk_rate = 25
+            walk_rate = self._walk_rate
 
             # Get current values
             rotation = self._model.getH()

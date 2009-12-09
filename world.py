@@ -106,7 +106,7 @@ class World(DirectObject):
         for p in enemy._points:
                 self._sphere_handler = CollisionHandlerQueue()
                 #self._sphere = CollisionSphere(p[0]/settings.ENV_SCALE, p[1]/settings.ENV_SCALE, p[2], 2 * settings.ENV_SCALE)
-                self._sphere = CollisionSphere(p[0], p[1], p[2],10 * settings.ENV_SCALE)
+                self._sphere = CollisionSphere(p[0], p[1], p[2], 2 * settings.ENV_SCALE)
                 self._coll_sphere = CollisionNode('collision-point-sphere')
                 self._coll_sphere.addSolid(self._sphere)
                 self._coll_sphere.setFromCollideMask(BitMask32.allOff())
@@ -122,7 +122,7 @@ class World(DirectObject):
         for p in enemy._points:
                 self._sphere_handler = CollisionHandlerQueue()
                 #self._sphere = CollisionSphere(p[0]/settings.ENV_SCALE, p[1]/settings.ENV_SCALE, p[2], 2 * settings.ENV_SCALE)
-                self._sphere = CollisionSphere(p[0], p[1], p[2],10 * settings.ENV_SCALE)
+                self._sphere = CollisionSphere(p[0], p[1], p[2],2 * settings.ENV_SCALE)
                 self._coll_sphere = CollisionNode('collision-point-sphere')
                 self._coll_sphere.addSolid(self._sphere)
                 self._coll_sphere.setFromCollideMask(BitMask32.allOff())
