@@ -24,12 +24,12 @@ ROOM_OFFSETS = [(0,0,0),            #placeholder - no room 0
                 (0,0,0),            #placeholder - no room 5
                 (1077,79,0),        #6 83
                 (1580,-540,0),      #7
-                (1800,-500,0),      #8
+                (2120,-460,0),      #8
                 (1780,79,0),        #9
-                (2300,-300,0),      #10
-                (2500,-800,0),      #11
-                (2800,-300,0),      #12
-                (3100,0,0)]         #13
+                (2550,-250,0),      #10
+                (2551,-790,0),      #11
+                (2990,-240,0),      #12
+                (3800,0,0)]         #13
 
 ROOM_LOADS = [(0),              #placeholder - no room 0
               (1,2),            #1
@@ -293,7 +293,7 @@ class World(DirectObject):
         self.room7 = loader.loadModel("models/room7")
         self.room7.setScale(settings.ENV_SCALE * settings.GLOBAL_SCALE)
         self.room7.setPos(ROOM_OFFSETS[7][0], ROOM_OFFSETS[7][1], ROOM_OFFSETS[7][2])
-        self.room7.setH(-136)
+        self.room7.setH(-135)
         self.rooms.append(self.room7)
 
         self.room8 = loader.loadModel("models/room8")
