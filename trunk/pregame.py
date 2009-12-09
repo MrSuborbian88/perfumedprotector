@@ -15,13 +15,14 @@ class Pregame(DirectObject):
         self.a = OnscreenImage(parent=render2d, image=os.path.join("image files", "Title-Screen.png"))
         self.sound_title = loader.loadSfx(os.path.join("sound files", "Title Theme.mp3"))
         self.sound_main = loader.loadSfx(os.path.join("sound files", "Main Theme.mp3"))
-        self.music = False
+        self.music = True
         if self.music:
             self.sound_title.play()
             self.sound_title.setLoop(True)
         self.dog_selection=0
         self.music_type = 0
         self.accept("m", self.muteMusic)
+        
 
     def muteMusic(self):
         if self.music:

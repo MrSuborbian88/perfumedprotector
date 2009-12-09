@@ -68,6 +68,11 @@ class World(DirectObject):
         self._setup_blocks()
         self.package = True
 
+        self.grain = OnscreenImage(image = 'image files/tvgrain.png', scale=(1.33,1,1), pos = (0,0,0))
+        self.grain.setTransparency(TransparencyAttrib.MAlpha)
+
+
+        taskMgr.doMethodLater(2, self.check_game_over, "check-game-over")
         taskMgr.doMethodLater(2, self.camera_pan, "cam_pan")
     
     def _setup_blocks(self):
@@ -507,8 +512,14 @@ class World(DirectObject):
 
     def win(self):
         taskMgr.doMethodLater(3, sys.exit, "win")
+        self.grain.destroy()
         if self.dogSelection == 2: #small
             self.a = OnscreenImage(parent=render2d, image=os.path.join("image files", "Victory-Screen-Small.png"))
         else:
             self.a = OnscreenImage(parent=render2d, image=os.path.join("image files", "Victory-Screen-Big.png"))
 
+    def check_game_over(self, task):
+        if self.player.lose:
+            self.grain.destroy()
+        return Task.cont
+    
