@@ -66,11 +66,13 @@ class World(DirectObject):
         self.pan_tar = 1
         self._setup_models()
         self._preload_rooms()
+        self._preload_enemies()
         self._setup_room_collisions()
         self._setup_lights()
         self._setup_actions()
         self._setup_cam()
         self._load_rooms(2)
+        self._change_enemies(1)
 
         taskMgr.doMethodLater(2, self.camera_pan, "cam_pan")
 
@@ -115,7 +117,7 @@ class World(DirectObject):
                 self._coll_sphere_path = self.env.attachNewNode(self._coll_sphere)
                 self._coll_sphere_path.show()
                 self._coll_trav.addCollider(self._coll_sphere_path, self._sphere_handler)
-        self.enemylist.append(enemy)
+        return enemy
         
     def _spawn_cat(self,pos,file_loc):
         self._coll_trav = CollisionTraverser()
@@ -131,7 +133,7 @@ class World(DirectObject):
                 self._coll_sphere_path = self.env.attachNewNode(self._coll_sphere)
                 self._coll_sphere_path.show()
                 self._coll_trav.addCollider(self._coll_sphere_path, self._sphere_handler)
-        self.enemylist.append(enemy)
+        return enemy
         
     def _setup_room_collisions(self): 
         self.cTrav = CollisionTraverser()
@@ -194,7 +196,15 @@ class World(DirectObject):
             base.camera.setPos(self.rooms[num].find("**/camera_loc").getPos() + ROOM_OFFSETS[num])
             base.camera.lookAt(self.rooms[num].find("**/camera_start_look").getPos() + ROOM_OFFSETS[num])
             self._load_rooms(num)
-
+            self._change_enemies(num)
+            
+    def _change_enemies(self,num):
+        for e in self._current_en:
+            e._model.detachNode()
+        self._current_en = self._en_list[num]
+        print self._current_en
+        for e in self._current_en:
+            e._model.reparentTo(render)
     def _load_rooms(self, current):
         self.room1.detachNode()
         self.room2.detachNode()
@@ -224,8 +234,6 @@ class World(DirectObject):
         self.room2.setScale(settings.ENV_SCALE * settings.GLOBAL_SCALE)
         self.room2.setPos(ROOM_OFFSETS[2][0], ROOM_OFFSETS[2][1], ROOM_OFFSETS[2][2])
         self.rooms.append(self.room2)
-        self._spawn_enemy((80,123,40), "data/room2.txt")
-        self._spawn_cat((40,100,40), "data/room2.txt")
 
         #load room1 and room2 to start
         self.room1.reparentTo(self.env)
@@ -285,7 +293,56 @@ class World(DirectObject):
         #self.room13.setScale(settings.ENV_SCALE * settings.GLOBAL_SCALE)
         #self.room13.setPos(ROOM_OFFSETS[13][0], ROOM_OFFSETS[13][1], ROOM_OFFSETS[13][2])
         #self.rooms.append(self.room13)
+    def _preload_enemies(self):
+        self._en_list = { }
+        e1 = []
+        self._en_list[1] = e1
+
+        e2 = []
+        e2.append(self._spawn_enemy((80,123,40), "data/room2.txt"))
+        self._en_list[2] = e2
+        print self._en_list[2]        
+        e3 = []
+
+        self._en_list[3] = e3
+
+        e4 = []
+
+        self._en_list[4] = e4
+
+        e5 = []
+
+        self._en_list[5] = e5
+
+        e6 = []
+
+        self._en_list[6] = e6
+
+
+        e7 = []
+
+        self._en_list[7] = e7
+
+        e8 = []
         
+        self._en_list[8] = e8
+
+        e9 = []
+
+        self._en_list[9] = e9
+
+        e10 = []
+
+        self._en_list[10] = e10
+
+        e11 = []
+
+        self._en_list[11] = e11
+
+        e12 = []
+
+        self._en_list[12] = e12
+        self._current_en = e1
 
     def camera_pan(self, task):
         if self.player.playing_dead:
