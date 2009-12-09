@@ -15,6 +15,7 @@ from direct.actor.Actor import Actor
 from direct.interval.IntervalGlobal import *
 from direct.task import Task
 
+GAME_STARTED = False
 ROOM_OFFSETS = [(0,0,0),        #placeholder - no room 0
                 (0,0,0),        #1
                 (0,0,0),        #2
@@ -34,7 +35,7 @@ ROOM_OFFSETS = [(0,0,0),        #placeholder - no room 0
                 (0,0,0),        #16
                 (0,0,0),        #17
                 (0,0,0)]        #18
-                
+
 ROOM_LOADS = [(0),              #placeholder - no room 0
               (1,2),            #1
               (1,2,3,4),        #2
@@ -60,6 +61,8 @@ class World(DirectObject):
         base.disableMouse()
         render.setShaderAuto()
         self.dogSelection = dogSelection
+        self.current_room = 2
+        self.pan_tar = 1
         self._setup_models()
         self._preload_rooms()
         self._setup_room_collisions()
@@ -68,6 +71,8 @@ class World(DirectObject):
         self._setup_cam()
         self._load_rooms(2)
 
+        taskMgr.doMethodLater(2, self.camera_pan, "cam_pan")
+
     def _setup_cam(self):
         base.camera.setPos(self.room2.find("**/camera_loc").getPos() + ROOM_OFFSETS[2])
         base.camera.lookAt(self.room2.find("**/camera_start_look").getPos() + ROOM_OFFSETS[2])
@@ -75,13 +80,12 @@ class World(DirectObject):
     def _setup_models(self):
         self.player = player.Player(self.dogSelection)
         base.cTrav = CollisionTraverser()
-        base.enableParticles()
         self.cHandler = CollisionHandlerEvent()
         self.cHandler.setInPattern("artifact_gotten") #artifact gotten?
         self.env = render.attachNewNode("env")
         self.rooms = []
         self.enemylist = []
-        
+
     def _setup_lights(self):
         ambient = AmbientLight("light-ambient")
         ambient.setColor((.4, .4, .4, 1))
@@ -101,7 +105,7 @@ class World(DirectObject):
         enemy = dogcatcher.DogCatcher(pos,file_loc)
         for p in enemy._points:
                 self._sphere_handler = CollisionHandlerQueue()
-#                self._sphere = CollisionSphere(p[0] /settings.ENV_SCALE, p[1]/settings.ENV_SCALE, p[2], 2 * settings.ENV_SCALE)
+                #self._sphere = CollisionSphere(p[0]/settings.ENV_SCALE, p[1]/settings.ENV_SCALE, p[2], 2 * settings.ENV_SCALE)
                 self._sphere = CollisionSphere(p[0], p[1], p[2],10 * settings.ENV_SCALE)
                 self._coll_sphere = CollisionNode('collision-point-sphere')
                 self._coll_sphere.addSolid(self._sphere)
@@ -114,6 +118,12 @@ class World(DirectObject):
 
     def _setup_room_collisions(self):
         pass
+
+    def _change_room(self, num):
+        self.current_room = num
+        self.player.current_room = num
+        #change cameras
+        _load_rooms(num)
 
     def _load_rooms(self, current):
         #self.room1.detachNode()
@@ -147,6 +157,7 @@ class World(DirectObject):
         """
         self.room1 = loader.loadModel("models/room2")
         self.room1.setScale(.0001)
+        self.room1.setPos(-2000,-2000,-2000)
         self.rooms.append(self.room1)
 
         self.room2 = loader.loadModel("models/room2")
@@ -213,30 +224,75 @@ class World(DirectObject):
         self.room13.setScale(settings.ENV_SCALE * settings.GLOBAL_SCALE)
         self.room13.setPos(ROOM_OFFSETS[13][0], ROOM_OFFSETS[13][1], ROOM_OFFSETS[13][2])
         self.rooms.append(self.room13)
-
-        self.room14 = loader.loadModel("models/room14")
-        self.room14.setScale(settings.ENV_SCALE * settings.GLOBAL_SCALE)
-        self.room14.setPos(ROOM_OFFSETS[14][0], ROOM_OFFSETS[14][1], ROOM_OFFSETS[14][2])
-        self.rooms.append(self.room14)
-
-        self.room15 = loader.loadModel("models/room15")
-        self.room15.setScale(settings.ENV_SCALE * settings.GLOBAL_SCALE)
-        self.room15.setPos(ROOM_OFFSETS[15][0], ROOM_OFFSETS[15][1], ROOM_OFFSETS[15][2])
-        self.rooms.append(self.room15)
-
-        self.room16 = loader.loadModel("models/room16")
-        self.room16.setScale(settings.ENV_SCALE * settings.GLOBAL_SCALE)
-        self.room16.setPos(ROOM_OFFSETS[16][0], ROOM_OFFSETS[16][1], ROOM_OFFSETS[16][2])
-        self.rooms.append(self.room16)
-
-        self.room17 = loader.loadModel("models/room17")
-        self.room17.setScale(settings.ENV_SCALE * settings.GLOBAL_SCALE)
-        self.room17.setPos(ROOM_OFFSETS[17][0], ROOM_OFFSETS[17][1], ROOM_OFFSETS[17][2])
-        self.rooms.append(self.room17)
-
-        self.room18 = loader.loadModel("models/room18")
-        self.room18.setScale(settings.ENV_SCALE * settings.GLOBAL_SCALE)
-        self.room18.setPos(ROOM_OFFSETS[18][0], ROOM_OFFSETS[18][1], ROOM_OFFSETS[18][2])
-        self.rooms.append(self.room18)
         """
-        
+
+    def camera_pan(self, task):
+        if self.player.playing_dead:
+            camera_h = base.camera.getH()
+            camera_p = base.camera.getP()
+
+            if self.pan_tar == 1:
+                base.camera.lookAt(self.rooms[self.current_room].find("**/camera_pan_1").getPos() + ROOM_OFFSETS[self.current_room])
+            else:
+                self.pan_tar = 0
+                base.camera.lookAt(self.rooms[self.current_room].find("**/camera_pan_2").getPos() + ROOM_OFFSETS[self.current_room])
+
+            target_h = base.camera.getH()
+            target_p = base.camera.getP()
+
+            diff_h = camera_h-target_h
+            diff_p = camera_p-target_p
+
+            if abs(diff_h) > abs(diff_p):
+                if diff_h==0:
+                    p_p = 1
+                    p_h = 0
+                else:
+                    p_p = abs(float(diff_p) / float(diff_h))
+                    p_h = 1
+            else:
+                if diff_p==0:
+                    p_h = 1
+                    p_p = 1
+                else:
+                    p_h = abs(float(diff_h) / float(diff_p))
+                    p_p = 1
+
+            if camera_h < -180:
+                camera_h = (180 - (camera_h + 180))
+            elif camera_h > 180:
+                camera_h = (-180 + (camera_h - 180))
+
+          #heading
+            if abs(diff_h) < .5:
+                dest_h = target_h
+            elif diff_h > 180 or (diff_h < 0 and diff_h > -180):
+                dest_h = camera_h+(.5*p_h)
+                #if dest_h > target_h:
+                #    dest_h = target_h
+            elif diff_h <= -180 or (diff_h > 0 and diff_h <= 180):
+                dest_h = camera_h-(.5*p_h)
+                #if dest_h < target_h:
+                #    dest_h = target_h
+            else:
+                dest_h = target_h
+
+          #pitch
+            if abs(diff_p) < .5:
+                dest_p = target_p
+            elif target_p > camera_p:
+                dest_p = camera_p+(.5*p_p)
+            elif target_p < camera_p:
+                dest_p = camera_p-(.5*p_p)
+            else:
+                dest_p = target_p
+
+            if camera_h == target_h:
+                self.pan_tar+=1
+                return Task.cont
+
+            base.camera.setH(dest_h)
+            base.camera.setP(dest_p)
+        return Task.cont
+
+

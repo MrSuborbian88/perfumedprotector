@@ -22,6 +22,7 @@ def addInstructions(pos, msg):
 
 class Player(DirectObject):
     def __init__(self, dogSelection):
+        self.playing_dead = False
         self._keymap = {
                 'forward' : 0,
                 'reverse' : 0,
@@ -93,7 +94,7 @@ class Player(DirectObject):
         self.accept("e", self._set_key, ["bark", 1])
         self.accept('space',self._set_key, ["jump", 1])
         self.accept('space-up', self._set_key, ["jump", 0])
-
+        self.accept('f', self.play_dead)
 
     def _setup_tasks(self):
         self._prev_move_time = 0
@@ -273,61 +274,62 @@ class Player(DirectObject):
         self._keymap[key] = value
 
     def _update_camera(self, task):
-        camera_h = base.camera.getH()
-        camera_p = base.camera.getP()
-        base.camera.lookAt(self._model)
-        target_h = base.camera.getH()
-        target_p = base.camera.getP()
+        if self.playing_dead == False:
+            camera_h = base.camera.getH()
+            camera_p = base.camera.getP()
+            base.camera.lookAt(self._model)
+            target_h = base.camera.getH()
+            target_p = base.camera.getP()
 
-        if camera_h < -180:
-            camera_h = (180 - (camera_h + 180))
-        elif camera_h > 180:
-            camera_h = (-180 + (camera_h - 180))
+            if camera_h < -180:
+                camera_h = (180 - (camera_h + 180))
+            elif camera_h > 180:
+                camera_h = (-180 + (camera_h - 180))
 
-        if camera_h == target_h and camera_p == target_p:
-            return Task.cont
+            if camera_h == target_h and camera_p == target_p:
+                return Task.cont
 
-        diff_h = camera_h-target_h
-        diff_p = camera_p-target_p
+            diff_h = camera_h-target_h
+            diff_p = camera_p-target_p
 
-        if abs(diff_h) > abs(diff_p):
-            if diff_h==0:
-                p_p = 1
-                p_h = 0
+            if abs(diff_h) > abs(diff_p):
+                if diff_h==0:
+                    p_p = 1
+                    p_h = 0
+                else:
+                    p_p = abs(diff_p / diff_h)
+                    p_h = 1
             else:
-                p_p = abs(diff_p / diff_h)
-                p_h = 1
-        else:
-            if diff_p==0:
-                p_h = 1
-                p_p = 1
+                if diff_p==0:
+                    p_h = 1
+                    p_p = 1
+                else:
+                    p_h = abs(diff_h / diff_p)
+                    p_p = 1
+
+            if camera_h == target_h:
+                dest_h = target_h
+                dest_p = target_p
+            elif diff_h > 180 or (diff_h < 0 and diff_h > -180):
+                dest_h = camera_h+(.5*p_h)
+                if dest_h > target_h:
+                    dest_h = target_h
+            elif diff_h <= -180 or (diff_h > 0 and diff_h <= 180):
+                dest_h = camera_h-(.5*p_h)
+                if dest_h < target_h:
+                    dest_h = target_h
             else:
-                p_h = abs(diff_h / diff_p)
-                p_p = 1
+                dest_h=target_h
 
-        if camera_h == target_h:
-            dest_h = target_h
-            dest_p = target_p
-        elif diff_h > 180 or (diff_h < 0 and diff_h > -180):
-            dest_h = camera_h+(.5*p_h)
-            if dest_h > target_h:
-                dest_h = target_h
-        elif diff_h <= -180 or (diff_h > 0 and diff_h <= 180):
-            dest_h = camera_h-(.5*p_h)
-            if dest_h < target_h:
-                dest_h = target_h
-        else:
-            dest_h=target_h
+            if target_p > camera_p:
+                dest_p = min(camera_p+(.5*p_p), target_p)
+            elif target_p < camera_p:
+                dest_p = max(camera_p-(.5*p_p), target_p)
+            else:
+                dest_p=target_p
 
-        if target_p > camera_p:
-            dest_p = min(camera_p+(.5*p_p), target_p)
-        elif target_p < camera_p:
-            dest_p = max(camera_p-(.5*p_p), target_p)
-        else:
-            dest_p=target_p
-
-        base.camera.setP(dest_p)
-        base.camera.setH(dest_h)
+            base.camera.setP(dest_p)
+            base.camera.setH(dest_h)
         return Task.cont
 
     def _task_move(self, task):
@@ -336,7 +338,17 @@ class Player(DirectObject):
             if self._inner_sphere_handler.getEntry(i).getIntoNode().getName()=='collision-with-player':
                 if self.chasetimer >= settings.PLAYER_CHASE_LENGTH:
                     self.chase = True
-        
+
+        if self.playing_dead or self._model.getR()>0:
+            if self.playing_dead:
+                if self._model.getR() < 90:
+                    self._model.setR(self._model.getR()+10)
+            else:
+                if self._model.getR() > 0:
+                    self._model.setR(self._model.getR()-10)
+            self._prev_move_time = task.time
+            return Task.cont
+
         et = task.time - self._prev_move_time
         rotation_rate = settings.PLAYER_ROTATION_RATE
         walk_rate = settings.PLAYER_WALK_RATE
@@ -354,7 +366,7 @@ class Player(DirectObject):
             self._sight_handler_mi.sortEntries()
             self._sight_handler_ri.sortEntries()
             self._sight_handler_le.sortEntries()
-            if self._sight_handler_mi.getNumEntries() and self._sight_handler_mi.getEntry(0).getIntoNode().getName() == 'collision-enemy-sphere':                                
+            if self._sight_handler_mi.getNumEntries() and self._sight_handler_mi.getEntry(0).getIntoNode().getName() == 'collision-enemy-sphere':
                 rotation_rad = deg2Rad(rotation)
                 dx = et * walk_rate * math.sin(rotation_rad)
                 dy = et * walk_rate * -math.cos(rotation_rad)
@@ -403,17 +415,17 @@ class Player(DirectObject):
         pos_y += self._keymap['forward'] * dy
         pos_x -= self._keymap['reverse'] * dx
         pos_y -= self._keymap['reverse'] * dy
-      
+
         if self._keymap['jump'] and not self.jumpingCurrently and self.dogSelection==2:
             self.jumpingCurrently=True
-        
+
         if self.jumpingCurrently:
                 temp=self.jump()
                 if (temp+pos_z) < 190:
                     pos_z+=temp
                 else:
                     self.jumping=0
-            
+
         if self._keymap['bark'] and self.dogSelection == 2:
             self.sound_bark.play()
             self._keymap['bark'] = 0
@@ -434,7 +446,7 @@ class Player(DirectObject):
         self._model.setY(pos_y)
 
         self._coll_trav.traverse(render)
-        
+
         entries_wall = []
         entries_front = []
         entries_front_left = []
@@ -444,7 +456,7 @@ class Player(DirectObject):
         entries_back_right = []
         entries_left = []
         entries_right = []
-        
+
         for i in range(self._wall_handler.getNumEntries()):
             entries_wall.append(self._wall_handler.getEntry(i))
         for i in range(self._gnd_handler_front.getNumEntries()):
@@ -463,7 +475,7 @@ class Player(DirectObject):
             entries_front_right.append(self._gnd_handler_front_right.getEntry(i))
         for i in range(self._gnd_handler_back_right.getNumEntries()):
             entries_back_right.append(self._gnd_handler_back_right.getEntry(i))
-        
+
         entries_all = entries_front + entries_back + entries_left + entries_right + entries_front_right + entries_back_right + entries_front_left + entries_back_left
         srt = lambda x, y: cmp(y.getSurfacePoint(render).getZ(),
                                x.getSurfacePoint(render).getZ())
@@ -476,7 +488,7 @@ class Player(DirectObject):
         entries_back_left.sort(srt)
         entries_back_right.sort(srt)
         entries_wall.sort(srt)
-        
+
         if entries_all:
             if self.gravity == 1:
                 self._model.setZ(pos_z)
@@ -501,7 +513,7 @@ class Player(DirectObject):
                         pos_z+=self.fall()
                         self._model.setZ(pos_z)
             #elif self.is_valid(entries_front) and self.is_valid(entries_back) and self.is_valid(entries_left) and self.is_valid(entries_right) and self.is_valid(entries_front_right) and self.is_valid(entries_front_left) and self.is_valid(entries_back_left) and self.is_valid(entries_back_right):
-            elif self.is_valid(entries_wall): 
+            elif self.is_valid(entries_wall):
                 f = entries_front[0].getSurfacePoint(render).getZ()
                 b = entries_back[0].getSurfacePoint(render).getZ()
                 #l = entries_left[0].getSurfacePoint(render).getZ()
@@ -522,11 +534,11 @@ class Player(DirectObject):
             self.chasetimer += 1
 
         self._prev_move_time = task.time
-       
-        
+
+
         self.inst1.destroy()
         self.inst1 = addInstructions(0.95, str(self._model.getPos()))
-
+            
         return Task.cont
     
     def is_valid(self, entries):
@@ -557,3 +569,12 @@ class Player(DirectObject):
         self.p.reparentTo(render) 
         self.p.setScale(10)  
         self.p.start()
+        
+    def play_dead(self):
+        self.playing_dead = not self.playing_dead
+        if self.playing_dead:
+            self._model.setR(self._model.getR()+10)
+            self._model.setZ(self._model.getZ()+1)
+        else:
+            self._model.setR(self._model.getR()-10)
+            self._model.setZ(self._model.getZ()-1)
