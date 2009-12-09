@@ -524,3 +524,28 @@
     }
   }
 }
+<Group> camera_loc {
+  <DCS> { net }
+  <Transform> {
+    <Matrix4> {
+      1 0 0 0
+      0 1 0 0
+      0 0 1 0
+      280 250 0 1
+    }
+    <Translate> { 0 0 0 }
+  }
+}
+<Group> camera_start_look {
+  <DCS> { net }
+  <Transform> {
+    <Matrix4> {
+      1 0 0 0
+      0 1 0 0
+      0 0 1 0
+      -200 210 0 1
+    }
+    <Translate> { 0 0 0 }
+  }
+}
+
