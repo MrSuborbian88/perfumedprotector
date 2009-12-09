@@ -103,62 +103,16 @@
   <Group> transform11 {
     <Scalar> visibility { hidden }
   }
-  <Group> ground1 {
+  <Group> mahdick {
     <ObjectType> { barrier }
-    <VertexPool> ground1Shape.verts {
-      <Vertex> 0 {
-        -8 0 -10
-        <UV> { -0.25068 1.25068 }
-        <Normal> { 0 1 0 }
-        <RGBA> { 1 1 1 1 }
-      }
-      <Vertex> 1 {
-        -8 0 -7.84309
-        <UV> { -0.25068 1.08877 }
-        <Normal> { 0 1 0 }
-        <RGBA> { 1 1 1 1 }
-      }
-      <Vertex> 2 {
-        -8 0 -4.01671
-        <UV> { -0.25068 0.801527 }
-        <Normal> { 0 1 0 }
-        <RGBA> { 1 1 1 1 }
-      }
-      <Vertex> 3 {
-        -8 0 0.308387
-        <UV> { -0.25068 0.47685 }
-        <Normal> { 0 1 0 }
-        <RGBA> { 1 1 1 1 }
-      }
-      <Vertex> 4 {
-        -8 0 4.40844
-        <UV> { -0.25068 0.169067 }
-        <Normal> { 0 1 0 }
-        <RGBA> { 1 1 1 1 }
-      }
-      <Vertex> 5 {
-        -8 0 10
-        <UV> { -0.25068 -0.25068 }
-        <Normal> { 0 1 0 }
-        <RGBA> { 1 1 1 1 }
-      }
-      <Vertex> 6 {
-        8 0 10
-        <UV> { 1.25068 -0.25068 }
-        <Normal> { 0 1 0 }
-        <RGBA> { 1 1 1 1 }
-      }
-      <Vertex> 7 {
-        8 0 -10
-        <UV> { 1.25068 1.25068 }
-        <Normal> { 0 1 0 }
-        <RGBA> { 1 1 1 1 }
-      }
+    <Group> transform18 {
+      <Scalar> visibility { hidden }
     }
-    <Polygon> {
-      <Normal> { 0 1 0 }
-      <TRef> { phong3SG }
-      <VertexRef> { 0 1 2 3 4 5 6 7 <Ref> { ground1Shape.verts } }
+  }
+  <Group> mahdick1 {
+    <ObjectType> { barrier }
+    <Group> transform19 {
+      <Scalar> visibility { hidden }
     }
   }
 }
@@ -3692,5 +3646,116 @@
     <Normal> { -1 0 0 }
     <TRef> { phong4SG }
     <VertexRef> { 237 214 213 238 <Ref> { walls1Shape.verts } }
+  }
+}
+<Group> ground1 {
+  <ObjectType> { barrier }
+  <VertexPool> groundShape1.verts {
+    <Vertex> 0 {
+      -8 0 -10
+      <UV> { -0.25068 1.25068 }
+      <Normal> { 0 1 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 1 {
+      -8 0 -7.84309
+      <UV> { -0.25068 1.08877 }
+      <Normal> { 0 1 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 2 {
+      -8 0 -4.01671
+      <UV> { -0.25068 0.801527 }
+      <Normal> { 0 1 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 3 {
+      -8 0 0.308387
+      <UV> { -0.25068 0.47685 }
+      <Normal> { 0 1 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 4 {
+      -8 0 4.40844
+      <UV> { -0.25068 0.169067 }
+      <Normal> { 0 1 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 5 {
+      -8 0 10
+      <UV> { -0.25068 -0.25068 }
+      <Normal> { 0 1 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 6 {
+      8 0 10
+      <UV> { 1.25068 -0.25068 }
+      <Normal> { 0 1 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 7 {
+      8 0 -10
+      <UV> { 1.25068 1.25068 }
+      <Normal> { 0 1 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 8 {
+      -8 0 -10
+      <UV> { -0.25068 1.25068 }
+      <Normal> { 0 1 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 9 {
+      -8 0 -7.84309
+      <UV> { -0.25068 1.08877 }
+      <Normal> { 0 1 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 10 {
+      -8 0 -4.01671
+      <UV> { -0.25068 0.801527 }
+      <Normal> { 0 1 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 11 {
+      -8 0 0.308387
+      <UV> { -0.25068 0.47685 }
+      <Normal> { 0 1 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 12 {
+      -8 0 4.40844
+      <UV> { -0.25068 0.169067 }
+      <Normal> { 0 1 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 13 {
+      -8 0 10
+      <UV> { -0.25068 -0.25068 }
+      <Normal> { 0 1 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 14 {
+      8 0 10
+      <UV> { 1.25068 -0.25068 }
+      <Normal> { 0 1 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 15 {
+      8 0 -10
+      <UV> { 1.25068 1.25068 }
+      <Normal> { 0 1 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+  }
+  <Polygon> {
+    <Normal> { 0 1 0 }
+    <TRef> { phong3SG }
+    <VertexRef> { 0 1 2 3 4 5 6 7 <Ref> { groundShape1.verts } }
+  }
+  <Polygon> {
+    <Normal> { 0 1 0 }
+    <TRef> { phong3SG }
+    <VertexRef> { 8 9 10 11 12 13 14 15 <Ref> { groundShape1.verts } }
   }
 }
