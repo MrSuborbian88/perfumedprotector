@@ -530,3 +530,29 @@
     <Scalar> visibility { hidden }
   }
 }
+
+<Group> camera_loc {
+  <DCS> { net }
+  <Transform> {
+    <Matrix4> {
+      1 0 0 0
+      0 1 0 0
+      0 0 1 0
+      -280 200 0 1
+    }
+    <Translate> { 0 0 0 }
+  }
+}
+<Group> camera_start_look {
+  <DCS> { net }
+  <Transform> {
+    <Matrix4> {
+      1 0 0 0
+      0 1 0 0
+      0 0 1 0
+      900 210 150 1
+    }
+    <Translate> { 0 0 0 }
+  }
+}
+
