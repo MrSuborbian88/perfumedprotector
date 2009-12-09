@@ -33,9 +33,11 @@ class BreakBlock(DirectObject):
     def getRoom(self):
         return self.number
     
+    def getPosition(self):
+        return self.position
+    
     def destroyBlock(self):
         if not self.destroyed:
             self._model.removeNode()
-            settings.loadParticleConfig(self.position)
             self.destroyed = True
         
