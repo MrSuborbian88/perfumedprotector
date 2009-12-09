@@ -2,7 +2,7 @@ import settings
 import player
 import cat
 import dogcatcher
-import sys
+import sys, os
 import breakblock
 from pandac.PandaModules import loadPrcFileData
 loadPrcFileData('', 'window-title Doggy Delivery')
@@ -241,6 +241,7 @@ class World(DirectObject):
                 print "13"
                 self._change_room(13)
                 if self.player.package == True:
+                    print "WIN!"
                     taskMgr.doMethodLater(3, self.win, "win")
         if self.package and self.player.package:
             self._package.removeNode()
@@ -501,7 +502,7 @@ class World(DirectObject):
             self.pan_tar = 1
         return Task.cont
 
-    def win(self):
+    def win(self, task):
         taskMgr.doMethodLater(3, sys.exit, "win")
         if self.dogSelection == 2: #small
             self.a = OnscreenImage(parent=render2d, image=os.path.join("image files", "Victory-Screen-Small.png"))
