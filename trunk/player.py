@@ -119,7 +119,7 @@ class Player(DirectObject):
         self._gnd_coll_front.setFromCollideMask(BitMask32.bit(0))
         self._gnd_coll_front.setIntoCollideMask(BitMask32.allOff())
         self._gnd_coll_path_front = self._model.attachNewNode(self._gnd_coll_front)
-        self._gnd_coll_path_front.show()
+        #self._gnd_coll_path_front.show()
         self._coll_trav.addCollider(self._gnd_coll_path_front, self._gnd_handler_front)
          # Front-left collision
         self._gnd_handler_front_left = CollisionHandlerQueue()
@@ -131,7 +131,7 @@ class Player(DirectObject):
         self._gnd_coll_front_left.setFromCollideMask(BitMask32.bit(0))
         self._gnd_coll_front_left.setIntoCollideMask(BitMask32.allOff())
         self._gnd_coll_path_front_left = self._model.attachNewNode(self._gnd_coll_front_left)
-        self._gnd_coll_path_front_left.show()
+        #self._gnd_coll_path_front_left.show()
         self._coll_trav.addCollider(self._gnd_coll_path_front_left, self._gnd_handler_front_left)
          # Front-right collision
         self._gnd_handler_front_right = CollisionHandlerQueue()
@@ -143,7 +143,7 @@ class Player(DirectObject):
         self._gnd_coll_front_right.setFromCollideMask(BitMask32.bit(0))
         self._gnd_coll_front_right.setIntoCollideMask(BitMask32.allOff())
         self._gnd_coll_path_front_right = self._model.attachNewNode(self._gnd_coll_front_right)
-        self._gnd_coll_path_front_right.show()
+        #self._gnd_coll_path_front_right.show()
         self._coll_trav.addCollider(self._gnd_coll_path_front_right, self._gnd_handler_front_right)
         # Back collision
         self._gnd_handler_back = CollisionHandlerQueue()
@@ -155,7 +155,7 @@ class Player(DirectObject):
         self._gnd_coll_back.setFromCollideMask(BitMask32.bit(0))
         self._gnd_coll_back.setIntoCollideMask(BitMask32.allOff())
         self._gnd_coll_path_back = self._model.attachNewNode(self._gnd_coll_back)
-        self._gnd_coll_path_back.show()
+        #self._gnd_coll_path_back.show()
         self._coll_trav.addCollider(self._gnd_coll_path_back, self._gnd_handler_back)
         # Back-left collision
         self._gnd_handler_back_left = CollisionHandlerQueue()
@@ -167,7 +167,7 @@ class Player(DirectObject):
         self._gnd_coll_back_left.setFromCollideMask(BitMask32.bit(0))
         self._gnd_coll_back_left.setIntoCollideMask(BitMask32.allOff())
         self._gnd_coll_path_back_left = self._model.attachNewNode(self._gnd_coll_back_left)
-        self._gnd_coll_path_back_left.show()
+        #self._gnd_coll_path_back_left.show()
         self._coll_trav.addCollider(self._gnd_coll_path_back_left, self._gnd_handler_back_left)
         # Back-right collision
         self._gnd_handler_back_right = CollisionHandlerQueue()
@@ -179,7 +179,7 @@ class Player(DirectObject):
         self._gnd_coll_back_right.setFromCollideMask(BitMask32.bit(0))
         self._gnd_coll_back_right.setIntoCollideMask(BitMask32.allOff())
         self._gnd_coll_path_back_right = self._model.attachNewNode(self._gnd_coll_back_right)
-        self._gnd_coll_path_back_right.show()
+        #self._gnd_coll_path_back_right.show()
         self._coll_trav.addCollider(self._gnd_coll_path_back_right, self._gnd_handler_back_right)
         # Left collision
         self._gnd_handler_left = CollisionHandlerQueue()
@@ -191,7 +191,7 @@ class Player(DirectObject):
         self._gnd_coll_left.setFromCollideMask(BitMask32.bit(0))
         self._gnd_coll_left.setIntoCollideMask(BitMask32.allOff())
         self._gnd_coll_path_left = self._model.attachNewNode(self._gnd_coll_left)
-        self._gnd_coll_path_left.show()
+        #self._gnd_coll_path_left.show()
         self._coll_trav.addCollider(self._gnd_coll_path_left, self._gnd_handler_left)
         # Right collision
         self._gnd_handler_right = CollisionHandlerQueue()
@@ -203,7 +203,7 @@ class Player(DirectObject):
         self._gnd_coll_right.setFromCollideMask(BitMask32.bit(0))
         self._gnd_coll_right.setIntoCollideMask(BitMask32.allOff())
         self._gnd_coll_path_right = self._model.attachNewNode(self._gnd_coll_right)
-        self._gnd_coll_path_right.show()
+        #self._gnd_coll_path_right.show()
         self._coll_trav.addCollider(self._gnd_coll_path_right, self._gnd_handler_right)
         
         #Wall collision
@@ -216,7 +216,7 @@ class Player(DirectObject):
         self._wall_coll.setFromCollideMask(BitMask32.bit(0))
         self._wall_coll.setIntoCollideMask(BitMask32.allOff())
         self._wall_coll_path = self._model.attachNewNode(self._wall_coll)
-        self._wall_coll_path.show()
+        #self._wall_coll_path.show()
         self._coll_trav.addCollider(self._wall_coll_path, self._wall_handler)
         
         # Enemy sight target
@@ -227,7 +227,7 @@ class Player(DirectObject):
         self._coll_sphere.setFromCollideMask(BitMask32.bit(0))
         self._coll_sphere.setIntoCollideMask(BitMask32.bit(5))
         self._coll_sphere_path = self._model.attachNewNode(self._coll_sphere)
-        self._coll_sphere_path.show()
+        #self._coll_sphere_path.show()
         self._coll_trav.addCollider(self._coll_sphere_path, self._sphere_handler)
         # Inner sphere collision
         self._inner_sphere_handler = CollisionHandlerQueue()
@@ -249,7 +249,7 @@ class Player(DirectObject):
         self._sight_coll_mi.setFromCollideMask(BitMask32.bit(6))
         self._sight_coll_mi.setIntoCollideMask(BitMask32.allOff())
         self._sight_coll_mi_path = self._model.attachNewNode(self._sight_coll_mi)
-        self._sight_coll_mi_path.show()
+        #self._sight_coll_mi_path.show()
         self._coll_trav.addCollider(self._sight_coll_mi_path, self._sight_handler_mi)
         # Sight collision (left)
         self._sight_handler_le = CollisionHandlerQueue()
@@ -261,7 +261,7 @@ class Player(DirectObject):
         self._sight_coll_le.setFromCollideMask(BitMask32.bit(6))
         self._sight_coll_le.setIntoCollideMask(BitMask32.allOff())
         self._sight_coll_le_path = self._model.attachNewNode(self._sight_coll_le)
-        self._sight_coll_le_path.show()
+        #self._sight_coll_le_path.show()
         self._coll_trav.addCollider(self._sight_coll_le_path, self._sight_handler_le)
         # Sight collision (right)
         self._sight_handler_ri = CollisionHandlerQueue()
@@ -273,7 +273,7 @@ class Player(DirectObject):
         self._sight_coll_ri.setFromCollideMask(BitMask32.bit(6))
         self._sight_coll_ri.setIntoCollideMask(BitMask32.allOff())
         self._sight_coll_ri_path = self._model.attachNewNode(self._sight_coll_ri)
-        self._sight_coll_ri_path.show()
+        #self._sight_coll_ri_path.show()
         self._coll_trav.addCollider(self._sight_coll_ri_path, self._sight_handler_ri)
 
     def _set_key(self, key, value):
@@ -463,6 +463,7 @@ class Player(DirectObject):
         if self._keymap['bark'] and self.dogSelection == 1:
             self.sound_bark.play()
             self._keymap['bark'] = 0
+            self.chase = False
             self.loadParticleConfig((42,-261,10))
         
         if self._keymap['forward'] == 1 or self._keymap['reverse'] == 1 or self._keymap['left'] == 1 or self._keymap['right'] == 1:
