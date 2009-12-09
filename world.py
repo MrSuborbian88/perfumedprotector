@@ -177,7 +177,7 @@ class World(DirectObject):
                     entry.getIntoNodePath().getParent().getParent() == self.room6:
                 print "room 6"
                 self._change_room(6)
-                
+                 
         return Task.again
 
     def _change_room(self, num):
