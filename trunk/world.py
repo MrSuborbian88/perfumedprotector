@@ -131,9 +131,7 @@ class World(DirectObject):
         self.cTrav = CollisionTraverser()
         # Front collision
         self._room_check_handler = CollisionHandlerQueue()
-        self._room_check_ray = CollisionRay()
-        self._room_check_ray.setOrigin(0, -5, 1)
-        self._room_check_ray.setDirection(0, 0, -1)
+        self._room_check_ray = CollisionSegment(0, -4, 1, 0, -4, -5)
         self._room_check_coll = CollisionNode('collision-ground-front')
         self._room_check_coll.addSolid(self._room_check_ray)
         self._room_check_coll.setFromCollideMask(BitMask32(0x00000001))
