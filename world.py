@@ -48,7 +48,7 @@ ROOM_LOADS = [(0),              #placeholder - no room 0
 
 class World(DirectObject):
     def __init__(self, dogSelection):
-        #base.disableMouse()
+        base.disableMouse()
         render.setShaderAuto()
         self.sound = True
         self.dogSelection = dogSelection
