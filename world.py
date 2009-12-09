@@ -16,25 +16,20 @@ from direct.interval.IntervalGlobal import *
 from direct.task import Task
 
 GAME_STARTED = False
-ROOM_OFFSETS = [(0,0,0),        #placeholder - no room 0
-                (547,0,0),        #1
-                (0,0,0),        #2
-                (190,-486,0),   #3
-                (388,565,0),    #4
-                (0,0,0),        #placeholder - no room 5
-                (1077,79,0),    #6 83
-                (0,0,0),        #7
-                (0,0,0),        #8
-                (0,0,0),        #9
-                (0,0,0),        #10
-                (0,0,0),        #11
-                (0,0,0),        #12
-                (0,0,0),        #13
-                (0,0,0),        #14
-                (0,0,0),        #15
-                (0,0,0),        #16
-                (0,0,0),        #17
-                (0,0,0)]        #18
+ROOM_OFFSETS = [(0,0,0),            #placeholder - no room 0
+                (547,0,0),          #1
+                (0,0,0),            #2
+                (190,-486,0),       #3
+                (388,565,0),        #4
+                (0,0,0),            #placeholder - no room 5
+                (1077,79,0),        #6 83
+                (1580,-540,0),      #7
+                (1800,-500,0),      #8
+                (1780,79,0),        #9
+                (2300,-300,0),      #10
+                (2500,-800,0),      #11
+                (2800,-300,0),      #12
+                (3100,0,0)]         #13
 
 ROOM_LOADS = [(0),              #placeholder - no room 0
               (1,2),            #1
@@ -44,21 +39,16 @@ ROOM_LOADS = [(0),              #placeholder - no room 0
               (0),              #placeholder - no room 5
               (3,4,6,7,9),      #6
               (6,7,8),          #7
-              (7,8,9,11,14),    #8
+              (7,8,9,10,11),    #8
               (6,8,9,10),       #9
-              (9,10,13),        #10
-              (8,11,12,13,18),  #11
-              (11,12,14,18),    #12
-              (10,11,13,15,18), #13
-              (8,12,14),        #14
-              (13,15,16,18),    #15
-              (15,16,18),       #16
-              (16,17),          #17
-              (11,12,13,15,18)] #18
+              (8,9,10,11,12),   #10
+              (8,10,11,12),     #11
+              (10,11,12,13),    #12
+              (12,13)]          #13
 
 class World(DirectObject):
     def __init__(self, dogSelection):
-        base.disableMouse()
+        #base.disableMouse()
         render.setShaderAuto()
         self.sound = True
         self.dogSelection = dogSelection
@@ -77,8 +67,8 @@ class World(DirectObject):
         taskMgr.doMethodLater(2, self.camera_pan, "cam_pan")
 
     def _setup_cam(self):
-        base.camera.setPos(self.room1.find("**/camera_loc").getPos() + ROOM_OFFSETS[2])
-        base.camera.lookAt(self.room1.find("**/camera_start_look").getPos() + ROOM_OFFSETS[2])
+        base.camera.setPos(self.room1.find("**/camera_loc").getPos() + ROOM_OFFSETS[1])
+        base.camera.lookAt(self.room1.find("**/camera_start_look").getPos() + ROOM_OFFSETS[1])
 
     def _setup_models(self):
         self.player = player.Player(self.dogSelection)
@@ -186,6 +176,48 @@ class World(DirectObject):
                     entry.getIntoNodePath().getParent().getParent() == self.room6:
                 print "6"
                 self._change_room(6)
+        #In room 7
+            elif entry.getIntoNodePath() == self.room7 or \
+                    entry.getIntoNodePath().getParent() == self.room7 or \
+                    entry.getIntoNodePath().getParent().getParent() == self.room7:
+                print "7"
+                self._change_room(7)
+        #In room 8
+            elif entry.getIntoNodePath() == self.room8 or \
+                    entry.getIntoNodePath().getParent() == self.room8 or \
+                    entry.getIntoNodePath().getParent().getParent() == self.room8:
+                print "8"
+                self._change_room(8)
+        #In room 9
+            elif entry.getIntoNodePath() == self.room9 or \
+                    entry.getIntoNodePath().getParent() == self.room9 or \
+                    entry.getIntoNodePath().getParent().getParent() == self.room9:
+                print "9"
+                self._change_room(9)
+        #In room 10
+            elif entry.getIntoNodePath() == self.room10 or \
+                    entry.getIntoNodePath().getParent() == self.room10 or \
+                    entry.getIntoNodePath().getParent().getParent() == self.room10:
+                print "10"
+                self._change_room(10)
+        #In room 11
+            elif entry.getIntoNodePath() == self.room11 or \
+                    entry.getIntoNodePath().getParent() == self.room11 or \
+                    entry.getIntoNodePath().getParent().getParent() == self.room11:
+                print "11"
+                self._change_room(11)
+        #In room 12
+            elif entry.getIntoNodePath() == self.room12 or \
+                    entry.getIntoNodePath().getParent() == self.room12 or \
+                    entry.getIntoNodePath().getParent().getParent() == self.room12:
+                print "12"
+                self._change_room(12)
+        #In room 13
+            elif entry.getIntoNodePath() == self.room13 or \
+                    entry.getIntoNodePath().getParent() == self.room13 or \
+                    entry.getIntoNodePath().getParent().getParent() == self.room13:
+                print "13"
+                self._change_room(13)
                  
         return Task.again
 
@@ -217,7 +249,7 @@ class World(DirectObject):
         self.room10.detachNode()
         self.room11.detachNode()
         self.room12.detachNode()
-        #self.room13.detachNode()
+        self.room13.detachNode()
         
         for r in ROOM_LOADS[current]:
             print "loading room %d" % r
@@ -225,6 +257,7 @@ class World(DirectObject):
 
     def _preload_rooms(self):
         self.rooms.append(NodePath())
+
         self.room1 = loader.loadModel("models/room1")
         self.room1.setScale(settings.ENV_SCALE * settings.GLOBAL_SCALE)
         self.room1.setPos(ROOM_OFFSETS[1][0], ROOM_OFFSETS[1][1], ROOM_OFFSETS[1][2])
@@ -250,9 +283,7 @@ class World(DirectObject):
         self.room4.setPos(ROOM_OFFSETS[4][0], ROOM_OFFSETS[4][1], ROOM_OFFSETS[4][2])
         self.rooms.append(self.room4)
 
-        self.room5 = loader.loadModel("models/room2")
-        self.room5.setScale(.0001)
-        self.rooms.append(self.room5)
+        self.rooms.append(NodePath())
 
         self.room6 = loader.loadModel("models/room6")
         self.room6.setScale(settings.ENV_SCALE * settings.GLOBAL_SCALE)
@@ -262,6 +293,7 @@ class World(DirectObject):
         self.room7 = loader.loadModel("models/room7")
         self.room7.setScale(settings.ENV_SCALE * settings.GLOBAL_SCALE)
         self.room7.setPos(ROOM_OFFSETS[7][0], ROOM_OFFSETS[7][1], ROOM_OFFSETS[7][2])
+        self.room7.setH(-136)
         self.rooms.append(self.room7)
 
         self.room8 = loader.loadModel("models/room8")
@@ -289,10 +321,11 @@ class World(DirectObject):
         self.room12.setPos(ROOM_OFFSETS[12][0], ROOM_OFFSETS[12][1], ROOM_OFFSETS[12][2])
         self.rooms.append(self.room12)
 
-        #self.room13 = loader.loadModel("models/room13")
-        #self.room13.setScale(settings.ENV_SCALE * settings.GLOBAL_SCALE)
-        #self.room13.setPos(ROOM_OFFSETS[13][0], ROOM_OFFSETS[13][1], ROOM_OFFSETS[13][2])
-        #self.rooms.append(self.room13)
+        self.room13 = loader.loadModel("models/room13")
+        self.room13.setScale(settings.ENV_SCALE * settings.GLOBAL_SCALE)
+        self.room13.setPos(ROOM_OFFSETS[13][0], ROOM_OFFSETS[13][1], ROOM_OFFSETS[13][2])
+        self.rooms.append(self.room13)
+        
     def _preload_enemies(self):
         self._en_list = { }
         e1 = []

@@ -64,7 +64,7 @@ class Player(DirectObject):
         self.currentFrame = self.animControl.getFrame()
         self._model.reparentTo(render)
         self._model.setScale(.5 * settings.GLOBAL_SCALE)
-        self._model.setPos(700, 0, 5)
+        self._model.setPos(550, 0, 5)
         self._model.setH(-90)
         self.p = ParticleEffect()
 
