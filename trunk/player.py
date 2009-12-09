@@ -238,7 +238,7 @@ class Player(DirectObject):
         # Sight collision (Mid)
         self._sight_handler_mi = CollisionHandlerQueue()
         self._sight_ray_mi = CollisionRay()
-        self._sight_ray_mi.setOrigin(1, 0, 0)
+        self._sight_ray_mi.setOrigin(1, 0, 1)
         self._sight_ray_mi.setDirection(0, -1, 0)
         self._sight_coll_mi = CollisionNode('collision-sight-mi')
         self._sight_coll_mi.addSolid(self._sight_ray_mi)
@@ -250,7 +250,7 @@ class Player(DirectObject):
         # Sight collision (left)
         self._sight_handler_le = CollisionHandlerQueue()
         self._sight_ray_le = CollisionRay()
-        self._sight_ray_le.setOrigin(1, 0, 0)
+        self._sight_ray_le.setOrigin(1, 0, 1)
         self._sight_ray_le.setDirection(-.1, -1, 0)
         self._sight_coll_le = CollisionNode('collision-sight-le')
         self._sight_coll_le.addSolid(self._sight_ray_le)
@@ -262,7 +262,7 @@ class Player(DirectObject):
         # Sight collision (right)
         self._sight_handler_ri = CollisionHandlerQueue()
         self._sight_ray_ri = CollisionRay()
-        self._sight_ray_ri.setOrigin(1, 0, 0)
+        self._sight_ray_ri.setOrigin(1, 0, 1)
         self._sight_ray_ri.setDirection(.1, -1, 0)
         self._sight_coll_ri = CollisionNode('collision-sight-ri')
         self._sight_coll_ri.addSolid(self._sight_ray_ri)
@@ -359,6 +359,7 @@ class Player(DirectObject):
         pos_x = self._model.getX()
         pos_y = self._model.getY()
         pos = self._model.getPos()
+        
         if self.chase:
             self._inner_sphere_handler.sortEntries()
             if self._inner_sphere_handler and self._inner_sphere_handler.getEntry(0).getIntoNode().getName() == 'collision-enemy-sphere':
@@ -368,21 +369,22 @@ class Player(DirectObject):
             self._sight_handler_mi.sortEntries()
             self._sight_handler_ri.sortEntries()
             self._sight_handler_le.sortEntries()
-            if self._sight_handler_mi.getNumEntries() and self._sight_handler_mi.getEntry(0).getIntoNode().getName() == 'collision-enemy-sphere':
+        
+            if self._sight_handler_mi.getNumEntries() and self._sight_handler_mi.getEntry(0).getIntoNode().getName() == 'collision-chase-sphere':
                 rotation_rad = deg2Rad(rotation)
                 dx = et * walk_rate * math.sin(rotation_rad)
                 dy = et * walk_rate * -math.cos(rotation_rad)
                 pos_x += dx
                 pos_y += dy
 
-            elif self._sight_handler_ri.getNumEntries() and self._sight_handler_ri.getEntry(0).getIntoNode().getName() == 'collision-enemy-sphere':
+            elif self._sight_handler_ri.getNumEntries() and self._sight_handler_ri.getEntry(0).getIntoNode().getName() == 'collision-chase-sphere':
                 rotation += et * rotation_rate
                 rotation_rad = deg2Rad(rotation)
                 dx = et * walk_rate * math.sin(rotation_rad)
                 dy = et * walk_rate * -math.cos(rotation_rad)
                 pos_x += dx
                 pos_y += dy
-            elif self._sight_handler_le.getNumEntries() and self._sight_handler_le.getEntry(0).getIntoNode().getName() == 'collision-enemy-sphere':
+            elif self._sight_handler_le.getNumEntries() and self._sight_handler_le.getEntry(0).getIntoNode().getName() == 'collision-chase-sphere':
                 rotation -= et * rotation_rate
                 rotation_rad = deg2Rad(rotation)
                 dx = et * walk_rate * math.sin(rotation_rad)
@@ -399,9 +401,9 @@ class Player(DirectObject):
             self.chasetimer -= 1
             if self.chasetimer == 0:
                 self.chase = False
-            self._prev_move_time = task.time
+            #self._prev_move_time = task.time
 
-            return Task.cont
+            #return Task.cont
 
 
 
@@ -539,7 +541,7 @@ class Player(DirectObject):
                 self._model.setPos(pos)
 
 
-        if self.chasetimer < settings.PLAYER_CHASE_LENGTH:
+        if not self.chase and self.chasetimer < settings.PLAYER_CHASE_LENGTH:
             self.chasetimer += 1
 
         self._prev_move_time = task.time

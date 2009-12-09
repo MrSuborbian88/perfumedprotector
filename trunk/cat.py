@@ -20,6 +20,7 @@ class Cat(enemy.Enemy):
         enemy.Enemy.__init__(self, pos, file_loc)
         self._is_chase = False
         self._is_cat = True
+        self._walk_rate = 45
         self._setup_cat_collision()
 
     def _load_models(self, pos):
@@ -31,10 +32,10 @@ class Cat(enemy.Enemy):
     def _setup_cat_collision(self):
         # Player sight target
         self._sphere_handler = CollisionHandlerQueue()
-        self._sphere = CollisionSphere(0, 6, 0, 3)
-        self._coll_sphere = CollisionNode('collision-enemy-sphere')
+        self._sphere = CollisionSphere(0, 6, 0, 5)
+        self._coll_sphere = CollisionNode('collision-chase-sphere')
         self._coll_sphere.addSolid(self._sphere)
-        self._coll_sphere.setFromCollideMask(BitMask32.bit(0))
+        self._coll_sphere.setFromCollideMask(BitMask32.allOff())
         self._coll_sphere.setIntoCollideMask(BitMask32.bit(6))
         self._coll_sphere_path = self._model.attachNewNode(self._coll_sphere)
         self._coll_sphere_path.show()
