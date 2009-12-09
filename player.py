@@ -347,15 +347,14 @@ class Player(DirectObject):
         self._model.cleanup()
         self._model.removeNode()
         if self.dogSelection == 2:
-            self._model = Actor("models/sdogb.egg", {"walking":"models/sdoganimb.egg"})
+            self._model = Actor("models/sdogb.egg", {"walking":"models/sdogbanim.egg"})
         else:
-            self._model = Actor("models/bdogb", {"walking":"models/bdoganimb.egg"})
+            self._model = Actor("models/bdogb.egg", {"walking":"models/bdogbanim.egg"})
         #self.animControl =self._model.getAnimControl('walking')
         self._model.reparentTo(render)
         self._model.setScale(.5 * settings.GLOBAL_SCALE)
         self._model.setPos(550, 0, 5)
         self._model.setH(-90)
-        self.p = ParticleEffect()
         self._setup_collisions()
         self._model.setPos(pos)
         self._model.setH(rot)
