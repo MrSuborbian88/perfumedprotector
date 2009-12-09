@@ -1,7 +1,7 @@
-<CoordinateSystem> { Z-Up }
+<CoordinateSystem> { Y-Up }
 
 <Comment> {
-  "maya2egg2009 -cs z-up -cn sdog -a model -o sdog.egg c:/sdds/sdog.mb"
+  "maya2egg2009 -cn sdog -a model -o sdog.egg c:/sdds/sdog.mb"
 }
 <Texture> phong3SG {
   tex-sdogBody.jpg
