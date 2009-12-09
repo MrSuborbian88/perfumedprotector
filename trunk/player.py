@@ -53,20 +53,22 @@ class Player(DirectObject):
         self.chase = False
         self.chasetimer = settings.PLAYER_CHASE_LENGTH
         self.inst1 = addInstructions(0.95, str(self._model.getPos()))
-
+        
         self.win = False
     def _load_models(self):
         if self.dogSelection == 2:
-            self._model = Actor("models/sdog")
+            self._model = Actor("models/sdog.egg", {"walking":"models/sdoganim.egg"})
         else:
             self._model = Actor("models/bdog")
+        self.animControl =self._model.getAnimControl('walking')
+        self.currentFrame = self.animControl.getFrame()
         self._model.reparentTo(render)
         self._model.setScale(.5 * settings.GLOBAL_SCALE)
         self._model.setPos(0, 0, 5)
         self.p = ParticleEffect()
 
     def _load_sounds(self):
-        self.sound_bark = loader.loadSfx(os.path.join("sound files", "Small Dog Barking.mp3"))
+        self.sound_bark = loader.loadSfx(os.path.join("sound files", "Dog Barking.mp3"))
         self.sound_dog_footsteps = loader.loadSfx(os.path.join("sound files", "Dog Footsteps.mp3"))
 
     def _load_lights(self):
@@ -426,11 +428,18 @@ class Player(DirectObject):
                 else:
                     self.jumping=0
 
-        if self._keymap['bark'] and self.dogSelection == 2:
+        if self._keymap['bark'] and self.dogSelection == 1:
             self.sound_bark.play()
             self._keymap['bark'] = 0
             self.loadParticleConfig((42,-261,10))
-
+        
+        if self._keymap['forward'] == 1 or self._keymap['reverse'] == 1 or self._keymap['left'] == 1 or self._keymap['right'] == 1:
+            if not self.animControl.isPlaying(): 
+                self._model.loop('walking')
+        else:
+            self.currentFrame = self.animControl.getFrame()
+            self._model.pose('walking', self.currentFrame)
+        
         if self.sound_dog_footsteps.status() == 1:
             if self._keymap['forward'] == 1 or self._keymap['reverse'] == 1 or self._keymap['left'] == 1 or self._keymap['right'] == 1:
                 self.sound_dog_footsteps.play()
@@ -569,6 +578,11 @@ class Player(DirectObject):
         self.p.reparentTo(render) 
         self.p.setScale(10)  
         self.p.start()
+        taskMgr.doMethodLater(5, self.cleanParticles, 'Stop Particles')
+        
+    def cleanParticles(self, random):
+        self.p.softStop()
+
         
     def play_dead(self):
         self.playing_dead = not self.playing_dead
