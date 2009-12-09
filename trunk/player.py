@@ -400,7 +400,7 @@ class Player(DirectObject):
             self._sight_handler_mi.sortEntries()
             self._sight_handler_ri.sortEntries()
             self._sight_handler_le.sortEntries()
-        
+            
             if self._sight_handler_mi.getNumEntries() and self._sight_handler_mi.getEntry(0).getIntoNode().getName() == 'collision-chase-sphere':
                 rotation_rad = deg2Rad(rotation)
                 dx = et * walk_rate * math.sin(rotation_rad)
@@ -423,6 +423,7 @@ class Player(DirectObject):
                 pos_y += dy
             else:
                 rotation += et * rotation_rate
+            
 
             self._model.setH(rotation)
             self._model.setX(pos_x)
@@ -431,11 +432,6 @@ class Player(DirectObject):
             self.chasetimer -= 1
             if self.chasetimer == 0:
                 self.chase = False
-            #self._prev_move_time = task.time
-
-            #return Task.cont
-
-
 
         # Rotate the player
         dr = et * rotation_rate
@@ -473,7 +469,7 @@ class Player(DirectObject):
         if self._keymap['forward'] == 1 or self._keymap['reverse'] == 1 or self._keymap['left'] == 1 or self._keymap['right'] == 1:
             if not self.animControl.isPlaying(): 
                 self._model.loop('walking')
-        else:
+        elif not self.chase:
             self.currentFrame = self.animControl.getFrame()
             self._model.pose('walking', self.currentFrame)
         
