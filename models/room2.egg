@@ -176,25 +176,25 @@
     <Vertex> 0 {
       4.43962 5.48188 -6.7561
       <UV> { 0.58897 0.716686 }
-      <Normal> { 1.46877e-007 1 -2.04177e-007 }
+      <Normal> { 1.30739e-007 1 0 }
       <RGBA> { 1 1 1 1 }
     }
     <Vertex> 1 {
-      7.68611 5.48188 -6.7561
+      8.08686 5.48188 -6.7561
       <UV> { 0.852699 0.716686 }
-      <Normal> { 1.46877e-007 1 -2.04177e-007 }
+      <Normal> { 1.30739e-007 1 0 }
       <RGBA> { 1 1 1 1 }
     }
     <Vertex> 2 {
-      7.68611 5.48188 -9.63356
+      8.08686 5.48188 -10.1297
       <UV> { 0.852699 0.950437 }
-      <Normal> { 1.46877e-007 1 -2.04177e-007 }
+      <Normal> { 1.30739e-007 1 0 }
       <RGBA> { 1 1 1 1 }
     }
     <Vertex> 3 {
-      4.43962 5.48188 -9.63356
+      4.43962 5.48188 -10.1297
       <UV> { 0.58897 0.950437 }
-      <Normal> { 1.46877e-007 1 -2.04177e-007 }
+      <Normal> { 1.30739e-007 1 0 }
       <RGBA> { 1 1 1 1 }
     }
     <Vertex> 4 {
@@ -679,7 +679,7 @@
     }
   }
   <Polygon> {
-    <Normal> { 1.46877e-007 1 -2.04177e-007 }
+    <Normal> { 1.30739e-007 1 0 }
     <TRef> { initialShadingGroup }
     <VertexRef> { 0 1 2 3 <Ref> { groundShape.verts } }
   }
@@ -7584,54 +7584,5 @@
     <Normal> { -1 0 0 }
     <TRef> { phong1SG }
     <VertexRef> { 409 410 411 412 <Ref> { walls1Shape.verts } }
-  }
-}
-
-<Group> camera_loc {
-  <DCS> { net }
-  <Transform> {
-    <Matrix4> {
-      1 0 0 0
-      0 1 0 0
-      0 0 1 0
-      -200 200 -200 1
-    }
-    <Translate> { 0 0 0 }
-  }
-}
-<Group> camera_start_look {
-  <DCS> { net }
-  <Transform> {
-    <Matrix4> {
-      1 0 0 0
-      0 1 0 0
-      0 0 1 0
-      200 210 -261 1
-    }
-    <Translate> { 0 0 0 }
-  }
-}
-<Group> camera_pan_1 {
-  <DCS> { net }
-  <Transform> {
-    <Matrix4> {
-      1 0 0 0
-      0 1 0 0
-      0 0 1 0
-      220 30 -261 1
-    }
-    <Translate> { 0 0 0 }
-  }
-}
-<Group> camera_pan_2 {
-  <DCS> { net }
-  <Transform> {
-    <Matrix4> {
-      1 0 0 0
-      0 1 0 0
-      0 0 1 0
-      -220 10 261 1
-    }
-    <Translate> { 0 0 0 }
   }
 }
