@@ -1,7 +1,7 @@
 <CoordinateSystem> { Y-Up }
 
 <Comment> {
-  "maya2egg2009 -o room3box.egg c:/sdds/roomBox.mb"
+  "maya2egg2009 -o room3box.egg c:/sdds/roombox.mb"
 }
 <Group> groundPlane_transform {
 }
@@ -38,42 +38,42 @@
       <RGBA> { 0.5 0.5 0.5 1 }
     }
     <Vertex> 6 {
-      8 8 -10
+      8 8 -32.0251
       <Normal> { 0 1 0 }
       <RGBA> { 0.5 0.5 0.5 1 }
     }
     <Vertex> 7 {
-      -8 8 -10
+      -8 8 -32.0251
       <Normal> { 0 1 0 }
       <RGBA> { 0.5 0.5 0.5 1 }
     }
     <Vertex> 8 {
-      -8 8 -10
+      -8 8 -32.0251
       <Normal> { 0 0 -1 }
       <RGBA> { 0.5 0.5 0.5 1 }
     }
     <Vertex> 9 {
-      8 8 -10
+      8 8 -32.0251
       <Normal> { 0 0 -1 }
       <RGBA> { 0.5 0.5 0.5 1 }
     }
     <Vertex> 10 {
-      8 0 -10
+      8 0 -32.0251
       <Normal> { 0 0 -1 }
       <RGBA> { 0.5 0.5 0.5 1 }
     }
     <Vertex> 11 {
-      -8 0 -10
+      -8 0 -32.0251
       <Normal> { 0 0 -1 }
       <RGBA> { 0.5 0.5 0.5 1 }
     }
     <Vertex> 12 {
-      -8 0 -10
+      -8 0 -32.0251
       <Normal> { 0 -1 0 }
       <RGBA> { 0.5 0.5 0.5 1 }
     }
     <Vertex> 13 {
-      8 0 -10
+      8 0 -32.0251
       <Normal> { 0 -1 0 }
       <RGBA> { 0.5 0.5 0.5 1 }
     }
@@ -93,12 +93,12 @@
       <RGBA> { 0.5 0.5 0.5 1 }
     }
     <Vertex> 17 {
-      8 0 -10
+      8 0 -32.0251
       <Normal> { 1 0 0 }
       <RGBA> { 0.5 0.5 0.5 1 }
     }
     <Vertex> 18 {
-      8 8 -10
+      8 8 -32.0251
       <Normal> { 1 0 0 }
       <RGBA> { 0.5 0.5 0.5 1 }
     }
@@ -108,7 +108,7 @@
       <RGBA> { 0.5 0.5 0.5 1 }
     }
     <Vertex> 20 {
-      -8 0 -10
+      -8 0 -32.0251
       <Normal> { -1 0 0 }
       <RGBA> { 0.5 0.5 0.5 1 }
     }
@@ -123,7 +123,7 @@
       <RGBA> { 0.5 0.5 0.5 1 }
     }
     <Vertex> 23 {
-      -8 8 -10
+      -8 8 -32.0251
       <Normal> { -1 0 0 }
       <RGBA> { 0.5 0.5 0.5 1 }
     }
