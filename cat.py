@@ -15,7 +15,6 @@ import os
 import random
 import sys
 
-
 class Cat(enemy.Enemy):
     def __init__(self, pos,file_loc):
         enemy.Enemy.__init__(self, pos, file_loc)

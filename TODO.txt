@@ -1,17 +1,54 @@
 Player
-   Follow cat
-   Break down break-downable stuff   
-   Play dead
+	Follow cat
+	Break down break-downable stuff	
+	Play dead
 
 Cat
-   Walk towards guards when being followed by dog
-   Avoid obstacles
+	Walk towards guards when being followed by dog
+	Avoid obstacles
 
 Robot
-   Chase player
-   Avoid obstacles
+	Chase player
+	Avoid obstacles
 
 Environment
-   Line-up rooms
-   Camera switches
-   Camera pan-route
+	Line-up rooms
+	Camera switches
+	Camera pan-route
+	
+Art
+	big dog model
+	big dog animation
+		jump
+		turn
+		walk
+	small dog animation
+		jump
+		turn
+		walk
+	cat animation
+		walk
+		turn
+	robot model
+	robot animation
+		walk
+		turn
+	rooms
+		1
+		3 - resize to line up with 2&6
+		6 - floor reallign & package spot
+		7
+		8
+		9
+		10
+		11
+		12
+		13
+
+
+
+
+
+
+
+
