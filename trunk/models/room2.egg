@@ -7586,3 +7586,52 @@
     <VertexRef> { 409 410 411 412 <Ref> { walls1Shape.verts } }
   }
 }
+
+<Group> camera_loc {
+  <DCS> { net }
+  <Transform> {
+    <Matrix4> {
+      1 0 0 0
+      0 1 0 0
+      0 0 1 0
+      -200 200 -200 1
+    }
+    <Translate> { 0 0 0 }
+  }
+}
+<Group> camera_start_look {
+  <DCS> { net }
+  <Transform> {
+    <Matrix4> {
+      1 0 0 0
+      0 1 0 0
+      0 0 1 0
+      200 210 -261 1
+    }
+    <Translate> { 0 0 0 }
+  }
+}
+<Group> camera_pan_1 {
+  <DCS> { net }
+  <Transform> {
+    <Matrix4> {
+      1 0 0 0
+      0 1 0 0
+      0 0 1 0
+      220 30 -261 1
+    }
+    <Translate> { 0 0 0 }
+  }
+}
+<Group> camera_pan_2 {
+  <DCS> { net }
+  <Transform> {
+    <Matrix4> {
+      1 0 0 0
+      0 1 0 0
+      0 0 1 0
+      -220 10 261 1
+    }
+    <Translate> { 0 0 0 }
+  }
+}
