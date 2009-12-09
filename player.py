@@ -31,9 +31,13 @@ class Player(DirectObject):
                 'bark'    : 0,
         }
         self._dir = 0
-        self._coll_dist = 4
-        self._coll_dist_h = 1.5
         self.dogSelection = dogSelection
+        if self.dogSelection == 2:
+            self._coll_dist = 4
+            self._coll_dist_h = 1.5
+        else:
+            self._coll_dist = 6
+            self._coll_dist_h = 3
         self._scale = .5 * settings.GLOBAL_SCALE
         self._load_models()
         self._load_sounds()
@@ -54,7 +58,7 @@ class Player(DirectObject):
         if self.dogSelection == 2:
             self._model = Actor("models/sdog")
         else:
-            self._model = Actor("models/dog")
+            self._model = Actor("models/bdog")
         self._model.reparentTo(render)
         self._model.setScale(.5 * settings.GLOBAL_SCALE)
         self._model.setPos(0, 0, 5)
@@ -400,7 +404,7 @@ class Player(DirectObject):
         pos_x -= self._keymap['reverse'] * dx
         pos_y -= self._keymap['reverse'] * dy
       
-        if self._keymap['jump'] and not self.jumpingCurrently:
+        if self._keymap['jump'] and not self.jumpingCurrently and self.dogSelection==2:
             self.jumpingCurrently=True
         
         if self.jumpingCurrently:
@@ -410,7 +414,7 @@ class Player(DirectObject):
                 else:
                     self.jumping=0
             
-        if self._keymap['bark']:
+        if self._keymap['bark'] and self.dogSelection == 2:
             self.sound_bark.play()
             self._keymap['bark'] = 0
             self.loadParticleConfig((42,-261,10))
