@@ -27,7 +27,7 @@ class Cat(enemy.Enemy):
         self._model = Actor("models/cat",{"enemove":"models/catanim.egg"})
         self._model.setScale(1 * settings.GLOBAL_SCALE)
         self._model.setPos(pos[0], pos[1], pos[2])
-        self._model.reparentTo(render)
+        #self._model.reparentTo(render)
         
     def _setup_cat_collision(self):
         # Player sight target

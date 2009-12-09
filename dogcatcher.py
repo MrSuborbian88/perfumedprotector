@@ -25,7 +25,7 @@ class DogCatcher(enemy.Enemy):
         self._model = Actor("models/cthr", {"enemove":"models/cthr"})
         self._model.setScale(1 * settings.GLOBAL_SCALE)
         self._model.setPos(pos[0], pos[1], pos[2])
-        self._model.reparentTo(render)
+        #self._model.reparentTo(render)
     def _setup_catcher_collisions(self):
         # Player collision
         self._player_handler = CollisionHandlerQueue()
