@@ -29,7 +29,7 @@ class DogCatcher(enemy.Enemy):
     def _setup_catcher_collisions(self):
         # Player collision
         self._player_handler = CollisionHandlerQueue()
-        self._player = CollisionSphere(0, 0, 0, 3)
+        self._player = CollisionSphere(0, -5, 0, 3)
         self._player_coll = CollisionNode('collision-with-player-dcatcher')
         self._player_coll.addSolid(self._player)
         self._player_coll.setFromCollideMask(BitMask32.bit(7))
