@@ -60,9 +60,10 @@ class Pregame(DirectObject):
         elif self.posit == 4:
             if not self.dog_selection==0:
                 self.music_type = 1
-                self.sound_title.stop()
-                self.sound_main.play()
-                self.sound_main.setLoop(True)
+                if self.music:
+                    self.sound_title.stop()
+                    self.sound_main.play()
+                    self.sound_main.setLoop(True)
                 self.d.destroy()
                 w = world.World(self.dog_selection)
             else:
