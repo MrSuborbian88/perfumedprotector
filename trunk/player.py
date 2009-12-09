@@ -413,7 +413,7 @@ class Player(DirectObject):
         if self._keymap['bark']:
             self.sound_bark.play()
             self._keymap['bark'] = 0
-            self.loadParticleConfig()
+            self.loadParticleConfig((42,-261,10))
 
         if self.sound_dog_footsteps.status() == 1:
             if self._keymap['forward'] == 1 or self._keymap['reverse'] == 1 or self._keymap['left'] == 1 or self._keymap['right'] == 1:
@@ -544,10 +544,12 @@ class Player(DirectObject):
             self.falling-=.5
             return self.falling*.5
     
-    def loadParticleConfig(self):
+    def loadParticleConfig(self, position):
         self.p.cleanup()
         self.p = ParticleEffect()
         self.p.loadConfig(os.path.join("models", "smokering.ptf"))   
-        self.p.accelerate(.25)     
-        self.p.start(self._model)
-        self.p.setPos(0,0,10)
+        self.p.accelerate(.25) 
+        self.p.setPos(position) 
+        self.p.reparentTo(render) 
+        self.p.setScale(10)  
+        self.p.start()
