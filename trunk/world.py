@@ -23,7 +23,7 @@ ROOM_OFFSETS = [(0,0,0),            #placeholder - no room 0
                 (190,-486,0),       #3
                 (388,565,0),        #4
                 (0,0,0),            #placeholder - no room 5
-                (1077,79,0),        #6 83
+                (1077,79,0),        #6
                 (1580,-540,0),      #7
                 (2120,-460,0),      #8
                 (1780,79,0),        #9
@@ -34,7 +34,7 @@ ROOM_OFFSETS = [(0,0,0),            #placeholder - no room 0
 
 ROOM_LOADS = [(0),              #placeholder - no room 0
               (1,2),            #1
-              (1,2,3,4,6,7,8,9,10,11,12,13),        #2
+              (1,2,3,4,6),      #2
               (2,3,6),          #3
               (2,4,6),          #4
               (0),              #placeholder - no room 5
@@ -142,7 +142,7 @@ class World(DirectObject):
         self.cTrav = CollisionTraverser()
         # Front collision
         self._room_check_handler = CollisionHandlerQueue()
-        self._room_check_ray = CollisionSegment(0, -4, 1, 0, -4, -5)
+        self._room_check_ray = CollisionSegment(0, -6, 1, 0, -6, -5)
         self._room_check_coll = CollisionNode('collision-ground-front')
         self._room_check_coll.addSolid(self._room_check_ray)
         self._room_check_coll.setFromCollideMask(BitMask32(0x00000001))
@@ -151,7 +151,7 @@ class World(DirectObject):
         self._room_check_coll_path.show()
         self.cTrav.addCollider(self._room_check_coll_path, self._room_check_handler)
 
-        taskMgr.doMethodLater(1, self._handle_room_check_collisions, "room_check")
+        taskMgr.doMethodLater(.5, self._handle_room_check_collisions, "room_check")
     def _setup_package_collisions(self):
         #Package
         self._pack_handler = CollisionHandlerQueue()
@@ -424,6 +424,9 @@ class World(DirectObject):
 
         self._en_list[12] = e12
         self._current_en = e1
+
+        e13 = []
+        self._en_list[13] = e13
 
     def camera_pan(self, task):
         if self.player.playing_dead:
