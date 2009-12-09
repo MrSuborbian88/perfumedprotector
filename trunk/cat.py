@@ -38,7 +38,7 @@ class Cat(enemy.Enemy):
         self._coll_sphere.setFromCollideMask(BitMask32.allOff())
         self._coll_sphere.setIntoCollideMask(BitMask32.bit(6))
         self._coll_sphere_path = self._model.attachNewNode(self._coll_sphere)
-        self._coll_sphere_path.show()
+        #self._coll_sphere_path.show()
         self._coll_trav.addCollider(self._coll_sphere_path, self._sphere_handler)   
         # Player collision
         self._player_handler = CollisionHandlerQueue()
@@ -48,5 +48,5 @@ class Cat(enemy.Enemy):
         self._player_coll.setFromCollideMask(BitMask32.bit(7))
         self._player_coll.setIntoCollideMask(BitMask32.bit(7))
         self._player_coll_path = self._model.attachNewNode(self._player_coll)
-        self._player_coll_path.show()
+        #self._player_coll_path.show()
         self._coll_trav.addCollider(self._player_coll_path, self._player_handler)

@@ -118,7 +118,7 @@ class World(DirectObject):
                 self._coll_sphere.setFromCollideMask(BitMask32.allOff())
                 self._coll_sphere.setIntoCollideMask(BitMask32.bit(5))
                 self._coll_sphere_path = self.env.attachNewNode(self._coll_sphere)
-                self._coll_sphere_path.show()
+                #self._coll_sphere_path.show()
                 self._coll_trav.addCollider(self._coll_sphere_path, self._sphere_handler)
         return enemy
         
@@ -134,7 +134,7 @@ class World(DirectObject):
                 self._coll_sphere.setFromCollideMask(BitMask32.allOff())
                 self._coll_sphere.setIntoCollideMask(BitMask32.bit(5))
                 self._coll_sphere_path = self.env.attachNewNode(self._coll_sphere)
-                self._coll_sphere_path.show()
+                #self._coll_sphere_path.show()
                 self._coll_trav.addCollider(self._coll_sphere_path, self._sphere_handler)
         return enemy
         
@@ -148,7 +148,7 @@ class World(DirectObject):
         self._room_check_coll.setFromCollideMask(BitMask32(0x00000001))
         self._room_check_coll.setIntoCollideMask(BitMask32.allOff())
         self._room_check_coll_path = self.player._model.attachNewNode(self._room_check_coll)
-        self._room_check_coll_path.show()
+        #self._room_check_coll_path.show()
         self.cTrav.addCollider(self._room_check_coll_path, self._room_check_handler)
 
         taskMgr.doMethodLater(.5, self._handle_room_check_collisions, "room_check")
@@ -161,7 +161,7 @@ class World(DirectObject):
         self._pack_coll.setFromCollideMask(BitMask32.bit(7))
         self._pack_coll.setIntoCollideMask(BitMask32.bit(7))
         self._pack_coll_path = self._package.attachNewNode(self._pack_coll)
-        self._pack_coll_path.show()
+        #self._pack_coll_path.show()
         self._coll_trav.addCollider(self._pack_coll_path, self._pack_handler)
 
     def _handle_room_check_collisions(self, task):
@@ -240,6 +240,8 @@ class World(DirectObject):
                     entry.getIntoNodePath().getParent().getParent() == self.room13:
                 print "13"
                 self._change_room(13)
+                if self.player.package == True:
+                    taskMgr.doMethodLater(3, self.win, "win")
         if self.package and self.player.package:
             self._package.removeNode()
             self.package = False
@@ -498,3 +500,11 @@ class World(DirectObject):
         else:
             self.pan_tar = 1
         return Task.cont
+
+    def win(self):
+        taskMgr.doMethodLater(3, sys.exit, "win")
+        if self.dogSelection == 2: #small
+            self.a = OnscreenImage(parent=render2d, image=os.path.join("image files", "Victory-Screen-Small.png"))
+        else:
+            self.a = OnscreenImage(parent=render2d, image=os.path.join("image files", "Victory-Screen-Big.png"))
+
