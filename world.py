@@ -133,7 +133,7 @@ class World(DirectObject):
                 self._coll_trav.addCollider(self._coll_sphere_path, self._sphere_handler)
         self.enemylist.append(enemy)
         
-    def _setup_room_collisions(self):
+    def _setup_room_collisions(self): 
         self.cTrav = CollisionTraverser()
         # Front collision
         self._room_check_handler = CollisionHandlerQueue()
@@ -201,14 +201,14 @@ class World(DirectObject):
         self.room3.detachNode()
         self.room4.detachNode()
         self.room6.detachNode()
-        """self.room7.detachNode()
+        self.room7.detachNode()
         self.room8.detachNode()
         self.room9.detachNode()
         self.room10.detachNode()
         self.room11.detachNode()
         self.room12.detachNode()
-        self.room13.detachNode()
-        """
+        #self.room13.detachNode()
+        
         for r in ROOM_LOADS[current]:
             print "loading room %d" % r
             self.rooms[r].reparentTo(self.env)
@@ -251,7 +251,7 @@ class World(DirectObject):
         self.room6.setPos(ROOM_OFFSETS[6][0], ROOM_OFFSETS[6][1], ROOM_OFFSETS[6][2])
         self.rooms.append(self.room6)
 
-        """self.room7 = loader.loadModel("models/room7")
+        self.room7 = loader.loadModel("models/room7")
         self.room7.setScale(settings.ENV_SCALE * settings.GLOBAL_SCALE)
         self.room7.setPos(ROOM_OFFSETS[7][0], ROOM_OFFSETS[7][1], ROOM_OFFSETS[7][2])
         self.rooms.append(self.room7)
@@ -281,11 +281,11 @@ class World(DirectObject):
         self.room12.setPos(ROOM_OFFSETS[12][0], ROOM_OFFSETS[12][1], ROOM_OFFSETS[12][2])
         self.rooms.append(self.room12)
 
-        self.room13 = loader.loadModel("models/room13")
-        self.room13.setScale(settings.ENV_SCALE * settings.GLOBAL_SCALE)
-        self.room13.setPos(ROOM_OFFSETS[13][0], ROOM_OFFSETS[13][1], ROOM_OFFSETS[13][2])
-        self.rooms.append(self.room13)
-        """
+        #self.room13 = loader.loadModel("models/room13")
+        #self.room13.setScale(settings.ENV_SCALE * settings.GLOBAL_SCALE)
+        #self.room13.setPos(ROOM_OFFSETS[13][0], ROOM_OFFSETS[13][1], ROOM_OFFSETS[13][2])
+        #self.rooms.append(self.room13)
+        
 
     def camera_pan(self, task):
         if self.player.playing_dead:
