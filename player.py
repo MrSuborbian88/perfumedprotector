@@ -13,7 +13,7 @@ from pandac.PandaModules import PointParticleFactory,SpriteParticleRenderer
 
 import settings
 import math
-import os
+import os, sys, time
 import world
 
 def addInstructions(pos, msg):
@@ -369,7 +369,7 @@ class Player(DirectObject):
                 if self.chasetimer >= settings.PLAYER_CHASE_LENGTH:
                     self.chase = True
             elif self._inner_sphere_handler.getEntry(i).getIntoNode().getName()=='collision-with-player-dcatcher':
-                print "Captured"
+                self.game_over()
             elif self._inner_sphere_handler.getEntry(i).getIntoNode().getName()=='collision-package':
                 self._switch_models()
                 self.package = True
@@ -378,11 +378,17 @@ class Player(DirectObject):
             if self.playing_dead:
                 if self._model.getR() < 90:
                     self._model.setR(self._model.getR()+10)
+                if self._model.getZ() < 9:
+                    self._model.setZ(self._model.getZ()+1)
             else:
                 if self._model.getR() > 0:
                     self._model.setR(self._model.getR()-10)
+                if self._model.getZ() > 0:
+                    self._model.setZ(self._model.getZ()-1)
             self._prev_move_time = task.time
             return Task.cont
+        elif self._model.getZ() < 0:
+            self._model.setZ(self._model.getZ()+.1)
 
         et = task.time - self._prev_move_time
         rotation_rate = settings.PLAYER_ROTATION_RATE
@@ -550,7 +556,7 @@ class Player(DirectObject):
                         pos_z+=self.fall()
                         self._model.setZ(pos_z)
                 else:
-                    if entries_front[0].getSurfacePoint(render).getZ()>self._model.getZ():
+                    if len(entries_front) > 0 and entries_front[0].getSurfacePoint(render).getZ()>self._model.getZ():
                         self._model.setZ(entries_front[0].getSurfacePoint(render).getZ())
                         self.gravity=0
                         self.jumpingCurrently=False
@@ -624,3 +630,10 @@ class Player(DirectObject):
     
     def passCurrentRoom(self, currentRoom):
         self.currentRoom = currentRoom
+
+    def game_over(self):
+        taskMgr.doMethodLater(3, sys.exit, "game_over")
+        if self.dogSelection == 2: #small
+            self.a = OnscreenImage(parent=render2d, image=os.path.join("image files", "Game-Over-Screen-Small.png"))
+        else:
+         
