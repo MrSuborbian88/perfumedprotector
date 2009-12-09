@@ -24,12 +24,12 @@ ROOM_OFFSETS = [(0,0,0),            #placeholder - no room 0
                 (0,0,0),            #placeholder - no room 5
                 (1077,79,0),        #6 83
                 (1580,-540,0),      #7
-                (2120,-460,0),      #8
+                (1800,-500,0),      #8
                 (1780,79,0),        #9
-                (2550,-250,0),      #10
-                (2551,-790,0),      #11
-                (2990,-240,0),      #12
-                (3800,0,0)]         #13
+                (2300,-300,0),      #10
+                (2500,-800,0),      #11
+                (2800,-300,0),      #12
+                (3100,0,0)]         #13
 
 ROOM_LOADS = [(0),              #placeholder - no room 0
               (1,2),            #1
@@ -45,7 +45,7 @@ ROOM_LOADS = [(0),              #placeholder - no room 0
               (8,10,11,12),     #11
               (10,11,12,13),    #12
               (12,13)]          #13
-
+PACKAGE_POS = (890,-5.7,0)
 class World(DirectObject):
     def __init__(self, dogSelection):
         base.disableMouse()
@@ -58,11 +58,13 @@ class World(DirectObject):
         self._preload_rooms()
         self._preload_enemies()
         self._setup_room_collisions()
+        self._setup_package_collisions()
         self._setup_lights()
         self._setup_actions()
         self._setup_cam()
         self._load_rooms(2)
         self._change_enemies(1)
+        self.package = True
 
         taskMgr.doMethodLater(2, self.camera_pan, "cam_pan")
 
@@ -141,6 +143,17 @@ class World(DirectObject):
         self.cTrav.addCollider(self._room_check_coll_path, self._room_check_handler)
 
         taskMgr.doMethodLater(1, self._handle_room_check_collisions, "room_check")
+    def _setup_package_collisions(self):
+        #Package
+        self._pack_handler = CollisionHandlerQueue()
+        self._pack_ray = CollisionSphere(0,0,0,2)
+        self._pack_coll = CollisionNode('collision-package')
+        self._pack_coll.addSolid(self._pack_ray)
+        self._pack_coll.setFromCollideMask(BitMask32.bit(7))
+        self._pack_coll.setIntoCollideMask(BitMask32.bit(7))
+        self._pack_coll_path = self._package.attachNewNode(self._pack_coll)
+        self._pack_coll_path.show()
+        self._coll_trav.addCollider(self._pack_coll_path, self._pack_handler)
 
     def _handle_room_check_collisions(self, task):
         self.cTrav.traverse(self.env)
@@ -218,7 +231,11 @@ class World(DirectObject):
                     entry.getIntoNodePath().getParent().getParent() == self.room13:
                 print "13"
                 self._change_room(13)
-                 
+        if self.package and self.player.package:
+            self._package.removeNode()
+            self.package = False
+            self._setup_room_collisions()
+            
         return Task.again
 
     def _change_room(self, num):
@@ -237,6 +254,9 @@ class World(DirectObject):
         print self._current_en
         for e in self._current_en:
             e._model.reparentTo(render)
+        if not self.player.package and num == 6:
+            self._package.reparentTo(render)        
+        
     def _load_rooms(self, current):
         self.room1.detachNode()
         self.room2.detachNode()
@@ -289,18 +309,21 @@ class World(DirectObject):
         self.room6.setScale(settings.ENV_SCALE * settings.GLOBAL_SCALE)
         self.room6.setPos(ROOM_OFFSETS[6][0], ROOM_OFFSETS[6][1], ROOM_OFFSETS[6][2])
         self.rooms.append(self.room6)
+        self._package = loader.loadModel("models/bag")
+        self._package.setPos(PACKAGE_POS)
+        self._package.setScale(settings.ENV_SCALE)
 
         self.room7 = loader.loadModel("models/room7")
         self.room7.setScale(settings.ENV_SCALE * settings.GLOBAL_SCALE)
         self.room7.setPos(ROOM_OFFSETS[7][0], ROOM_OFFSETS[7][1], ROOM_OFFSETS[7][2])
-        self.room7.setH(-135)
+        self.room7.setH(-136)
         self.rooms.append(self.room7)
 
         self.room8 = loader.loadModel("models/room8")
         self.room8.setScale(settings.ENV_SCALE * settings.GLOBAL_SCALE)
         self.room8.setPos(ROOM_OFFSETS[8][0], ROOM_OFFSETS[8][1], ROOM_OFFSETS[8][2])
         self.rooms.append(self.room8)
-
+    
         self.room9 = loader.loadModel("models/room9")
         self.room9.setScale(settings.ENV_SCALE * settings.GLOBAL_SCALE)
         self.room9.setPos(ROOM_OFFSETS[9][0], ROOM_OFFSETS[9][1], ROOM_OFFSETS[9][2])
