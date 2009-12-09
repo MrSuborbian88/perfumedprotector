@@ -58,6 +58,7 @@ class Player(DirectObject):
         self.inst1 = addInstructions(0.95, str(self._model.getPos()))
         self.blocks = []
         self.currentRoom = 1
+        self.lose = False
         
         self.win = False
     def _load_models(self):
@@ -636,6 +637,7 @@ class Player(DirectObject):
         self.currentRoom = currentRoom
 
     def game_over(self):
+        self.lose = True
         taskMgr.doMethodLater(3, sys.exit, "game_over")
         if self.dogSelection == 2: #small
             self.a = OnscreenImage(parent=render2d, image=os.path.join("image files", "Game-Over-Screen-Small.png"))
