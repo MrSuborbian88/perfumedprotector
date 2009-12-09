@@ -18,7 +18,25 @@ class Pregame(DirectObject):
         self.sound_title.play()
         self.sound_title.setLoop(True)
         self.dog_selection=0
+        self.music = True
+        self.music_type = 0
+        self.accept("m", self.muteMusic)
 
+    def muteMusic(self):
+        if self.music:
+            self.music = False
+            if self.music_type == 0:
+                self.sound_title.stop()
+            else:
+                self.sound_main.stop()
+        else:
+            self.music = True
+            if self.music_type == 0:
+                self.sound_title.play()
+                self.sound_title.setLoop(True)
+            else:
+                self.sound_main.play()
+                self.sound_main.setLoop(True)
 
     def selectOne(self):
         self.dog_selection=1
@@ -41,6 +59,7 @@ class Pregame(DirectObject):
             self.d = OnscreenImage(parent=render2d, image=os.path.join("image files", "Selection-Screen.png"))
         elif self.posit == 4:
             if not self.dog_selection==0:
+                self.music_type = 1
                 self.sound_title.stop()
                 self.sound_main.play()
                 self.sound_main.setLoop(True)
