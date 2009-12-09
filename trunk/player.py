@@ -49,6 +49,7 @@ class Player(DirectObject):
         self.gravity = 0
         self.jumping = 15
         self.falling = 0
+        self.package = False
         self.jumpingCurrently = False
         self.chase = False
         self.chasetimer = settings.PLAYER_CHASE_LENGTH
@@ -58,8 +59,10 @@ class Player(DirectObject):
     def _load_models(self):
         if self.dogSelection == 2:
             self._model = Actor("models/sdog.egg", {"walking":"models/sdoganim.egg"})
+            #self._model2 = Actor("models/sdogb.egg", {"walking":"models/sdoganimb.egg"})
         else:
             self._model = Actor("models/bdog", {"walking":"models/bdoganim.egg"})
+            #self._model2 = Actor("models/bdogb", {"walking":"models/bdoganimb.egg"})
         self.animControl =self._model.getAnimControl('walking')
         self.currentFrame = self.animControl.getFrame()
         self._model.reparentTo(render)
@@ -334,7 +337,29 @@ class Player(DirectObject):
             base.camera.setP(dest_p)
             base.camera.setH(dest_h)
         return Task.cont
-
+    def _switch_models(self):
+        pos = self._model.getPos()
+        rot = self._model.getH()
+        p = self._model.getP()
+        r = self._model.getR()
+        self._model.cleanup()
+        self._model.removeNode()
+        if self.dogSelection == 2:
+            self._model = Actor("models/sdogb.egg", {"walking":"models/sdoganimb.egg"})
+        else:
+            self._model = Actor("models/bdogb", {"walking":"models/bdoganimb.egg"})
+        #self.animControl =self._model.getAnimControl('walking')
+        self._model.reparentTo(render)
+        self._model.setScale(.5 * settings.GLOBAL_SCALE)
+        self._model.setPos(550, 0, 5)
+        self._model.setH(-90)
+        self.p = ParticleEffect()
+        self._setup_collisions()
+        self._model.setPos(pos)
+        self._model.setH(rot)
+        self._model.setP(p)
+        self._model.setR(r)
+        
     def _task_move(self, task):
         pos_z = self._model.getZ()
         for i in range(self._inner_sphere_handler.getNumEntries()):
@@ -343,6 +368,9 @@ class Player(DirectObject):
                     self.chase = True
             elif self._inner_sphere_handler.getEntry(i).getIntoNode().getName()=='collision-with-player-dcatcher':
                 print "Captured"
+            elif self._inner_sphere_handler.getEntry(i).getIntoNode().getName()=='collision-package':
+                self._switch_models()
+                self.package = True
 
         if self.playing_dead or self._model.getR()>0:
             if self.playing_dead:
