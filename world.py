@@ -3,6 +3,7 @@ import player
 import cat
 import dogcatcher
 import sys
+import breakblock
 from pandac.PandaModules import loadPrcFileData
 loadPrcFileData('', 'window-title Doggy Delivery')
 loadPrcFileData('', 'notify-level fatal')
@@ -64,9 +65,19 @@ class World(DirectObject):
         self._setup_cam()
         self._load_rooms(2)
         self._change_enemies(1)
+        self._setup_blocks()
         self.package = True
 
         taskMgr.doMethodLater(2, self.camera_pan, "cam_pan")
+    
+    def _setup_blocks(self):
+        self.blocks = []
+        self.blocks.append(breakblock.BreakBlock((12.5,-278,5), self.rooms[2], 2))
+        self.blocks.append(breakblock.BreakBlock((1234,13,0), self.rooms[6], 6))
+        self.blocks.append(breakblock.BreakBlock((2200,-135,0), self.rooms[9], 9))
+        self.blocks.append(breakblock.BreakBlock((2340,-684,0), self.rooms[8], 8))
+        self.blocks.append(breakblock.BreakBlock((2730,-460,0), self.rooms[10], 10))
+        self.player.passBlocks(self.blocks)
 
     def _setup_cam(self):
         base.camera.setPos(self.room1.find("**/camera_loc").getPos() + ROOM_OFFSETS[1])
@@ -233,7 +244,8 @@ class World(DirectObject):
             self._package.removeNode()
             self.package = False
             self._setup_room_collisions()
-            
+        
+        self.player.passCurrentRoom(self.current_room)
         return Task.again
 
     def _change_room(self, num):

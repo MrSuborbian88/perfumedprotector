@@ -54,6 +54,8 @@ class Player(DirectObject):
         self.chase = False
         self.chasetimer = settings.PLAYER_CHASE_LENGTH
         self.inst1 = addInstructions(0.95, str(self._model.getPos()))
+        self.blocks = []
+        self.currentRoom = 1
         
         self.win = False
     def _load_models(self):
@@ -464,7 +466,10 @@ class Player(DirectObject):
             self.sound_bark.play()
             self._keymap['bark'] = 0
             self.chase = False
-            self.loadParticleConfig((42,-261,10))
+            for x in self.blocks:
+                if x.getRoom() == self.currentRoom:
+                    x.destroyBlock()
+            
         
         if self._keymap['forward'] == 1 or self._keymap['reverse'] == 1 or self._keymap['left'] == 1 or self._keymap['right'] == 1:
             if not self.animControl.isPlaying(): 
@@ -603,19 +608,6 @@ class Player(DirectObject):
             self.falling-=.5
             return self.falling*.5
     
-    def loadParticleConfig(self, position):
-        self.p.cleanup()
-        self.p = ParticleEffect()
-        self.p.loadConfig(os.path.join("models", "smokering.ptf"))   
-        self.p.accelerate(.25) 
-        self.p.setPos(position) 
-        self.p.reparentTo(render) 
-        self.p.setScale(10)  
-        self.p.start()
-        taskMgr.doMethodLater(5, self.cleanParticles, 'Stop Particles')
-        
-    def cleanParticles(self, random):
-        self.p.softStop()
 
         
     def play_dead(self):
@@ -626,3 +618,9 @@ class Player(DirectObject):
         else:
             self._model.setR(self._model.getR()-10)
             self._model.setZ(self._model.getZ()-1)
+            
+    def passBlocks(self, blocks):
+        self.blocks = blocks
+    
+    def passCurrentRoom(self, currentRoom):
+        self.currentRoom = currentRoom
