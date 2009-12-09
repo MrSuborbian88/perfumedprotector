@@ -364,7 +364,7 @@ class Player(DirectObject):
         
         if self.chase:
             self._inner_sphere_handler.sortEntries()
-            if self._inner_sphere_handler and self._inner_sphere_handler.getEntry(0).getIntoNode().getName() == 'collision-enemy-sphere':
+            if self._inner_sphere_handler.getNumEntries() and self._inner_sphere_handler.getEntry(0).getIntoNode().getName() == 'collision-enemy-sphere':
                     self._prev_move_time = task.time
                     return Task.cont
 
