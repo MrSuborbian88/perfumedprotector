@@ -1,0 +1,155 @@
+<CoordinateSystem> { Y-Up }
+
+<Comment> {
+  "maya2egg2009 -o room3box.egg c:/sdds/roomBox.mb"
+}
+<Group> groundPlane_transform {
+}
+<Group> pCube1 {
+  <VertexPool> pCubeShape1.verts {
+    <Vertex> 0 {
+      -8 0 10
+      <Normal> { 0 0 1 }
+      <RGBA> { 0.5 0.5 0.5 1 }
+    }
+    <Vertex> 1 {
+      8 0 10
+      <Normal> { 0 0 1 }
+      <RGBA> { 0.5 0.5 0.5 1 }
+    }
+    <Vertex> 2 {
+      8 8 10
+      <Normal> { 0 0 1 }
+      <RGBA> { 0.5 0.5 0.5 1 }
+    }
+    <Vertex> 3 {
+      -8 8 10
+      <Normal> { 0 0 1 }
+      <RGBA> { 0.5 0.5 0.5 1 }
+    }
+    <Vertex> 4 {
+      -8 8 10
+      <Normal> { 0 1 0 }
+      <RGBA> { 0.5 0.5 0.5 1 }
+    }
+    <Vertex> 5 {
+      8 8 10
+      <Normal> { 0 1 0 }
+      <RGBA> { 0.5 0.5 0.5 1 }
+    }
+    <Vertex> 6 {
+      8 8 -10
+      <Normal> { 0 1 0 }
+      <RGBA> { 0.5 0.5 0.5 1 }
+    }
+    <Vertex> 7 {
+      -8 8 -10
+      <Normal> { 0 1 0 }
+      <RGBA> { 0.5 0.5 0.5 1 }
+    }
+    <Vertex> 8 {
+      -8 8 -10
+      <Normal> { 0 0 -1 }
+      <RGBA> { 0.5 0.5 0.5 1 }
+    }
+    <Vertex> 9 {
+      8 8 -10
+      <Normal> { 0 0 -1 }
+      <RGBA> { 0.5 0.5 0.5 1 }
+    }
+    <Vertex> 10 {
+      8 0 -10
+      <Normal> { 0 0 -1 }
+      <RGBA> { 0.5 0.5 0.5 1 }
+    }
+    <Vertex> 11 {
+      -8 0 -10
+      <Normal> { 0 0 -1 }
+      <RGBA> { 0.5 0.5 0.5 1 }
+    }
+    <Vertex> 12 {
+      -8 0 -10
+      <Normal> { 0 -1 0 }
+      <RGBA> { 0.5 0.5 0.5 1 }
+    }
+    <Vertex> 13 {
+      8 0 -10
+      <Normal> { 0 -1 0 }
+      <RGBA> { 0.5 0.5 0.5 1 }
+    }
+    <Vertex> 14 {
+      8 0 10
+      <Normal> { 0 -1 0 }
+      <RGBA> { 0.5 0.5 0.5 1 }
+    }
+    <Vertex> 15 {
+      -8 0 10
+      <Normal> { 0 -1 0 }
+      <RGBA> { 0.5 0.5 0.5 1 }
+    }
+    <Vertex> 16 {
+      8 0 10
+      <Normal> { 1 0 0 }
+      <RGBA> { 0.5 0.5 0.5 1 }
+    }
+    <Vertex> 17 {
+      8 0 -10
+      <Normal> { 1 0 0 }
+      <RGBA> { 0.5 0.5 0.5 1 }
+    }
+    <Vertex> 18 {
+      8 8 -10
+      <Normal> { 1 0 0 }
+      <RGBA> { 0.5 0.5 0.5 1 }
+    }
+    <Vertex> 19 {
+      8 8 10
+      <Normal> { 1 0 0 }
+      <RGBA> { 0.5 0.5 0.5 1 }
+    }
+    <Vertex> 20 {
+      -8 0 -10
+      <Normal> { -1 0 0 }
+      <RGBA> { 0.5 0.5 0.5 1 }
+    }
+    <Vertex> 21 {
+      -8 0 10
+      <Normal> { -1 0 0 }
+      <RGBA> { 0.5 0.5 0.5 1 }
+    }
+    <Vertex> 22 {
+      -8 8 10
+      <Normal> { -1 0 0 }
+      <RGBA> { 0.5 0.5 0.5 1 }
+    }
+    <Vertex> 23 {
+      -8 8 -10
+      <Normal> { -1 0 0 }
+      <RGBA> { 0.5 0.5 0.5 1 }
+    }
+  }
+  <Polygon> {
+    <Normal> { 0 0 1 }
+    <VertexRef> { 0 1 2 3 <Ref> { pCubeShape1.verts } }
+  }
+  <Polygon> {
+    <Normal> { 0 1 0 }
+    <VertexRef> { 4 5 6 7 <Ref> { pCubeShape1.verts } }
+  }
+  <Polygon> {
+    <Normal> { 0 0 -1 }
+    <VertexRef> { 8 9 10 11 <Ref> { pCubeShape1.verts } }
+  }
+  <Polygon> {
+    <Normal> { 0 -1 0 }
+    <VertexRef> { 12 13 14 15 <Ref> { pCubeShape1.verts } }
+  }
+  <Polygon> {
+    <Normal> { 1 0 0 }
+    <VertexRef> { 16 17 18 19 <Ref> { pCubeShape1.verts } }
+  }
+  <Polygon> {
+    <Normal> { -1 0 0 }
+    <VertexRef> { 20 21 22 23 <Ref> { pCubeShape1.verts } }
+  }
+}
