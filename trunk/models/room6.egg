@@ -7067,3 +7067,29 @@
     <VertexRef> { 88 89 90 91 <Ref> { ground1Shape.verts } }
   }
 }
+
+<Group> camera_loc {
+  <DCS> { net }
+  <Transform> {
+    <Matrix4> {
+      1 0 0 0
+      0 1 0 0
+      0 0 1 0
+      0 200 300 1
+    }
+    <Translate> { 0 0 0 }
+  }
+}
+<Group> camera_start_look {
+  <DCS> { net }
+  <Transform> {
+    <Matrix4> {
+      1 0 0 0
+      0 1 0 0
+      0 0 1 0
+      400 210 200 1
+    }
+    <Translate> { 0 0 0 }
+  }
+}
+
