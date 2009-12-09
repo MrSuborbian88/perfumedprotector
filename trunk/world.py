@@ -372,7 +372,7 @@ class World(DirectObject):
         e6 = []
         e6.append(self._spawn_enemy((1420,-137,30), "data/r6_g1.txt"))
         e6.append(self._spawn_cat((1420,75,30), "data/r6_c1.txt"))
-        e6.append(self._spawn_enemy((1322,266,30), "data/r6_g2.txt"))
+        e6.append(self._spawn_enemy((1321,265,30), "data/r6_g2.txt"))
 
         self._en_list[6] = e6
 
@@ -382,13 +382,14 @@ class World(DirectObject):
         self._en_list[7] = e7
 
         e8 = []
-        
+        e8.append(self._spawn_cat((2280,-796,30), "data/r8_c1.txt"))
+        e8.append(self._spawn_enemy((2046,-530,30),"data/r8_g1.txt"))
         self._en_list[8] = e8
 
         e9 = []
-        e9.append(self._spawn_enemy((1653,122,15), "data/r9_g1.txt"))
+        e9.append(self._spawn_enemy((1664,40,30), "data/r9_g1.txt"))
         e9.append(self._spawn_enemy((1756,-139,30), "data/r9_g2.txt"))
-        e9.append(self._spawn_enemy((1976,88,15), "data/r9_g3.txt"))
+        e9.append(self._spawn_enemy((1953,47,25), "data/r9_g3.txt"))
         
 
         self._en_list[9] = e9
@@ -398,6 +399,12 @@ class World(DirectObject):
         self._en_list[10] = e10
 
         e11 = []
+        e11.append(self._spawn_enemy((2714,-916,20), "data/r11_g1.txt"))
+        e11.append(self._spawn_enemy((2362,-915,20), "data/r11_g2.txt"))
+        e11.append(self._spawn_enemy((2879,-746,20), "data/r11_g3.txt"))
+        e11.append(self._spawn_cat((2579,-734,20), "data/r11_c1.txt"))
+        e11.append(self._spawn_cat((2438,-644,20), "data/r11_c2.txt"))
+        
 
         self._en_list[11] = e11
 
