@@ -117,7 +117,7 @@ class World(DirectObject):
         for p in enemy._points:
                 self._sphere_handler = CollisionHandlerQueue()
                 #self._sphere = CollisionSphere(p[0]/settings.ENV_SCALE, p[1]/settings.ENV_SCALE, p[2], 2 * settings.ENV_SCALE)
-                self._sphere = CollisionSphere(p[0], p[1], p[2],1 * settings.GLOBAL_SCALE)
+                self._sphere = CollisionSphere(p[0], p[1], p[2],2 * settings.GLOBAL_SCALE)
                 self._coll_sphere = CollisionNode(file_loc)
                 self._coll_sphere.addSolid(self._sphere)
                 self._coll_sphere.setFromCollideMask(BitMask32.allOff())
@@ -363,6 +363,7 @@ class World(DirectObject):
         self._en_list[3] = e3
 
         e4 = []
+        e4.append(self._spawn_cat((659,561,30), "data/r4_c1.txt"))
 
         self._en_list[4] = e4
 
@@ -371,6 +372,9 @@ class World(DirectObject):
         self._en_list[5] = e5
 
         e6 = []
+        e6.append(self._spawn_enemy((1420,-137,30), "data/r6_g1.txt"))
+        e6.append(self._spawn_cat((1420,75,30), "data/r6_c1.txt"))
+        e6.append(self._spawn_enemy((1322,266,30), "data/r6_g2.txt"))
 
         self._en_list[6] = e6
 
@@ -384,6 +388,10 @@ class World(DirectObject):
         self._en_list[8] = e8
 
         e9 = []
+        e9.append(self._spawn_enemy((1653,122,15), "data/r9_g1.txt"))
+        e9.append(self._spawn_enemy((1756,-139,30), "data/r9_g2.txt"))
+        e9.append(self._spawn_enemy((1976,88,15), "data/r9_g3.txt"))
+        
 
         self._en_list[9] = e9
 
