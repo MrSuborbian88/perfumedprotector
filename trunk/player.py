@@ -59,7 +59,7 @@ class Player(DirectObject):
         if self.dogSelection == 2:
             self._model = Actor("models/sdog.egg", {"walking":"models/sdoganim.egg"})
         else:
-            self._model = Actor("models/bdog")
+            self._model = Actor("models/bdog", {"walking":"models/bdoganim.egg"})
         self.animControl =self._model.getAnimControl('walking')
         self.currentFrame = self.animControl.getFrame()
         self._model.reparentTo(render)
