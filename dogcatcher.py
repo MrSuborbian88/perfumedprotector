@@ -35,5 +35,5 @@ class DogCatcher(enemy.Enemy):
         self._player_coll.setFromCollideMask(BitMask32.bit(7))
         self._player_coll.setIntoCollideMask(BitMask32.bit(7))
         self._player_coll_path = self._model.attachNewNode(self._player_coll)
-        self._player_coll_path.show()
+        #self._player_coll_path.show()
         self._coll_trav.addCollider(self._player_coll_path, self._player_handler)
