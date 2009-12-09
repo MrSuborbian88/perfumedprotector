@@ -16,14 +16,12 @@ import random
 import sys
 
 
-class Cat(enemy.Enemy):
+class DogCatcher(enemy.Enemy):
     def __init__(self, pos,file_loc):
         enemy.Enemy.__init__(self, pos, file_loc)
-        self._is_chase = False
-        self._is_cat = True
 
     def _load_models(self, pos):
-        self._model = Actor("models/cat")
+        self._model = Actor("models/cthr", {"enemove":"models/cthr"})
         self._model.setScale(1 * settings.GLOBAL_SCALE)
         self._model.setPos(pos[0], pos[1], pos[2])
         self._model.reparentTo(render)

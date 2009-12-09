@@ -22,6 +22,7 @@ class Enemy(DirectObject):
         self.dead=False
         self._is_moving=False
         self._is_chase=False
+        self._is_cat=False
         self._points = []
         self._load_models(pos)
         self._setup_collisions()
@@ -171,20 +172,23 @@ class Enemy(DirectObject):
             
             if self._sight_handler_hi.getNumEntries() and self._sight_handler_hi.getEntry(0).getIntoNode().getName() == 'collision-player-sphere' or \
                 self._sight_handler_lo.getNumEntries() and self._sight_handler_lo.getEntry(0).getIntoNode().getName() == 'collision-player-sphere' or \
-                self._sight_handler_mi.getNumEntries() and self._sight_handler_mi.getEntry(0).getIntoNode().getName() == 'collision-player-sphere':                                
+                self._sight_handler_mi.getNumEntries() and self._sight_handler_mi.getEntry(0).getIntoNode().getName() == 'collision-player-sphere' and \
+                not self._is_cat:                                
                 rotation_rad = deg2Rad(rotation)
                 dx = et * walk_rate * math.sin(rotation_rad)
                 dy = et * walk_rate * -math.cos(rotation_rad)
                 pos_x += dx
                 pos_y += dy
-            elif self._sight_handler_ri.getNumEntries() and self._sight_handler_ri.getEntry(0).getIntoNode().getName() == 'collision-player-sphere':
+            elif self._sight_handler_ri.getNumEntries() and self._sight_handler_ri.getEntry(0).getIntoNode().getName() == 'collision-player-sphere' and \
+                not self._is_cat:
                 rotation += et * rotation_rate
                 rotation_rad = deg2Rad(rotation)
                 dx = et * walk_rate * math.sin(rotation_rad)
                 dy = et * walk_rate * -math.cos(rotation_rad)
                 pos_x += dx
                 pos_y += dy
-            elif self._sight_handler_le.getNumEntries() and self._sight_handler_le.getEntry(0).getIntoNode().getName() == 'collision-player-sphere':
+            elif self._sight_handler_le.getNumEntries() and self._sight_handler_le.getEntry(0).getIntoNode().getName() == 'collision-player-sphere' and \
+                not self._is_cat:
                 rotation -= et * rotation_rate
                 rotation_rad = deg2Rad(rotation)
                 dx = et * walk_rate * math.sin(rotation_rad)

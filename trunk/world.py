@@ -1,6 +1,7 @@
 import settings
 import player
 import cat
+import dogcatcher
 import sys
 from pandac.PandaModules import loadPrcFileData
 loadPrcFileData('', 'window-title Doggy Delivery')
@@ -97,7 +98,7 @@ class World(DirectObject):
 
     def _spawn_enemy(self,pos,file_loc):
         self._coll_trav = CollisionTraverser()
-        enemy = cat.Cat(pos,file_loc)
+        enemy = dogcatcher.DogCatcher(pos,file_loc)
         for p in enemy._points:
                 self._sphere_handler = CollisionHandlerQueue()
 #                self._sphere = CollisionSphere(p[0] /settings.ENV_SCALE, p[1]/settings.ENV_SCALE, p[2], 2 * settings.ENV_SCALE)
